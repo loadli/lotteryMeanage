@@ -5,6 +5,7 @@ const koaCompose = require('koa-compose');
 const koaCors = require('koa-cors');
 const todoRouter = require('./routers/todo');
 const userRouter = require('./routers/user');
+const recordRouter = require('./routers/record')
 const Koa = require('koa');
 const app = new Koa();
 
@@ -40,6 +41,6 @@ app.use(async function errorHandler(ctx, next) {
 // 为应用使用路由定义
 // 使用待办事项业务路由
 // app.use(todoRouter);
-app.use(koaCompose([todoRouter, userRouter]));
+app.use(koaCompose([todoRouter, userRouter, recordRouter]));
 
 module.exports = app;
