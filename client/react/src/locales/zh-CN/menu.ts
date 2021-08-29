@@ -24,6 +24,7 @@ export default {
   'menu.list': '列表页',
   'menu.list.table-list': '查询表格',
   'menu.list.table-record': '抽奖历史',
+  'menu.list.lottery-record': '抽奖记录',
   'menu.list.basic-list': '标准列表',
   'menu.list.card-list': '卡片列表',
   'menu.list.search-list': '搜索列表',

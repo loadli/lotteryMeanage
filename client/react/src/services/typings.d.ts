@@ -85,4 +85,17 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+// 抽奖记录
+  interface LotteryRecordItem {
+    _id: string,
+    createdAt: string,
+    updatedAt: string,
+    user: string,
+    remaining: string,
+    prize_name: string,
+    description: string,
+    spending: string
+  };
+
+  type LotteryRecordList = LotteryRecordItem[];
 }

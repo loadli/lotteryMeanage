@@ -49,6 +49,12 @@
     component: './Record',
   },
   {
+    name: 'list.lottery-record',
+    icon: 'read',
+    path: '/lotteryRecord',
+    component: './LotteryRecord',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
