@@ -16,16 +16,24 @@ class TodoService {
     const start = (page - 1) * size
     const end = start + (size - 1)
     if (Number.isNaN(start) || Number.isNaN(end)) {
-      return [];
+      return {
+        data: [],
+        current: 1,
+        pageSize: 20,
+        total: 0,
+        success: false,
+      };
     }
     const all = await recordTable.where().skip(start).limit(end).find();
     const total = await recordTable.where().count();
 
     console.log(all, total)
     const listMsg = {
-      list: all,
-      page: page,
+      data: all,
+      current: page,
+      pageSize: size,
       total: total,
+      success: true,
     }
     return listMsg;
   }

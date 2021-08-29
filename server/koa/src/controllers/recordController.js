@@ -15,8 +15,8 @@ class recordController {
    * @param ctx Koa 的上下文参数
    */
   async listAll(ctx) {
-    const page = ctx.request.query.page;
-    const size = ctx.request.query.size;
+    const page = ctx.request.query.current;
+    const size = ctx.request.query.pageSize;
     const list = await recordService.listAll(page, size);
     ctx.body = {...list};
   }
