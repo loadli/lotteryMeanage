@@ -3,11 +3,11 @@ const inspirecloud = require('@byteinspire/api');
 const ObjectId = inspirecloud.db.ObjectId;
 
 /**
- * RecordService
+ * BaseSettingService
  * Service 是业务具体实现，由 Controller 或其它 Service 调用
  * 包含待办事项的增删改查功能
  */
-class RecordService {
+class BaseSettingService {
   /**
    * 列出所有待办事项
    * @return {Promise<>} 返回待办事项数组
@@ -27,6 +27,7 @@ class RecordService {
     const all = await recordTable.where().skip(start).limit(end).find();
     const total = await recordTable.where().count();
 
+    console.log(all, total)
     const listMsg = {
       data: all,
       current: page,
@@ -61,4 +62,4 @@ class RecordService {
 }
 
 // 导出 Service 的实例
-module.exports = new RecordService();
+module.exports = new BaseSettingService();

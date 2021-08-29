@@ -65,4 +65,10 @@ export default {
   'pages.searchTable.tenThousand': '万',
   'pages.searchTable.batchDeletion': '批量删除',
   'pages.searchTable.batchApproval': '批量审批',
+  'pages.recordTable.user': '用户',
+  'pages.recordTable.oreUsed': '消耗',
+  'pages.recordTable.oreRemain': '剩余',
+  'pages.recordTable.optionTime': '操作时间',
+  'pages.recordTable.prize': '奖品',
+  'pages.recordTable.image': '实物图片',
 };

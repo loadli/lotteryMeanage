@@ -7,7 +7,6 @@ import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import type { FormValueType } from './components/UpdateForm';
-import UpdateForm from './components/UpdateForm';
 import { rule, addRule, updateRule, removeRule } from '@/services/ant-design-pro/api';
 import { connect } from 'dva';
 // import { effects } from './model';
@@ -156,25 +155,57 @@ const TableList: React.FC = (props) => {
     {
       title: (
         <FormattedMessage
-          id="pages.searchTable.updateForm.prizeType.typeLabel"
-          defaultMessage="Rule name"
+          id="ID"
+          defaultMessage="ID"
         />
       ),
       dataIndex: '_id',
-      tip: 'The rule name is the unique key',
-      render: (dom, entity) => {
-        console.log(dom, entity)
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
+      tip: 'The id is the unique key',
+    },
+    {
+      title: (
+        <FormattedMessage
+          id="pages.recordTable.user"
+          defaultMessage="ID"
+        />
+      ),
+      dataIndex: 'userId',
+    },
+    {
+      title: (
+        <FormattedMessage
+          id="pages.recordTable.oreUsed"
+          defaultMessage="ID"
+        />
+      ),
+      dataIndex: 'oreUse',
+    },
+    {
+      title: (
+        <FormattedMessage
+          id="pages.recordTable.oreRemain"
+          defaultMessage="ID"
+        />
+      ),
+      dataIndex: 'oreRemain',
+    },
+    {
+      title: (
+        <FormattedMessage
+          id="pages.recordTable.optionTime"
+          defaultMessage="ID"
+        />
+      ),
+      dataIndex: 'updatedAt',
+    },
+    {
+      title: (
+        <FormattedMessage
+          id="pages.recordTable.prize"
+          defaultMessage="ID"
+        />
+      ),
+      dataIndex: 'prizeName',
     },
   ]
 
@@ -190,7 +221,7 @@ const TableList: React.FC = (props) => {
         search={{
           labelWidth: 120,
         }}
-        dataSource={list}
+        // dataSource={list}
         // request={rule} // current pageSize
         request={props?.dispatch.bind(null, {
           type: 'lotteryRecord/getList',
