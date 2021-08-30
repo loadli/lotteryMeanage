@@ -58,7 +58,6 @@ class adminController {
     const probabilityList = prizeList.map(item => item.probability);
     for (let i = 0; i < probabilityList.length; i++) {
       const random = Math.random() * probablySum
-      console.log(random)
       if (random < probabilityList[i]) {
         prize = prizeList[i]
       } else {
@@ -66,7 +65,6 @@ class adminController {
       }
     }
     if (prize) {
-      console.log(prize)
       // 抽奖算法
       ctx.body = {
           code:"200",
