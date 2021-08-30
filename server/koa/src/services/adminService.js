@@ -1,6 +1,8 @@
 const adminTable = require('../models/adminTable');
 const recordTable = require('../models/recordTable');
+const prizeTable = require('../models/prizeTable');
 const inspirecloud = require('@byteinspire/api');
+const { use } = require('../app');
 const ObjectId = inspirecloud.db.ObjectId;
 
 /**
@@ -14,7 +16,7 @@ class AdminService {
    * @return {Promise<>} 返回待办事项数组
    */
   async getUser() {
-    const adminList = await adminTable.where();
+    const adminList = await adminTable.where().find();
     const admin = {
         oreRemain: adminList[0].oreRemain
     };
@@ -22,29 +24,37 @@ class AdminService {
   }
 
   async myPrize(userId) {
+    console.log(userId)
+    if (!userId) {
+      return []
+    }
     const prizeRecordList = await recordTable.where({
       userId
-    })
+    }).find()
     return prizeRecordList
   }
 
   async history(userId) {
+    if (!userId) {
+      return []
+    }
     const prizeRecordList = await recordTable.where({
       userId
-    })
+    }).find()
     return prizeRecordList
   }
-  async lottery(userId) {
-    const prizeRecordList = await recordTable.where({
-      userId
-    })
-    return prizeRecordList
+  async lottery() {
+    const prizeList = await prizeTable.where().find()
+    return prizeList;
   }
   async address(userId, prizeId) {
+    if (!userId) {
+      return []
+    }
     const prizeRecordList = await recordTable.where({
       userId,
       prizeId
-    })
+    }).find()
     return prizeRecordList
   }
 

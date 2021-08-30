@@ -20,12 +20,12 @@ class adminController {
   }
 
   async oreRemain(ctx) {
-    const { oreRemain } = await adminService.getUser();
+    const admin = await adminService.getUser();
     ctx.body = {
       code:"200",
       message:"请求成功",
       data: {
-        number: oreRemain
+        number: admin.oreRemain
       }
     };
   }
@@ -33,7 +33,8 @@ class adminController {
   async myPrize(ctx) {
     const { userId } = ctx.request.body;
     const prizeRecordList = await adminService.myPrize(userId);
-    return {
+    console.log(prizeRecordList)
+    ctx.body = {
         code:"200",
         message:"请求成功",
         data: prizeRecordList
@@ -43,7 +44,7 @@ class adminController {
   async history(ctx){
     const { userId } = ctx.request.body;
     const historyList = await adminService.history(userId);
-    return {
+    ctx.body = {
         code:"200",
         message:"请求成功",
         data: historyList
@@ -51,12 +52,14 @@ class adminController {
   }
 
   async lottery(ctx){
-    const { userId } = ctx.request.body;
-    const prizeRecordList = await adminService.lottery(userId);
-    return {
+    // const { userId } = ctx.request.body;
+    const prizeList = await adminService.lottery();
+    console.log(prizeList)
+    // 抽奖算法
+    ctx.body = {
         code:"200",
         message:"请求成功",
-        data: prizeRecordList
+        data: prizeList
     }
   }
 
@@ -64,7 +67,7 @@ class adminController {
     const { userId } = ctx.request.body;
     const { prizeId } = ctx.request.body;
     const addressList = await adminService.address(userId, prizeId);
-    return {
+    ctx.body = {
         code:"200",
         message:"请求成功",
         data: addressList

@@ -27,7 +27,6 @@ class PrizeService {
     const all = await recordTable.where().skip(start).limit(end).find();
     const total = await recordTable.where().count();
 
-    console.log(all, total)
     const listMsg = {
       data: all,
       current: page,
