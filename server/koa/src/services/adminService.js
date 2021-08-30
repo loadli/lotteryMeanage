@@ -1,4 +1,5 @@
 const adminTable = require('../models/adminTable');
+const recordTable = require('../models/recordTable');
 const inspirecloud = require('@byteinspire/api');
 const ObjectId = inspirecloud.db.ObjectId;
 
@@ -19,6 +20,35 @@ class AdminService {
     };
     return admin;
   }
+
+  async myPrize(userId) {
+    const prizeRecordList = await recordTable.where({
+      userId
+    })
+    return prizeRecordList
+  }
+
+  async history(userId) {
+    const prizeRecordList = await recordTable.where({
+      userId
+    })
+    return prizeRecordList
+  }
+  async lottery(userId) {
+    const prizeRecordList = await recordTable.where({
+      userId
+    })
+    return prizeRecordList
+  }
+  async address(userId, prizeId) {
+    const prizeRecordList = await recordTable.where({
+      userId,
+      prizeId
+    })
+    return prizeRecordList
+  }
+
+
 
 }
 
