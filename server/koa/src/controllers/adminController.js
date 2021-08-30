@@ -33,7 +33,6 @@ class adminController {
   async myPrize(ctx) {
     const { userId } = ctx.request.body;
     const prizeRecordList = await adminService.myPrize(userId);
-    console.log(prizeRecordList)
     ctx.body = {
         code:"200",
         message:"请求成功",
@@ -54,12 +53,33 @@ class adminController {
   async lottery(ctx){
     // const { userId } = ctx.request.body;
     const prizeList = await adminService.lottery();
-    console.log(prizeList)
-    // 抽奖算法
-    ctx.body = {
+    let probablySum = prizeList.reduce((sum, item) => sum += Number(item.probability), 0);
+    let prize = null
+    const probabilityList = prizeList.map(item => item.probability);
+    for (let i = 0; i < probabilityList.length; i++) {
+      const random = Math.random() * probablySum
+      console.log(random)
+      if (random < probabilityList[i]) {
+        prize = prizeList[i]
+      } else {
+        probablySum -= probabilityList[i]
+      }
+    }
+    if (prize) {
+      console.log(prize)
+      // 抽奖算法
+      ctx.body = {
+          code:"200",
+          message:"请求成功",
+          data: prize
+      }
+      await adminService.LotteryEnd(prize)
+    } else {
+      ctx.body = {
         code:"200",
         message:"请求成功",
-        data: prizeList
+        data: null
+      }
     }
   }
 

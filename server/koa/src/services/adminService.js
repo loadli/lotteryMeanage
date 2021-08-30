@@ -24,7 +24,6 @@ class AdminService {
   }
 
   async myPrize(userId) {
-    console.log(userId)
     if (!userId) {
       return []
     }
@@ -44,8 +43,18 @@ class AdminService {
     return prizeRecordList
   }
   async lottery() {
-    const prizeList = await prizeTable.where().find()
+    const prizeList = await prizeTable.where(function(){
+      return this.prizeRemain > 0
+    }).find()
     return prizeList;
+  }
+  async LotteryEnd(prize) {
+    const prizeData = await prizeTable.where({
+      _id: prize._id
+    }).findOne()
+    prizeData.prizeRemain--
+    await prizeTable.save(prizeData)
+    return prizeData;
   }
   async address(userId, prizeId) {
     if (!userId) {
