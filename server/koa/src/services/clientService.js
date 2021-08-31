@@ -22,7 +22,8 @@ const prizeTable = require("../models/prizeTable");
 // 抽奖纪录表
 const recordTable = require("../models/recordTable");
 // ---------------------------------------------------
-
+// 通过new ObjectId(id)去生成ObjectId
+let ObjectId = inspirecloud.db.ObjectId
 /**
  * clientService
  * 前台业务具体实现，由 clientController 调用
@@ -48,7 +49,7 @@ class clientService {
      * 获取用户剩余矿石
      */
     async oreRemain(id) {
-        const user = await userTable.where({ _id: ObjectId(id) }).find();
+        const user = await userTable.where({ _id: new ObjectId(id)}).findOne();
         return user;
     }
     /**
