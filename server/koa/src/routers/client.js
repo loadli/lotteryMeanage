@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:28:58
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 09:51:35
+ * @LastEditTime : 2021-08-31 16:31:31
  * @Description  : 前台接口
  * @FilePath     : \lotteryMeanage\server\koa\src\routers\client.js
  */
@@ -17,7 +17,7 @@ const router = new Router({
 const clientController = require("../controllers/clientController");
 
 /*
- * 🌰举例： /list的接口地址：/client/list
+ * 🌰举例： /list的接口地址：/user/list
  */
 
 // 文档 => 1.1 抽奖列表

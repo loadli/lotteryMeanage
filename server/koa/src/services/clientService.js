@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 10:58:04
+ * @LastEditTime : 2021-08-31 17:17:20
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -35,7 +35,7 @@ class clientService {
     async getUser() {
         const adminList = await adminTable.where().find();
         const admin = {
-            oreRemain: adminList[0].oreRemain
+            oreRemain: adminList[0].oreRemain,
         };
         return admin;
     }
@@ -45,27 +45,33 @@ class clientService {
      */
     async myPrize(userId) {
         if (!userId) {
-            return []
+            return [];
         }
-        const prizeRecordList = await recordTable.where({
-            userId
-        }).find()
-        return prizeRecordList
+        const prizeRecordList = await recordTable
+            .where({
+                userId,
+            })
+            .find();
+        return prizeRecordList;
     }
 
     async history(userId) {
         if (!userId) {
-            return []
+            return [];
         }
-        const prizeRecordList = await recordTable.where({
-            userId
-        }).find()
-        return prizeRecordList
+        const prizeRecordList = await recordTable
+            .where({
+                userId,
+            })
+            .find();
+        return prizeRecordList;
     }
     async lottery() {
-        const prizeList = await prizeTable.where(function () {
-            return this.prizeRemain > 0
-        }).find()
+        const prizeList = await prizeTable
+            .where(function () {
+                return this.prizeRemain > 0;
+            })
+            .find();
         return prizeList;
     }
 
@@ -74,11 +80,13 @@ class clientService {
      * @param {object} prize 奖品
      */
     async LotteryEnd(prize) {
-        const prizeData = await prizeTable.where({
-            _id: prize._id
-        }).findOne()
-        prizeData.prizeRemain--
-        await prizeTable.save(prizeData)
+        const prizeData = await prizeTable
+            .where({
+                _id: prize._id,
+            })
+            .findOne();
+        prizeData.prizeRemain--;
+        await prizeTable.save(prizeData);
         return prizeData;
     }
 
@@ -89,13 +97,15 @@ class clientService {
      */
     async address(userId, prizeId) {
         if (!userId) {
-            return []
+            return [];
         }
-        const prizeRecordList = await recordTable.where({
-            userId,
-            prizeId
-        }).find()
-        return prizeRecordList
+        const prizeRecordList = await recordTable
+            .where({
+                userId,
+                prizeId,
+            })
+            .find();
+        return prizeRecordList;
     }
 }
 

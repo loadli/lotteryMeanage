@@ -7,7 +7,7 @@ export async function getRecordList(options?: { [key: string]: any }) {
   return request<{
     data: API.LotteryRecordList;
     error?: string;
-  }>(`${requestUrl}/record/list`, {
+  }>(`${requestUrl}/serve/list`, {
     method: 'GET',
     params: options,
   });

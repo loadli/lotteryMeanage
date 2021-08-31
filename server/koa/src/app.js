@@ -9,11 +9,11 @@ const app = new Koa();
 // 自定义路由
 // --------------------------------------------------
 const todoRouter = require("./routers/todo");
-const userRouter = require("./routers/user");
-const recordRouter = require("./routers/record");
+// const userRouter = require("./routers/user");
+// const recordRouter = require("./routers/record");
 const clientRouter = require("./routers/client");
+const serveRouter = require("./routers/serve");
 // --------------------------------------------------
-
 
 // 为应用使用中间件
 // 静态文件中间件
@@ -49,6 +49,6 @@ app.use(async function errorHandler(ctx, next) {
 // 为应用使用路由定义
 // 使用待办事项业务路由
 // app.use(todoRouter);
-app.use(koaCompose([todoRouter, userRouter, recordRouter, clientRouter]));
+app.use(koaCompose([todoRouter, clientRouter, serveRouter]));
 
 module.exports = app;
