@@ -60,11 +60,6 @@ class PrizeService {
       throw error;
     }
   }
-
-    /**
-     * 更新奖品可用状态
-     */
-    async updateLotteryEnable(){}
 }
 
 // 导出 Service 的实例

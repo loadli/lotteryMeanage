@@ -17,6 +17,8 @@ const recordService = require("../services/recordService");
 const deliveryService = require("../services/deliveryService");
 // 奖品
 const prizeService = require("../services/prizeService");
+const inspirecloud = require("@byteinspire/api");
+const dateToString = inspirecloud.db.dateToString
 
 /**
  * serveController
@@ -190,10 +192,19 @@ class serveController {
      */
     async setPrize(ctx) {
         const { id } = ctx.request.body
+        const info = {
+            name: ctx.request.name,
+            type: ctx.request.type,
+            probability: ctx.request.probability,
+            enableDatetime: ctx.request.enableDatetime,
+            prizeSum: ctx.request.prizeSum,
+            prizeRemain: ctx.request.prizeRemain,
+            image: ctx.request.image,
+        }
+        await prizeService.modifyPrize(id, info);
         ctx.body = {
             code: "200",
             message: "更新成功",
-            data: {},
         }
     }
 
@@ -202,22 +213,15 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async setEnable(ctx) {
-        const { _id } = ctx.request.body
+        const { id } = ctx.request.body
         const info = {
-            name: ctx.request.name,
-            type: ctx.request.type,
-            probability: ctx.request.probability,
-            enableDatetime: ctx.request.enableDatetime,
+            enableDatetime: dateToString({ format: "%Y-%m-%d", date: new Date() }),
             enable: ctx.request.enable,
-            prizeSum: ctx.request.prizeSum,
-            prizeRemain: ctx.request.prizeRemain,
-            image: ctx.request.image,
         }
-        await prizeService.modifyPrize(_id, info);
+        await prizeService.modifyPrize(id, info);
         ctx.body = {
             code: "200",
             message: "更新成功",
-            data: {},
         };
     }
 
