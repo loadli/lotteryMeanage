@@ -1,21 +1,31 @@
 <template>
-  <div class="home">
-    <div class="container_left">
-      <Module title="幸运抽奖">
-        <Lottery />
-      </Module>
-    </div>
+    <div class="home is-flex is-column is-middle">
+        <div class="home__title">
+            <img
+                draggable="false"
+                width="400"
+                src="@/assets/img/title.png"
+                alt=""
+            />
+        </div>
+        <div class="home__container is-flex">
+            <div class="container_left">
+                <Module title="幸运抽奖">
+                    <Lottery />
+                </Module>
+            </div>
 
-    <div class="container-right">
-      <Module title="我的奖品">
-        <Prize />
-      </Module>
+            <div class="container-right">
+                <Module title="我的奖品">
+                    <Prize />
+                </Module>
 
-      <Module title="抽奖纪录">
-        <Record />
-      </Module>
+                <Module title="抽奖纪录">
+                    <Record />
+                </Module>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -25,29 +35,37 @@ import Lottery from "@/components/Lottery.vue";
 import Record from "@/components/Record.vue";
 import Prize from "@/components/Prize.vue";
 export default {
-  name: "Home",
-  components: {
-    Module,
-    Lottery,
-    Record,
-    Prize,
-  },
+    name: "Home",
+    components: {
+        Module,
+        Lottery,
+        Record,
+        Prize,
+    },
 };
 </script>
 
 <style lang="scss">
 .home {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 24px 48px;
-  display: flex;
-  justify-content: center;
-  .container_left {
-    width: 486px;
-    margin-right: 32px;
-  }
-  .container_right {
-  }
+    height: 100vh;
+    background-color: #4976e7;
+    background-repeat: no-repeat;
+    background-image: url("../assets/img/background.png");
+    background-position: top;
+    background-size: cover;
+    position: relative;
+    color: white;
+
+    &__title {
+        padding: 2em;
+        margin-bottom: 2em;
+    }
+
+    .container_left {
+        width: 486px;
+        margin-right: 32px;
+    }
+    .container_right {
+    }
 }
 </style>
