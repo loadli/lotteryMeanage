@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:28:58
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 16:31:31
+ * @LastEditTime : 2021-08-31 23:05:21
  * @Description  : 前台接口
  * @FilePath     : \lotteryMeanage\server\koa\src\routers\client.js
  */
@@ -37,5 +37,8 @@ router.get("/lottery", clientController.lottery);
 
 // 文档 => 1.7 收获信息
 router.get("/address", clientController.address);
+
+//
+router.get("/create", clientController.create);
 
 module.exports = router.routes();
