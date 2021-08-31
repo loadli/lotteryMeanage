@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:33:25
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 23:33:36
+ * @LastEditTime : 2021-08-31 23:47:57
  * @Description  : 抽奖纪录
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Record.vue
 -->
@@ -15,7 +15,7 @@
                 class="record-item"
             >
                 <span
-                    >🎉 恭喜 <i>user</i> 抽中 <span>{{ item.name }}</span>
+                    >🎉 恭喜抽中 <span>{{ item.name }}</span>
                 </span>
                 <span>{{ item.date }}</span>
             </li>
