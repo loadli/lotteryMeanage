@@ -10,7 +10,7 @@ const Router = require("@koa/router");
 
 // 路由前缀
 const router = new Router({
-    prefix: "/client",
+    prefix: "/user",
 });
 
 //前台服务
@@ -21,21 +21,21 @@ const clientController = require("../controllers/clientController");
  */
 
 // 文档 => 1.1 抽奖列表
-router.post("/list", clientController.list);
+// router.post("/list", clientController.list);
 
 // 文档 => 1.2 矿石数量
-router.post("/ore", clientController.ore);
+router.get("/ore", clientController.oreRemain);
 
 // 文档 => 1.3 我的奖品
-router.post("/my", clientController.my);
+router.get("/my", clientController.myPrize);
 
 // 文档 => 1.4 抽奖纪录
-router.post("/history", clientController.history);
+router.get("/history", clientController.history);
 
 // 文档 => 1.4 抽奖
-router.post("/lottery", clientController.lottery);
+router.get("/lottery", clientController.lottery);
 
 // 文档 => 1.7 收获信息
-router.post("/address", clientController.address);
+router.get("/address", clientController.address);
 
 module.exports = router.routes();

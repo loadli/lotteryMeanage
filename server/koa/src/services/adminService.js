@@ -2,7 +2,9 @@ const adminTable = require('../models/adminTable');
 const recordTable = require('../models/recordTable');
 const prizeTable = require('../models/prizeTable');
 const inspirecloud = require('@byteinspire/api');
-const { use } = require('../app');
+const {
+  use
+} = require('../app');
 const ObjectId = inspirecloud.db.ObjectId;
 
 /**
@@ -18,7 +20,7 @@ class AdminService {
   async getUser() {
     const adminList = await adminTable.where().find();
     const admin = {
-        oreRemain: adminList[0].oreRemain
+      oreRemain: adminList[0].oreRemain
     };
     return admin;
   }
@@ -43,7 +45,7 @@ class AdminService {
     return prizeRecordList
   }
   async lottery() {
-    const prizeList = await prizeTable.where(function(){
+    const prizeList = await prizeTable.where(function () {
       return this.prizeRemain > 0
     }).find()
     return prizeList;
@@ -66,9 +68,6 @@ class AdminService {
     }).find()
     return prizeRecordList
   }
-
-
-
 }
 
 // 导出 Service 的实例

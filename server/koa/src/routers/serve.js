@@ -21,7 +21,7 @@ const serveController = require("../controllers/serveController");
  */
 
 // 文档 => 2.1 登录
-router.post("/login", serveController.logon);
+router.post("/login", serveController.login);
 
 // 文档 => 2.2 基础设置
 router.post("/baseConfig", serveController.baseConfig);
@@ -30,7 +30,9 @@ router.post("/baseConfig", serveController.baseConfig);
 router.post("/setBaseConfig", serveController.setBaseConfig);
 
 // 文档 => 2.4 读取抽奖纪录
-router.post("/history", serveController.history);
+router.get("/list", serveController.listAllRecord);
+// 删除抽奖记录
+router.post("/delete", serveController.deleteRecord);
 
 // 文档 => 2.5 读取发货纪录
 router.post("/transport", serveController.transport);

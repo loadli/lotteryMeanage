@@ -16,46 +16,113 @@ const clientService = require("../services/clientService");
  */
 class clientController {
     /**
-     * @description: 抽奖列表
-     * @param {Object} ctx - 请求参数
-     * @return {Array}
+     * 所有前台接口
+     * 响应格式
+     * {
+     *   list: [todo1, todo2]
+     * }
+     * @param ctx Koa 的上下文参数
      */
-    async list(ctx) {}
 
-    /**
-     * @description: 矿石数量
-     * @param {Object} ctx - 请求参数
-     * @return {Object}
-     */
-    async ore(ctx) {}
+    async user(ctx) {
+        const admin = await clientService.getUser();
+        ctx.body = {
+            ...admin
+        };
+    }
 
+    async oreRemain(ctx) {
+        const admin = await clientService.getUser();
+        ctx.body = {
+            code: "200",
+            message: "请求成功",
+            data: {
+                number: admin.oreRemain
+            }
+        };
+    }
     /**
      * @description: 我的奖品
-     * @param {Object} ctx - 请求参数
-     * @return {Array}
      */
-    async my(ctx) {}
-
+    async myPrize(ctx) {
+        const {
+            userId
+        } = ctx.request.body;
+        const prizeRecordList = await clientService.myPrize(userId);
+        ctx.body = {
+            code: "200",
+            message: "请求成功",
+            data: prizeRecordList
+        }
+    }
     /**
      * @description: 抽奖纪录
      * @param {Object} ctx - 请求参数
-     * @return {Array}
      */
-    async history(ctx) {}
+    async history(ctx) {
+        const {
+            userId
+        } = ctx.request.body;
+        const historyList = await clientService.history(userId);
+        ctx.body = {
+            code: "200",
+            message: "请求成功",
+            data: historyList
+        }
+    }
 
     /**
      * @description: 抽奖
      * @param {Object} ctx - 请求参数
-     * @return {Object}
      */
-    async lottery(ctx) {}
-
+    async lottery(ctx) {
+        // const { userId } = ctx.request.body;
+        const prizeList = await clientService.lottery();
+        let probablySum = prizeList.reduce((sum, item) => sum += Number(item.probability), 0);
+        let prize = null
+        const probabilityList = prizeList.map(item => item.probability);
+        for (let i = 0; i < probabilityList.length; i++) {
+            const random = Math.random() * probablySum
+            if (random < probabilityList[i]) {
+                prize = prizeList[i]
+            } else {
+                probablySum -= probabilityList[i]
+            }
+        }
+        if (prize) {
+            // 抽奖算法
+            ctx.body = {
+                code: "200",
+                message: "请求成功",
+                data: prize
+            }
+            await clientService.LotteryEnd(prize)
+        } else {
+            ctx.body = {
+                code: "200",
+                message: "请求成功",
+                data: null
+            }
+        }
+    }
     /**
      * @description: 收获信息
      * @param {Object} ctx - 请求参数
-     * @return {Object}
      */
-    async address(ctx) {}
+    async address(ctx) {
+        const {
+            userId
+        } = ctx.request.body;
+        const {
+            prizeId
+        } = ctx.request.body;
+        const addressList = await clientService.address(userId, prizeId);
+        ctx.body = {
+            code: "200",
+            message: "请求成功",
+            data: addressList
+        }
+    }
 }
 
 module.exports = new clientController();

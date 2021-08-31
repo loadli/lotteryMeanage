@@ -11,7 +11,7 @@ const app = new Koa();
 const todoRouter = require("./routers/todo");
 const userRouter = require("./routers/user");
 const recordRouter = require("./routers/record");
-const adminRouter = require("./routers/admin");
+const clientRouter = require("./routers/client");
 // --------------------------------------------------
 
 
@@ -49,6 +49,6 @@ app.use(async function errorHandler(ctx, next) {
 // 为应用使用路由定义
 // 使用待办事项业务路由
 // app.use(todoRouter);
-app.use(koaCompose([todoRouter, userRouter, recordRouter, adminRouter]));
+app.use(koaCompose([todoRouter, userRouter, recordRouter, clientRouter]));
 
 module.exports = app;
