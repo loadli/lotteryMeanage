@@ -63,6 +63,16 @@ class serveController {
         };
     }
 
+
+
+
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    // 抽奖记录-服务
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
     /**
      * @description: 读取抽奖纪录
      * @param {Object} ctx - 请求参数
@@ -71,7 +81,7 @@ class serveController {
      *   list: [todo1, todo2]
      * }
      */
-    async listAllRecord(ctx) {
+     async listAllRecord(ctx) {
         const page = ctx.request.query.current;
         const size = ctx.request.query.pageSize;
         const list = await recordService.listAll(page, size);
@@ -79,10 +89,6 @@ class serveController {
             ...list,
         };
     }
-    /**
-     * @description: 删除抽奖纪录
-     * @param {Object} ctx - 请求参数
-     */
     async deleteRecord(ctx) {
         await recordService.delete(ctx.params.id);
         ctx.body = {
@@ -130,17 +136,39 @@ class serveController {
         };
     }
 
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    // 奖品信息-服务
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
     /**
-     * @description: 修改奖品状态
+     * @description: 读取奖品信息
      * @param {Object} ctx - 请求参数
      */
-    async setLottery(ctx) {
-        await prizeService.updateLottery();
+    async prizeList(ctx) {
+        const page = ctx.request.query.current;
+        const size = ctx.request.query.pageSize;
+        const prizeList = await prizeService.listAll(page, size);
+        ctx.body = {
+            code:"200",
+            message:"请求成功",
+            data: prizeList
+        }
+    }
+
+    /**
+     * @description: 修改奖品信息
+     * @param {Object} ctx - 请求参数
+     */
+    async setPrize(ctx) {
+        const { id } = ctx.request.body
         ctx.body = {
             code: "200",
             message: "更新成功",
             data: {},
-        };
+        }
     }
 
     /**
@@ -148,13 +176,25 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async setEnable(ctx) {
-        await prizeService.updateLotteryEnable();
+        const { _id } = ctx.request.body
+        const info = {
+            name: ctx.request.name,
+            type: ctx.request.type,
+            probability: ctx.request.probability,
+            enableDatetime: ctx.request.enableDatetime,
+            enable: ctx.request.enable,
+            prizeSum: ctx.request.prizeSum,
+            prizeRemain: ctx.request.prizeRemain,
+            image: ctx.request.image,
+        }
+        await prizeService.modifyPrize(_id, info);
         ctx.body = {
             code: "200",
             message: "更新成功",
             data: {},
         };
     }
+
 }
 
 module.exports = new serveController();

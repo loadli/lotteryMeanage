@@ -6,54 +6,8 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import type { FormValueType } from './components/UpdateForm';
-import { rule, addRule, updateRule, removeRule } from '@/services/ant-design-pro/api';
+import { removeRule } from '@/services/ant-design-pro/api';
 import { connect } from 'dva';
-// import { effects } from './model';
-
-/**
- * @en-US Add node
- * @zh-CN 添加节点
- * @param fields
- */
-const handleAdd = async (fields: API.RuleListItem) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addRule({ ...fields });
-    hide();
-    message.success('Added successfully');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Adding failed, please try again!');
-    return false;
-  }
-};
-
-/**
- * @en-US Update node
- * @zh-CN 更新节点
- *
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('Configuring');
-  try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
-    });
-    hide();
-
-    message.success('Configuration is successful');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Configuration failed, please try again!');
-    return false;
-  }
-};
 
 /**
  *  Delete node
@@ -85,17 +39,6 @@ const mapState = (state: any) => {
 }
 
 const TableList: React.FC<{ dispatch: Function }> = (props) => {
-  /**
-   * @en-US Pop-up window of new window
-   * @zh-CN 新建窗口的弹窗
-   *  */
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  /**
-   * @en-US The pop-up window of the distribution update window
-   * @zh-CN 分布更新窗口的弹窗
-   * */
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
-
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
@@ -107,7 +50,6 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
    */
   const [ current, setCurrent ] = useState(1);
   const [ pageSize, setPageSize ] = useState(20);
-  const [ list, setList ] = useState([]);
   // useEffect(async function () {
   //   const dispatch = props?.dispatch;
   //   const list = await dispatch({
@@ -224,7 +166,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
         // dataSource={list}
         // request={rule} // current pageSize
         request={props?.dispatch.bind(null, {
-          type: 'lotteryRecord/getList',
+          type: 'prize/getList',
           payload: {
             current,
             pageSize,
@@ -276,27 +218,6 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
           </Button>
         </FooterToolbar>
       )}
-      {/* <UpdateForm
-        onSubmit={async (value) => {
-          const success = await handleUpdate(value);
-          if (success) {
-            handleUpdateModalVisible(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-        onCancel={() => {
-          handleUpdateModalVisible(false);
-          if (!showDetail) {
-            setCurrentRow(undefined);
-          }
-        }}
-        updateModalVisible={updateModalVisible}
-        values={currentRow || {}}
-      /> */}
-
       <Drawer
         width={600}
         visible={showDetail}
