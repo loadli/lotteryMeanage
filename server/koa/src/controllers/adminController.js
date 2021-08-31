@@ -82,8 +82,7 @@ class adminController {
   }
 
   async address(ctx){
-    const { userId } = ctx.request.body;
-    const { prizeId } = ctx.request.body;
+    const { userId, prizeId } = ctx.request.body;
     const addressList = await adminService.address(userId, prizeId);
     ctx.body = {
         code:"200",

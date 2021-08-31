@@ -54,32 +54,14 @@ class serveController {
      */
     async setTransport(ctx) {}
 
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    // 抽奖记录-服务
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
     /**
-     * @description: 读取奖品信息
-     * @param {Object} ctx - 请求参数
-     */
-    async lottery(ctx) {}
-
-    /**
-     * @description: 修改奖品状态
-     * @param {Object} ctx - 请求参数
-     */
-    async setLottery(ctx) {}
-
-    /**
-     * @description: 修改奖品可用状态
-     * @param {Object} ctx - 请求参数
-     */
-    async setEnable(ctx) {}
-
-/************************************************************/
-/************************************************************/
-/************************************************************/
-// 抽奖记录-服务
-/************************************************************/
-/************************************************************/
-/************************************************************/
-/**
      * 列出所有待办事项
      * 响应格式
      * {
@@ -125,6 +107,60 @@ class serveController {
             ok: true
         };
     }
+
+
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    // 奖品信息-服务
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    /**
+     * @description: 读取奖品信息
+     * @param {Object} ctx - 请求参数
+     */
+    async prizeList(ctx) {
+        const page = ctx.request.query.current;
+        const size = ctx.request.query.pageSize;
+        const prizeList = await prizeService.listAll(page, size);
+        ctx.body = {
+            code:"200",
+            message:"请求成功",
+            data: prizeList
+        }
+    }
+
+    /**
+     * @description: 修改奖品信息
+     * @param {Object} ctx - 请求参数
+     */
+    async setPrize(ctx) {
+        const { id } = ctx.request.body
+    }
+
+    /**
+     * @description: 修改奖品可用状态
+     * @param {Object} ctx - 请求参数
+     */
+    async setEnable(ctx) {
+        const { _id } = ctx.request.body
+        const info = {
+            name: ctx.request.name,
+            type: ctx.request.type,
+            probability: ctx.request.probability,
+            enableDatetime: ctx.request.enableDatetime,
+            enable: ctx.request.enable,
+            prizeSum: ctx.request.prizeSum,
+            prizeRemain: ctx.request.prizeRemain,
+            image: ctx.request.image,
+        }
+        await prizeService.modifyPrize(_id, info);
+        ctx.body = {
+            ok: true
+        };
+    }
+
 }
 
 module.exports = new serveController();

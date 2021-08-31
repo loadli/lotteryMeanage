@@ -1,4 +1,5 @@
 const recordTable = require('../models/recordTable');
+const prizeTable = require('../models/prizeTable')
 const inspirecloud = require('@byteinspire/api');
 const ObjectId = inspirecloud.db.ObjectId;
 
@@ -24,8 +25,8 @@ class PrizeService {
         success: false,
       };
     }
-    const all = await recordTable.where().skip(start).limit(end).find();
-    const total = await recordTable.where().count();
+    const all = await prizeTable.where().skip(start).limit(end).find();
+    const total = await prizeTable.where().count();
 
     const listMsg = {
       data: all,
@@ -37,25 +38,27 @@ class PrizeService {
     return listMsg;
   }
 
+  async modifyPrize(id, info) {
+    const item = await prizeTable.where({_id: ObjectId(id)})
+    for(let key in info) {
+      item[key] = info[key]
+    }
+    const result = await prizeTable.save(item)
+    return result;
+  }
+
   /**
    * 删除一条待办事项
    * @param id 待办事项的 _id
    * 若不存在，则抛出 404 错误
    */
   async delete(id) {
-    const result = await recordTable.where({_id: ObjectId(id)}).delete();
+    const result = await prizeTable.where({_id: ObjectId(id)}).delete();
     if (result.deletedCount === 0) {
       const error = new Error(`record: ${id} not found`);
       error.status = 404;
       throw error;
     }
-  }
-
-  /**
-   * 删除所有待办事项
-   */
-  async deleteAll() {
-    await recordTable.where().delete();
   }
 
 }
