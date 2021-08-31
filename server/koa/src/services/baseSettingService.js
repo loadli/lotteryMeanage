@@ -7,14 +7,53 @@ const ObjectId = inspirecloud.db.ObjectId;
  */
 class BaseSettingService {
     /**
-     * 获取所有配置
+     * 获取矿石初始值
      */
-    async listAll() {}
-
+    async getOreInit() {
+        const baseSetting = await baseSettingTable
+            .where({
+                key: "oreInit",
+            })
+            .findOne();
+        return baseSetting.value;
+    }
     /**
-     * 写入所有配置
+     * 获取单次消耗矿石
      */
-    async updateAll() {}
+    async getOreUse() {
+        const baseSetting = await baseSettingTable
+            .where({
+                key: "oreUse",
+            })
+            .findOne();
+        return baseSetting.value;
+    }
+    /**
+     * 设置矿石初始值
+     */
+    async setOreInit(count) {
+        const baseSetting = await baseSettingTable
+            .where({
+                key: "oreInit",
+            })
+            .findOne();
+        baseSetting.value = count;
+        await baseSettingTable.save(baseSetting);
+        return baseSetting.value;
+    }
+    /**
+     * 设置单次消耗矿石
+     */
+    async setOreUse(count) {
+        const baseSetting = await baseSettingTable
+            .where({
+                key: "oreUse",
+            })
+            .findOne();
+        baseSetting.value = count;
+        await baseSettingTable.save(baseSetting);
+        return baseSetting.value;
+    }
 }
 
 // 导出 Service 的实例
