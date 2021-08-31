@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 17:17:20
+ * @LastEditTime : 2021-08-31 23:03:05
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -12,9 +12,9 @@ const inspirecloud = require("@byteinspire/api");
 // 引入轻服务数据表
 // ---------------------------------------------------
 // 用户表
-const adminTable = require("../models/adminTable");
+const userTable = require("../models/userTable");
 // // 基础设置表
-// const baseSettingTable = require("../models/baseSettingTable");
+const baseSettingTable = require("../models/baseSettingTable");
 // // 发货信息表
 // const deliveryTable = require("../models/deliveryTable");
 // 奖品信息表
@@ -30,14 +30,29 @@ const recordTable = require("../models/recordTable");
 
 class clientService {
     /**
+     * 创建一个用户id
+     */
+    async createUser() {
+        const oreInit = await baseSettingTable
+            .where({
+                key: "oreInit",
+            })
+            .findOne();
+
+        const initUser = {
+            oreRemain: oreInit.value,
+        };
+        return await userTable.save(initUser);
+    }
+    /**
      * 获取用户剩余矿石
      */
-    async getUser() {
-        const adminList = await adminTable.where().find();
-        const admin = {
-            oreRemain: adminList[0].oreRemain,
+    async oreRemain() {
+        const userList = await userTable.where().find();
+        const user = {
+            oreRemain: userList[0].oreRemain,
         };
-        return admin;
+        return user;
     }
     /**
      * 获取抽奖记录

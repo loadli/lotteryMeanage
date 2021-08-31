@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:37:11
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 17:25:57
+ * @LastEditTime : 2021-08-31 23:05:44
  * @Description  : 前台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\clientController.js
  */
@@ -27,12 +27,26 @@ class clientController {
     }
 
     /**
+     * 创建用户
+     */
+    async create(ctx) {
+        const user = await clientService.createUser();
+        ctx.body = {
+            code: "200",
+            message: "请求成功",
+            data: {
+                id: user._id,
+            },
+        };
+    }
+
+    /**
      * 剩余矿石
      * @param {Object} ctx - 请求参数
      * @return {Object}
      */
     async oreRemain(ctx) {
-        const admin = await clientService.getUser();
+        const admin = await clientService.oreRemain();
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -106,7 +120,7 @@ class clientController {
             };
         }
     }
-    
+
     /**
      * @description: 收获信息
      * @param {Object} ctx - 请求参数
