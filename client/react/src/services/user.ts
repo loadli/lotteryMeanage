@@ -24,7 +24,7 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
   return request<{
     data: API.CurrentUser;
     error?: string;
-  }>(`${requestUrl}/user/login`, {
+  }>(`${requestUrl}/serve/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

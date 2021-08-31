@@ -5,12 +5,11 @@ const ObjectId = inspirecloud.db.ObjectId;
 /**
  * RecordService
  * Service 是业务具体实现，由 Controller 或其它 Service 调用
- * 包含待办事项的增删改查功能
  */
 class RecordService {
   /**
-   * 列出所有待办事项
-   * @return {Promise<>} 返回待办事项数组
+   * 列出所有历史纪录
+   * @return {Promise<>} 返回历史纪录数组
    */
   async listAll(page, size) {
     const start = (page - 1) * size
@@ -38,8 +37,8 @@ class RecordService {
   }
 
   /**
-   * 删除一条待办事项
-   * @param id 待办事项的 _id
+   * 删除一条历史纪录
+   * @param id 历史纪录的 _id
    * 若不存在，则抛出 404 错误
    */
   async delete(id) {
@@ -52,7 +51,7 @@ class RecordService {
   }
 
   /**
-   * 删除所有待办事项
+   * 删除所有历史纪录
    */
   async deleteAll() {
     await recordTable.where().delete();

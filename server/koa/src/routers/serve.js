@@ -44,7 +44,7 @@ router.post("/setTransport", serveController.setTransport);
 router.post("/lottery", serveController.lottery);
 
 // 文档 => 2.8 修改奖品状态
-router.post("/setLottery", serveController.setLottery);
+router.post("/setLottery", serveController.setPrize);
 
 // 文档 => 2.9 修改奖品可用状态
 router.post("/setEnable", serveController.setEnable);

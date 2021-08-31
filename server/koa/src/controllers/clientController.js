@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:37:11
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 09:50:08
+ * @LastEditTime : 2021-08-31 17:25:57
  * @Description  : 前台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\clientController.js
  */
@@ -16,59 +16,60 @@ const clientService = require("../services/clientService");
  */
 class clientController {
     /**
-     * 所有前台接口
-     * 响应格式
-     * {
-     *   list: [todo1, todo2]
-     * }
-     * @param ctx Koa 的上下文参数
+     * 获取用户
      */
 
     async user(ctx) {
-        const admin = await clientService.getUser();
+        const user = await clientService.getUser();
         ctx.body = {
-            ...admin
+            ...user,
         };
     }
 
+    /**
+     * 剩余矿石
+     * @param {Object} ctx - 请求参数
+     * @return {Object}
+     */
     async oreRemain(ctx) {
         const admin = await clientService.getUser();
         ctx.body = {
             code: "200",
             message: "请求成功",
             data: {
-                number: admin.oreRemain
-            }
+                number: admin.oreRemain,
+            },
         };
     }
+
     /**
-     * @description: 我的奖品
+     * 我的奖品
+     * @param {Object} ctx - 请求参数
+     * @return {Array}
      */
     async myPrize(ctx) {
-        const {
-            userId
-        } = ctx.request.body;
+        const { userId } = ctx.request.body;
         const prizeRecordList = await clientService.myPrize(userId);
         ctx.body = {
             code: "200",
             message: "请求成功",
-            data: prizeRecordList
-        }
+            data: prizeRecordList,
+        };
     }
+
     /**
-     * @description: 抽奖纪录
+     * 抽奖纪录
      * @param {Object} ctx - 请求参数
+     * @return {Array}
      */
     async history(ctx) {
-        const {
-            userId
-        } = ctx.request.body;
+        const { userId } = ctx.request.body;
         const historyList = await clientService.history(userId);
         ctx.body = {
             code: "200",
             message: "请求成功",
-            data: historyList
-        }
+            data: historyList,
+        };
     }
 
     /**
@@ -78,15 +79,15 @@ class clientController {
     async lottery(ctx) {
         // const { userId } = ctx.request.body;
         const prizeList = await clientService.lottery();
-        let probablySum = prizeList.reduce((sum, item) => sum += Number(item.probability), 0);
-        let prize = null
-        const probabilityList = prizeList.map(item => item.probability);
+        let probablySum = prizeList.reduce((sum, item) => (sum += Number(item.probability)), 0);
+        let prize = null;
+        const probabilityList = prizeList.map((item) => item.probability);
         for (let i = 0; i < probabilityList.length; i++) {
-            const random = Math.random() * probablySum
+            const random = Math.random() * probablySum;
             if (random < probabilityList[i]) {
-                prize = prizeList[i]
+                prize = prizeList[i];
             } else {
-                probablySum -= probabilityList[i]
+                probablySum -= probabilityList[i];
             }
         }
         if (prize) {
@@ -94,34 +95,31 @@ class clientController {
             ctx.body = {
                 code: "200",
                 message: "请求成功",
-                data: prize
-            }
-            await clientService.LotteryEnd(prize)
+                data: prize,
+            };
+            await clientService.LotteryEnd(prize);
         } else {
             ctx.body = {
                 code: "200",
                 message: "请求成功",
-                data: null
-            }
+                data: null,
+            };
         }
     }
+    
     /**
      * @description: 收获信息
      * @param {Object} ctx - 请求参数
      */
     async address(ctx) {
-        const {
-            userId
-        } = ctx.request.body;
-        const {
-            prizeId
-        } = ctx.request.body;
+        const { userId } = ctx.request.body;
+        const { prizeId } = ctx.request.body;
         const addressList = await clientService.address(userId, prizeId);
         ctx.body = {
             code: "200",
             message: "请求成功",
-            data: addressList
-        }
+            data: addressList,
+        };
     }
 }
 
