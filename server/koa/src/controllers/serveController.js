@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 17:29:27
+ * @LastEditTime : 2021-08-31 20:19:48
  * @Description  : 后台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\serveController.js
  */
@@ -38,28 +38,54 @@ class serveController {
     }
 
     /**
-     * @description: 基础设置
+     * @description: 读取矿石初始值
      * @param {Object} ctx - 请求参数
      */
-    async baseConfig(ctx) {
-        const config = await baseSettingService.listAll();
+     async getOreInit(ctx) {
+        const oreInit = await baseSettingService.getOreInit();
         ctx.body = {
             code: "200",
             message: "请求成功",
-            data: {},
+            data: { ...oreInit },
         };
     }
 
     /**
-     * @description: 修改基础设置
+     * @description: 读取矿石单次消耗
      * @param {Object} ctx - 请求参数
      */
-    async setBaseConfig(ctx) {
-        await baseSettingService.updateAll();
+    async getOreUse(ctx) {
+        const oreUse = await baseSettingService.getOreUse();
+        ctx.body = {
+            code: "200",
+            message: "请求成功",
+            data: { ...oreUse },
+        };
+    }
+
+    /**
+     * @description: 写入矿石初始值
+     * @param {Object} ctx - 请求参数
+     */
+    async setOreInit(ctx) {
+        const oreInit = await baseSettingService.setOreInit();
         ctx.body = {
             code: "200",
             message: "修改成功",
-            data: {},
+            data: { ...oreInit },
+        };
+    }
+
+    /**
+     * @description: 写入矿石初始值
+     * @param {Object} ctx - 请求参数
+     */
+    async setOreUse(ctx) {
+        const oreUse = await baseSettingService.setOreUse();
+        ctx.body = {
+            code: "200",
+            message: "修改成功",
+            data: { ...oreUse },
         };
     }
 
