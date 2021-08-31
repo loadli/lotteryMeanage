@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:37:11
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 23:05:44
+ * @LastEditTime : 2021-08-31 23:19:08
  * @Description  : 前台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\clientController.js
  */
@@ -46,12 +46,13 @@ class clientController {
      * @return {Object}
      */
     async oreRemain(ctx) {
-        const admin = await clientService.oreRemain();
+        const { userId } = ctx.request.body;
+        const user = await clientService.oreRemain(userId);
         ctx.body = {
             code: "200",
             message: "请求成功",
             data: {
-                number: admin.oreRemain,
+                number: user.oreRemain,
             },
         };
     }

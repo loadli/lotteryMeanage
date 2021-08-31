@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 23:03:05
+ * @LastEditTime : 2021-08-31 23:20:14
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -47,11 +47,8 @@ class clientService {
     /**
      * 获取用户剩余矿石
      */
-    async oreRemain() {
-        const userList = await userTable.where().find();
-        const user = {
-            oreRemain: userList[0].oreRemain,
-        };
+    async oreRemain(id) {
+        const user = await userTable.where({ _id: ObjectId(id) }).find();
         return user;
     }
     /**
