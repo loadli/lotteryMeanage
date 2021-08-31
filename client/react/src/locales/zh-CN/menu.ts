@@ -26,6 +26,10 @@ export default {
   'menu.list.table-record': '抽奖历史',
   // 抽奖记录
   'menu.list.lottery-record': '抽奖记录',
+  // 抽奖设置
+  'menu.list.lottery': '抽奖设置',
+  'menu.list.lottery.base': '基础设置',
+  'menu.list.lottery.prize': '奖品设置',
   'menu.list.basic-list': '标准列表',
   'menu.list.card-list': '卡片列表',
   'menu.list.search-list': '搜索列表',

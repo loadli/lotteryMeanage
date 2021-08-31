@@ -55,6 +55,22 @@
     component: './LotteryRecord',
   },
   {
+    name: 'list.lottery',
+    icon: 'table',
+    routes: [
+      {
+        path: '/lottery/base',
+        name: 'base',
+        component: './LotteryBase/Base',
+      },
+      {
+        path: '/lottery/prize',
+        name: 'prize',
+        component: './LotteryBase/Prize',
+      },
+    ],
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
