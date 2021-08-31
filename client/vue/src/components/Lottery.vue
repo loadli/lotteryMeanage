@@ -109,6 +109,10 @@ export default {
   },
 
   methods: {
+    // 获取奖品列表
+    getLotteryList() {
+      
+    },
     closeDialog(cb) {
       this.initLottery(this.options);
       if (cb === "again") {
