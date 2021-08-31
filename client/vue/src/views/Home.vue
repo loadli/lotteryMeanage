@@ -42,6 +42,26 @@ export default {
         Record,
         Prize,
     },
+    data() {
+        return {
+            
+        }
+    },
+    created() {
+        let user_info = localStorage.getItem('user_info')
+        if(!user_info) {
+            this.createUser()
+        }
+        console.log(user_info)
+    },
+    methods: {
+        // 创建用户
+        createUser() {
+            this.$axios.get('/user/create').then(res => {
+                console.log(res)
+            })
+        }
+    },
 };
 </script>
 
