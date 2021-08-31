@@ -2,9 +2,9 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:36:18
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-26 19:38:39
+ * @LastEditTime : 2021-08-31 23:41:22
  * @Description  : 奖品
- * @FilePath     : \lottery\src\components\Prize.vue
+ * @FilePath     : \lotteryMeanage\client\vue\src\components\Prize.vue
 -->
 <template>
   <div class="prize">
@@ -151,13 +151,18 @@ export default {
 .prize {
   margin-right: 1em;
   background: rgba(255, 247, 232, 0.3);
+  padding: 8px 16px;
+  border-radius: 12px;
   display: flex;
+  
   .btn {
     position: relative;
     display: inline-block;
+    cursor: pointer;
   }
   .btn-left {
     margin-right: 48px;
+    
     .icon:before,
     .icon:after {
       content: "";

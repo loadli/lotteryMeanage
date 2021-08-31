@@ -43,24 +43,22 @@ export default {
         Prize,
     },
     data() {
-        return {
-            
-        }
+        return {};
     },
     created() {
-        let user_info = localStorage.getItem('user_info')
-        if(!user_info) {
-            this.createUser()
+        let user_info = localStorage.getItem("user_info");
+        if (!user_info) {
+            this.createUser();
         }
-        console.log(user_info)
+        console.log(user_info);
     },
     methods: {
         // 创建用户
         createUser() {
-            this.$axios.get('/user/create').then(res => {
-                console.log(res)
-            })
-        }
+            this.$axios.get("/user/create").then((res) => {
+                console.log(res);
+            });
+        },
     },
 };
 </script>
@@ -87,5 +85,21 @@ export default {
     }
     .container_right {
     }
+}
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.3);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    border-radius: 12px;
 }
 </style>
