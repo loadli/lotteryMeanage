@@ -35,8 +35,8 @@ router.post("/history", clientController.history);
 // 文档 => 1.4 抽奖
 router.post("/lottery", clientController.lottery);
 
-// 文档 => 1.7 收获信息
-router.get("/address", clientController.address);
+// 文档 => 1.7 添加收货信息
+router.post("/address", clientController.address);
 
 // 文档 => 1.8 创建用户
 router.get("/create", clientController.create);

@@ -183,8 +183,8 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
     {
       title: (
         <FormattedMessage
-          id="pages.recordTable.oreRemain"
-          defaultMessage="ID"
+          id="pages.recordTable.oreRemains"
+          defaultMessage="剩余"
         />
       ),
       dataIndex: 'oreRemain',

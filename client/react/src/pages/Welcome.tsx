@@ -15,7 +15,7 @@ export default (): React.ReactNode => {
             marginBottom: 12,
           }}
         >
-          <FormattedMessage id="pages.welcome.advancedLayout" defaultMessage="Advanced layout" />
+            <img src={require("@/assets/welcome.svg")}></img>
         </Typography.Text>
       </Card>
     </PageContainer>
