@@ -7,10 +7,6 @@ const ObjectId = inspirecloud.db.ObjectId;
  * Service 是业务具体实现，由 Controller 或其它 Service 调用
  */
 class RecordService {
-  /**
-   * 列出所有历史纪录
-   * @return {Promise<>} 返回历史纪录数组
-   */
   async listAll(page, size) {
     const start = (page - 1) * size
     const end = start + (size - 1)

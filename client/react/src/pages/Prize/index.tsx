@@ -34,11 +34,11 @@ const handleRemove = async (selectedRows: API.RuleListItem[]) => {
 
 const mapState = (state: any) => {
   return {
-    list: state?.lotteryRecord?.list
+    list: state?.prize?.list
   }
 }
 
-const TableList: React.FC<{ dispatch: Function }> = (props) => {
+const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
@@ -50,10 +50,12 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
    */
   const [ current, setCurrent ] = useState(1);
   const [ pageSize, setPageSize ] = useState(20);
-  // useEffect(async function () {
+
+
+  //   useEffect(async function () {
   //   const dispatch = props?.dispatch;
   //   const list = await dispatch({
-  //     type: 'lotteryRecord/getList',
+  //     type: 'prize/getList',
   //     payload: {
   //       current,
   //       pageSize,
@@ -97,57 +99,70 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
     {
       title: (
         <FormattedMessage
-          id="ID"
-          defaultMessage="ID"
+          id="pages.prizeTable.name"
+          defaultMessage="Name"
         />
       ),
-      dataIndex: '_id',
-      tip: 'The id is the unique key',
+      dataIndex: 'name',
     },
     {
       title: (
         <FormattedMessage
-          id="pages.recordTable.user"
-          defaultMessage="ID"
+          id="pages.prizeTable.prizeRemain"
+          defaultMessage="Prize Remain"
         />
       ),
-      dataIndex: 'userId',
+      dataIndex: 'prizeRemain',
     },
     {
       title: (
         <FormattedMessage
-          id="pages.recordTable.oreUsed"
-          defaultMessage="ID"
+          id="pages.prizeTable.prizeSum"
+          defaultMessage="Prize Sum"
         />
       ),
-      dataIndex: 'oreUse',
+      dataIndex: 'prizeSum',
     },
     {
       title: (
         <FormattedMessage
-          id="pages.recordTable.oreRemain"
-          defaultMessage="ID"
+          id="pages.prizeTable.type"
+          defaultMessage="Type"
         />
       ),
-      dataIndex: 'oreRemain',
+      dataIndex: 'type',
     },
     {
       title: (
         <FormattedMessage
-          id="pages.recordTable.optionTime"
-          defaultMessage="ID"
+          id="pages.prizeTable.probability"
+          defaultMessage="Probability"
         />
       ),
-      dataIndex: 'updatedAt',
+      dataIndex: 'probability',
     },
     {
       title: (
         <FormattedMessage
-          id="pages.recordTable.prize"
-          defaultMessage="ID"
+          id="pages.prizeTable.enableDatetime"
+          defaultMessage="Enable Time"
         />
       ),
-      dataIndex: 'prizeName',
+      dataIndex: 'enableDatetime',
+    },
+    {
+      title: (
+        <FormattedMessage
+          id="pages.prizeTable.enable"
+          defaultMessage="Enable"
+        />
+      ),
+      dataIndex: 'enable',
+      render: (value) => {
+        return (
+          <div>{ value ? '是' : '否' }</div>
+        );
+      },
     },
   ]
 
@@ -165,13 +180,16 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
         }}
         // dataSource={list}
         // request={rule} // current pageSize
-        request={props?.dispatch.bind(null, {
-          type: 'prize/getList',
-          payload: {
-            current,
-            pageSize,
-          }
-        })}
+        request={(params) => {
+          return props?.dispatch({
+            type: 'prize/getList',
+            payload: {
+              current,
+              pageSize,
+              ...params
+            }
+          })
+        }}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -247,4 +265,4 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
 
 
 
-export default connect(mapState)(TableList);
+export default connect(mapState)(PrizeTable);
