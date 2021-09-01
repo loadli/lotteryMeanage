@@ -21,5 +21,9 @@
   },
   "repository": {},
   "license": "ISC",
-  "scripts": {}
+  "scripts": {
+    "login": "inspirecloud login",
+    "init": "inspirecloud init",
+    "dev": "inspirecloud dev"
+  }
 }
