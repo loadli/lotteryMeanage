@@ -5,13 +5,13 @@ import requestUrl from './requestUrl';
 
 /** 获取当前的用户 */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<{
-    data: API.CurrentUser;
-    error?: string;
-  }>(`${requestUrl}/user?id=${getUserId() || ''}`, {
-    method: 'GET',
-    ...(options || {}),
-  });
+  // return request<{
+  //   data: API.CurrentUser;
+  //   error?: string;
+  // }>(`${requestUrl}/user?id=${getUserId() || ''}`, {
+  //   method: 'GET',
+  //   ...(options || {}),
+  // });
 }
 
 /** 退出登录 */
@@ -25,7 +25,7 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
     data: API.CurrentUser;
     error?: string;
   }>(`${requestUrl}/serve/login`, {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },

@@ -2,12 +2,12 @@ import { request } from 'umi';
 
 import requestUrl from './requestUrl';
 
-/** 获取当前的用户 */
+/** 获取奖品信息 */
 export async function getPrizeList(options?: { [key: string]: any }) {
   return request<{
     data: API.LotteryRecordList;
     error?: string;
-  }>(`${requestUrl}/record/list`, {
+  }>(`${requestUrl}/serve/prizeList`, {
     method: 'GET',
     params: options,
   });

@@ -56,7 +56,7 @@
   },
   {
     name: 'list.lottery',
-    icon: 'table',
+    icon: 'setting',
     routes: [
       {
         path: '/lottery/base',
@@ -66,7 +66,7 @@
       {
         path: '/lottery/prize',
         name: 'prize',
-        component: './LotteryBase/Prize',
+        component: './Prize',
       },
     ],
   },

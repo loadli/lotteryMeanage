@@ -58,7 +58,6 @@ class serveController {
    */
   async getOreUse(ctx) {
     const oreUse = await baseSettingService.getOreUse();
-    console.log(oreUse);
     ctx.body = {
       code: "200",
       message: "请求成功",
@@ -181,9 +180,9 @@ class serveController {
     const size = ctx.request.query.pageSize;
     const prizeList = await prizeService.listAll(page, size);
     ctx.body = {
-      code: "200",
-      message: "请求成功",
-      data: prizeList,
+    //   code: "200",
+    //   message: "请求成功",
+      ...prizeList,
     };
   }
 
