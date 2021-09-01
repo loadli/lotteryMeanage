@@ -20,6 +20,7 @@ class DeliveryService {
      * 更新发货状态
      */
     async updateTransport(id) {
+        console.log(id);
         const item = await deliveryTable.where({ _id: ObjectId(id) }).findOne();
         Object.assign(item, { transport: true });
         await deliveryTable.save(item);

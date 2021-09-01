@@ -26,6 +26,7 @@ declare namespace API {
   type PageParams = {
     current?: number;
     pageSize?: number;
+   
   };
 
   type RuleListItem = {
@@ -41,6 +42,7 @@ declare namespace API {
     updatedAt?: string;
     createdAt?: string;
     progress?: number;
+    data?:Array;
   };
 
   type RuleList = {
@@ -98,19 +100,37 @@ declare namespace API {
   };
 
   type LotteryRecordList = LotteryRecordItem[];
-  // 奖品信息
-  interface Prize {
+
+  // 发货记录
+  interface DeliveryRecordItem {
     _id: string,
+    address: string,
     createdAt: string,
-    updatedAt: string,
-    enable: string,
-    enableDatetime: string,
     name: string,
-    prizeRemain: string,
-    prizeSum: string,
-    probability: string,
-    type: string,
+    phone: string,
+    prizeId: string,
+    transport: boolean,
+    updatedAt: string,
+    userId: string,
+    id:string
   };
 
-  type PrizeList = Prize[];
+  type deliresList = {
+    code?:string
+    data?: DeliveryRecordItem[];
+    /** 列表的内容总数 */
+    total?: number;
+    success?: boolean;
+  };
+
+  type DeliveryListItem = {
+    key?: number;
+    prizeId?: boolean;
+    userId?: string;
+    phone?: string;
+    address?: string;
+    name?: string;
+    transport?: string;
+    prizeName?: number;
+  };
 }
