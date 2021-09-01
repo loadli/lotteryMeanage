@@ -71,4 +71,11 @@ export default {
   'pages.recordTable.optionTime': '操作时间',
   'pages.recordTable.prize': '奖品',
   'pages.recordTable.image': '实物图片',
+  'pages.deliveryTable.Winning': '中奖记录',
+  'pages.deliveryTable.addressee': '收件人',
+  'pages.deliveryTable.tel': '电话',
+  'pages.deliveryTable.address': '地址',
+  'pages.deliveryTable.prize': '奖品',
+  'pages.deliveryTable.transport': '是否发货',
+  'pages.deliveryTable.deliveryOption': '操作',
 };

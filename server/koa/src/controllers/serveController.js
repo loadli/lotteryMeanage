@@ -130,6 +130,8 @@ class serveController {
    * @param {Object} ctx - 请求参数
    */
   async transport(ctx) {
+      console.log(ctx,'这是第一个ctx');
+
     const list = await deliveryService.listAll();
     ctx.body = {
       code: "200",
@@ -143,8 +145,9 @@ class serveController {
    * @param {Object} ctx - 请求参数
    */
   async setTransport(ctx) {
-    const deliveryId = ctx.request.id
-    await deliveryService.updateTransport(deliveryId);
+      console.log(ctx,'这是ctx');
+    const {id} = ctx.request.body
+    await deliveryService.updateTransport(id);
     ctx.body = {
       code: "200",
       message: "更新成功",

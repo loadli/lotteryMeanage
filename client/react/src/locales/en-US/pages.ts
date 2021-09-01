@@ -67,4 +67,11 @@ export default {
   'pages.searchTable.tenThousand': '0000',
   'pages.searchTable.batchDeletion': 'bacth deletion',
   'pages.searchTable.batchApproval': 'batch approval',
+  'pages.deliveryTable.Winning': 'Winning Record',
+  'pages.deliveryTable.addressee': 'Address',
+  'pages.deliveryTable.tel': 'Tel',
+  'pages.deliveryTable.address': 'Address',
+  'pages.deliveryTable.prize': 'Prize',
+  'pages.deliveryTable.transport': 'Transport',
+  'pages.deliveryTable.deliveryOption': 'Options',
 };
