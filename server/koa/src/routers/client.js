@@ -40,5 +40,5 @@ router.get("/address", clientController.address);
 
 // 文档 => 1.8 创建用户
 router.get("/create", clientController.create);
-
+router.post("/prizeInfo", clientController.prizeInfo);
 module.exports = router.routes();

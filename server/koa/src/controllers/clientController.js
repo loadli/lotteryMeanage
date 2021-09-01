@@ -87,6 +87,21 @@ class clientController {
         };
     }
 
+        /**
+     * 奖品信息
+     * @param {Object} ctx - 请求参数
+     * @return {Array}
+     */
+    async prizeInfo(ctx) {
+        const { _id } = ctx.request.body;
+            const prizeInfoList = await clientService.prizeInfo(_id);
+            ctx.body = {
+                code: "200",
+                message: "请求成功",
+                data: prizeInfoList,
+        };
+        }
+
     /**
      * @description: 抽奖
      * @param {Object} ctx - 请求参数

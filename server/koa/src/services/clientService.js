@@ -16,7 +16,7 @@ const userTable = require("../models/userTable");
 // // 基础设置表
 const baseSettingTable = require("../models/baseSettingTable");
 // // 发货信息表
-// const deliveryTable = require("../models/deliveryTable");
+const deliveryTable = require("../models/deliveryTable");
 // 奖品信息表
 const prizeTable = require("../models/prizeTable");
 // 抽奖纪录表
@@ -60,7 +60,8 @@ class clientService {
         if (!userId) {
             return [];
         }
-        const prizeRecordList = await recordTable
+
+        const prizeRecordList = await deliveryTable
             .where({
                 userId,
             })
@@ -77,12 +78,30 @@ class clientService {
                 userId,
             })
             .find();
+        
         return prizeRecordList;
     }
+
+    async prizeInfo(_id) {
+        if (!_id) {
+            return [];
+        }
+        const prizeInfo = await prizeTable
+            .where({
+                    _id
+                }
+            )
+            .find();
+        console.log("walk.....",_id)
+        return prizeInfo;
+    }
+
+
+
     async lottery() {
         const prizeList = await prizeTable
             .where(function () {
-                return this.prizeRemain > 0;
+                userId
             })
             .find();
         return prizeList;

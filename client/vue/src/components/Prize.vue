@@ -66,8 +66,44 @@ export default {
     },
   },
   methods: {
-    fetchPriceInfo() {
-      this.priceInfo = [
+   async fetchPriceInfo() {
+
+
+        let prizeInfo =  await this.$axios.post("api/user/my", 
+          {userId: "612b6d0129e75c0238ab1651"}
+        )
+
+        let prizeImgArr = prizeInfo.data.data;
+        let mapping = {};
+        prizeImgArr.forEach( async(v ={}) => {
+          
+          let prizeId = v.prizeId;
+          if(mapping[prizeId]){
+            console.log('1111111111')
+          }else {
+            let imgInfo  = await this.$axios.post("api/user/prizeInfo", 
+              {_id: prizeId}
+            );
+            console.log("imgInfo",imgInfo);
+              mapping[prizeId] = imgInfo
+        }
+   
+        })
+        console.log(prizeInfo);
+
+/*       return new Promise((resolve, reject) => {
+        this.$axios.post("api/user/history", 
+          {userId: "612b6d0129e75c0238ab1651"}
+        ).then((res = {}) => {
+            
+          if(res.data.code == 200) {
+            this.recordList = res.data.data || [];
+          }
+        });
+      }); */
+
+
+      /*    this.priceInfo = [
         {
           image: img1,
           name: "杯子",
@@ -118,7 +154,7 @@ export default {
           name: "t恤",
           recordId: 10,
         },
-      ];
+      ]; */
     },
     handleChange(direction) {
       let len = this.priceInfo.length;
