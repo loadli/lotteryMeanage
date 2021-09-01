@@ -2,9 +2,9 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-30 23:10:29
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-30 23:35:44
- * @Description  : 模块
- * @FilePath     : \lottery\src\components\module.vue
+ * @LastEditTime : 2021-09-01 16:49:54
+ * @Description  : 弹窗模块
+ * @FilePath     : \lotteryMeanage\client\vue\src\components\Dialog.vue
 -->
 <template>
   <div>
@@ -13,22 +13,21 @@
       <div class="modal__wrapper">
         <div class="modal__content">
           <div class="modal__header">
-            <span class="modal__title">恭喜中奖！</span>
-            <span class="modal__headerbtn" @click="closeDialog('close')"
+            <span class="modal__title">{{title}}</span>
+            <span class="modal__headerbtn" @click="close()"
               >X</span
             >
           </div>
           <div class="modal__body">
             <div class="wrapper">
-              <img src="" alt="奖品图片" />
-              <div class="title">恭喜获得XXX</div>
-              <div class="desc">
-                <p>本次抽中的矿石已累加到你的当前矿石数中</p>
-              </div>
-              <div class="submit__btn" @click="closeDialog('again')">
-                再抽一次
-              </div>
+              <slot></slot>
+
             </div>
+          </div>
+          <div class="modal__foot">
+              <div class="submit__btn" @click="submit()">
+                {{buttonText}}
+              </div>
           </div>
         </div>
       </div>
@@ -41,6 +40,8 @@ export default {
   name: "Dialog",
   props: {
     visible: Boolean,
+    title:String,
+    buttonText:String,
     prizeInfo: {
       type: Object,
       default: () => {
@@ -53,10 +54,13 @@ export default {
   },
   created() {},
   methods: {
-    closeDialog(cb) {
+    close() {
       this.$emit("update:visible", false);
-      this.$emit("closeDialog", cb);
+      this.$emit("close");
     },
+    submit(){
+      this.$emit("submit");
+    }
   },
 };
 </script>
@@ -68,7 +72,7 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 10;
 }
 .modal__wrapper {
@@ -90,7 +94,7 @@ export default {
     margin: 0 auto 50px;
     // padding: 16px;
     background: #fff;
-    border-radius: 2px;
+    border-radius: 12px;
     // -webkit-box-shadow: 0 2px 8px 0 rgb(0 0 0 / 15%);
     // box-shadow: 0 2px 8px 0 rgb(0 0 0 / 15%);
     // top: 100px;
@@ -131,33 +135,16 @@ export default {
       font-weight: 400;
       line-height: 22px;
       text-align: justify;
-      .wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .title {
-          padding-top: 20px;
-          font-weight: 500;
-          font-size: 20px;
-          line-height: 28px;
-          text-align: center;
-          color: #d25f00;
-          opacity: 0.8;
-        }
-        .desc {
-          text-align: center;
-          p {
-            margin: 0;
-            padding-top: 8px;
-            font-size: 14px;
-            line-height: 22px;
-            color: #1d2129;
-          }
-        }
+      padding: 1em;
+    }
+    .modal__foot {
+      text-align: center;
+      padding: 1em;
         .submit__btn {
-          margin-top: 32px;
-          margin-bottom: 40px;
+          margin-top: 1em;
+          margin-bottom: 1em;
           padding: 0;
+          display: inline-block;
           width: 200px;
           height: 48px;
           line-height: 48px;
@@ -167,8 +154,7 @@ export default {
           font-size: 16px;
           color: #fff;
           cursor: pointer;
-        }
-      }
+        } 
     }
   }
 }
