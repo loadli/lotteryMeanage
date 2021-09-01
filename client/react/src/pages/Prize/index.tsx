@@ -1,4 +1,4 @@
-import { Button, message, Drawer } from 'antd';
+import { Button, message, Drawer, Modal } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -8,7 +8,7 @@ import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { removeRule } from '@/services/ant-design-pro/api';
 import { connect } from 'dva';
-
+import EditForm from './components/EditForm';
 /**
  *  Delete node
  * @zh-CN 删除节点
@@ -34,9 +34,9 @@ const handleRemove = async (selectedRows: API.Prize[]) => {
 
 const mapState = (state: any) => {
   return {
-    list: state?.prize?.list
-  }
-}
+    list: state?.prize?.list,
+  };
+};
 
 const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -48,9 +48,9 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
   /**
    * 设置页数和数据大小
    */
-  const [ current, setCurrent ] = useState(1);
-  const [ pageSize, setPageSize ] = useState(20);
-
+  const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   //   useEffect(async function () {
   //   const dispatch = props?.dispatch;
@@ -94,105 +94,79 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
       },
     },
   ];
+  const showEdit = () => {
+    setIsModalVisible(true);
+  };
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
 
-  const columns: ProColumns<API.Prize>[] =[
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+  const columns: ProColumns<API.Prize>[] = [
     {
-      title: (
-        <FormattedMessage
-          id="pages.prizeTable.name"
-          defaultMessage="Name"
-        />
-      ),
+      title: <FormattedMessage id="pages.prizeTable.name" defaultMessage="Name" />,
       dataIndex: 'name',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.prizeTable.prizeRemain"
-          defaultMessage="Prize Remain"
-        />
-      ),
+      title: <FormattedMessage id="pages.prizeTable.prizeRemain" defaultMessage="Prize Remain" />,
       dataIndex: 'prizeRemain',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.prizeTable.prizeSum"
-          defaultMessage="Prize Sum"
-        />
-      ),
+      title: <FormattedMessage id="pages.prizeTable.prizeSum" defaultMessage="Prize Sum" />,
       dataIndex: 'prizeSum',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.prizeTable.type"
-          defaultMessage="Type"
-        />
-      ),
+      title: <FormattedMessage id="pages.prizeTable.type" defaultMessage="Type" />,
       dataIndex: 'type',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.prizeTable.probability"
-          defaultMessage="Probability"
-        />
-      ),
+      title: <FormattedMessage id="pages.prizeTable.probability" defaultMessage="Probability" />,
       dataIndex: 'probability',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.prizeTable.enableDatetime"
-          defaultMessage="Enable Time"
-        />
-      ),
+      title: <FormattedMessage id="pages.prizeTable.enableDatetime" defaultMessage="Enable Time" />,
       dataIndex: 'enableDatetime',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.prizeTable.enable"
-          defaultMessage="Enable"
-        />
-      ),
+      title: <FormattedMessage id="pages.prizeTable.enable" defaultMessage="Enable" />,
       dataIndex: 'enable',
       render: (value) => {
-        console.log(value)
-        return (
-          <div >{ String(value) === 'true' ? '是' : '否' }</div>
-        );
+        console.log(value);
+        return <div>{String(value) === 'true' ? '是' : '否'}</div>;
       },
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.prizeTable.options"
-          defaultMessage="Options"
-        />
-      ),
+      title: <FormattedMessage id="pages.prizeTable.options" defaultMessage="Options" />,
       dataIndex: 'enable',
       render: (value, record, _, action) => {
-        console.log(value)
+        console.log(value);
         return (
-          <div >
-            <Button type={ String(value) === 'true' ? "primary" : 'default' } onClick={async () => {
-              await props.dispatch({
+          <div>
+            <Button
+              type={String(value) === 'true' ? 'primary' : 'default'}
+              onClick={async () => {
+                await props.dispatch({
                   type: 'prize/transAble',
                   payload: {
                     _id: record._id,
-                    enable: String(record.enable) === 'true' ? false : true
-                  }
-                })
+                    enable: String(record.enable) === 'true' ? false : true,
+                  },
+                });
                 action?.reload();
-              }} >{ String(value) === 'true' ? '禁用' : '启用' }</Button>
-              <Button type="text">编辑</Button>
+              }}
+            >
+              {String(value) === 'true' ? '禁用' : '启用'}
+            </Button>
+            <Button type="text" onClick={() => showEdit()}>
+              编辑
+            </Button>
           </div>
         );
       },
     },
-  ]
+  ];
 
   return (
     <PageContainer>
@@ -214,9 +188,9 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
             payload: {
               current,
               pageSize,
-              ...params
-            }
-          })
+              ...params,
+            },
+          });
         }}
         columns={columns}
         rowSelection={{
@@ -287,10 +261,18 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
           />
         )}
       </Drawer>
+      <Modal
+        width={1000}
+        title="编辑奖品"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        destroyOnClose={true}
+      >
+        <EditForm />
+      </Modal>
     </PageContainer>
   );
 };
-
-
 
 export default connect(mapState)(PrizeTable);
