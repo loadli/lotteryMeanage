@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 23:20:14
+ * @LastEditTime : 2021-09-01 10:07:09
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -23,7 +23,7 @@ const prizeTable = require("../models/prizeTable");
 const recordTable = require("../models/recordTable");
 // ---------------------------------------------------
 // 通过new ObjectId(id)去生成ObjectId
-let ObjectId = inspirecloud.db.ObjectId
+const ObjectId = inspirecloud.db.ObjectId
 /**
  * clientService
  * 前台业务具体实现，由 clientController 调用
@@ -49,7 +49,7 @@ class clientService {
      * 获取用户剩余矿石
      */
     async oreRemain(id) {
-        const user = await userTable.where({ _id: new ObjectId(id)}).findOne();
+        const user = await userTable.where({ _id: ObjectId(id)}).findOne();
         return user;
     }
     /**
