@@ -42,12 +42,12 @@
       },
     ],
   },
-  {
-    name: 'list.table-record',
-    icon: 'table',
-    path: '/record',
-    component: './Record',
-  },
+//   {
+//     name: 'list.table-record',
+//     icon: 'table',
+//     path: '/record',
+//     component: './Record',
+//   },
   {
     name: 'list.lottery-record',
     icon: 'read',

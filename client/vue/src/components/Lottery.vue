@@ -150,7 +150,25 @@ export default {
     // 提交地址
     submitAddress(){
       let {name,phone,address} = this.dialog.addressInfo;
-      console.log({name,phone,address});
+      let userId = localStorage.getItem("userId")
+      // TODO 抽奖奖品ID暂时写死
+      let prizeId = '612b77f59b76850241946dcc'  
+      let data = {
+        name,
+        phone,
+        address,
+        userId,
+        prizeId
+      }
+       this.$axios
+        .post("api/user/address", data)
+        .then((res) => {
+          console.log(res);
+          if(res.data.code == 200) {
+            alert("添加收货地址成功")
+            this.dialog.flag = false
+          }
+        });
     },
     handleLottery() {
       this.start();

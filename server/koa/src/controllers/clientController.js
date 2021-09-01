@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:37:11
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 23:19:08
+ * @LastEditTime : 2021-09-01 23:45:56
  * @Description  : 前台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\clientController.js
  */
@@ -107,7 +107,7 @@ class clientController {
      * @param {Object} ctx - 请求参数
      */
     async lottery(ctx) {
-        // const { userId } = ctx.request.body;
+        const { userId } = ctx.request.body;
         const prizeList = await clientService.lottery();
         let probablySum = prizeList.reduce((sum, item) => (sum += Number(item.probability)), 0);
         let prize = null;
@@ -127,7 +127,7 @@ class clientController {
                 message: "请求成功",
                 data: prize,
             };
-            await clientService.LotteryEnd(prize);
+            await clientService.LotteryEnd(userId,prize);
         } else {
             ctx.body = {
                 code: "200",
@@ -138,13 +138,20 @@ class clientController {
     }
 
     /**
-     * @description: 收获信息
+     * @description: 收货信息
      * @param {Object} ctx - 请求参数
      */
     async address(ctx) {
-        const { userId } = ctx.request.body;
-        const { prizeId } = ctx.request.body;
-        const addressList = await clientService.address(userId, prizeId);
+        const { userId, name, prizeId, phone, address } = ctx.request.body;
+        const data = {
+            userId,
+            name,
+            prizeId,
+            phone,
+            address
+        }
+        const addressList = await clientService.address(data);
+        console.log('addressList', addressList)
         ctx.body = {
             code: "200",
             message: "请求成功",
