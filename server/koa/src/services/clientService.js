@@ -107,18 +107,13 @@ class clientService {
      * 获取地址
      * @param {string} userId 用户ID
      * @param {string} prizeId 奖品ID
+     * @param {string} name 姓名
+     * @param {string} phone 手机号
+     * @param {string} address 地址
      */
-    async address(userId, prizeId) {
-        if (!userId) {
-            return [];
-        }
-        const prizeRecordList = await recordTable
-            .where({
-                userId,
-                prizeId,
-            })
-            .find();
-        return prizeRecordList;
+    async address(body) {
+        console.log('body', body)
+        return await recordTable.save(body);;
     }
 }
 
