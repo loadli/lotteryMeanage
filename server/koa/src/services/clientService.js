@@ -16,7 +16,7 @@ const userTable = require("../models/userTable");
 // // 基础设置表
 const baseSettingTable = require("../models/baseSettingTable");
 // // 发货信息表
-// const deliveryTable = require("../models/deliveryTable");
+const deliveryTable = require("../models/deliveryTable");
 // 奖品信息表
 const prizeTable = require("../models/prizeTable");
 // 抽奖纪录表
@@ -112,8 +112,13 @@ class clientService {
      * @param {string} address 地址
      */
     async address(body) {
-        console.log('body', body)
-        return await recordTable.save(body);;
+        let prizeInfo = await prizeTable.where({_id: new ObjectId(body.prizeId)}).findOne()
+        let requestBody = {
+            ...body,
+            transport: false,   // 是否发货
+            prizeName: prizeInfo.name,  // 奖品名
+        }
+        return await deliveryTable.save(requestBody);
     }
 }
 
