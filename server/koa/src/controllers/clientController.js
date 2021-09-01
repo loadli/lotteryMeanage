@@ -123,13 +123,20 @@ class clientController {
     }
 
     /**
-     * @description: 收获信息
+     * @description: 收货信息
      * @param {Object} ctx - 请求参数
      */
     async address(ctx) {
-        const { userId } = ctx.request.body;
-        const { prizeId } = ctx.request.body;
-        const addressList = await clientService.address(userId, prizeId);
+        const { userId, name, prizeId, phone, address } = ctx.request.body;
+        const data = {
+            userId,
+            name,
+            prizeId,
+            phone,
+            address
+        }
+        const addressList = await clientService.address(data);
+        console.log('addressList', addressList)
         ctx.body = {
             code: "200",
             message: "请求成功",
