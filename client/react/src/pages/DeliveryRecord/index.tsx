@@ -35,13 +35,14 @@ const TableList: React.FC = (props) => {
             // 修改发货状态
             debugger
             await changeTransportStatus({id:record._id})
-           const res = await getDeliveryRecordList() 
+           const res : API.deliresList = await getDeliveryRecordList() 
            if(res?.code === '200' ){
                  props?.dispatch({
                 type:'deliveryRecord/saveList',
                 payload:res.data
             })
             //  actionRef.current.reload()
+            setsearchList(res.data)
            }
           
             // props?.dispatch({
