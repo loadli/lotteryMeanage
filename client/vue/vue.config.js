@@ -10,11 +10,11 @@ module.exports = {
     devServer: {  
         proxy: {  
           '/api': {  
-          target: 'http://192.168.1.4:3000', // 后台请求地址  
+          target: 'http://localhost:3000', // 后台请求地址  
           ws: true,  
           changeOrigin: true,  
           pathRewrite: {  
-						'^/api': '' //通过pathRewrite重写地址，将前缀/api转为/  
+			'^/api': '' //通过pathRewrite重写地址，将前缀/api转为/  
           }  
         }  
        }
