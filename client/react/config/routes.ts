@@ -55,8 +55,14 @@
     component: './LotteryRecord',
   },
   {
+    name: 'list.delivery-record',
+    icon: 'read',
+    path: '/deliveryRecord',
+    component: './DeliveryRecord',
+  },
+  {
     name: 'list.lottery',
-    icon: 'table',
+    icon: 'setting',
     routes: [
       {
         path: '/lottery/base',
@@ -66,7 +72,7 @@
       {
         path: '/lottery/prize',
         name: 'prize',
-        component: './LotteryBase/Prize',
+        component: './Prize',
       },
     ],
   },

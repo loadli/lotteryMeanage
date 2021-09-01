@@ -155,7 +155,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
     {
       title: (
         <FormattedMessage
-          id="ID"
+          id="pages.recordTable.id"
           defaultMessage="ID"
         />
       ),
@@ -223,13 +223,16 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
         }}
         // dataSource={list}
         // request={rule} // current pageSize
-        request={props?.dispatch.bind(null, {
-          type: 'lotteryRecord/getList',
-          payload: {
-            current,
-            pageSize,
-          }
-        })}
+        request={(params) => {
+          return props?.dispatch({
+            type: 'lotteryRecord/getList',
+            payload: {
+              current,
+              pageSize,
+              ...params
+            }
+          })
+        }}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {

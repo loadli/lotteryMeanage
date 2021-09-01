@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 20:19:48
+ * @LastEditTime : 2021-09-01 14:18:08
  * @Description  : 后台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\serveController.js
  */
@@ -58,7 +58,6 @@ class serveController {
    */
   async getOreUse(ctx) {
     const oreUse = await baseSettingService.getOreUse();
-    console.log(oreUse);
     ctx.body = {
       code: "200",
       message: "请求成功",
@@ -130,11 +129,13 @@ class serveController {
    * @param {Object} ctx - 请求参数
    */
   async transport(ctx) {
-    await deliveryService.listAll();
+      console.log(ctx,'这是第一个ctx');
+
+    const list = await deliveryService.listAll();
     ctx.body = {
       code: "200",
       message: "请求成功",
-      data: {},
+      data: list,
     };
   }
 
@@ -143,7 +144,9 @@ class serveController {
    * @param {Object} ctx - 请求参数
    */
   async setTransport(ctx) {
-    await deliveryService.updateTransport();
+      console.log(ctx,'这是ctx');
+    const {id} = ctx.request.body
+    await deliveryService.updateTransport(id);
     ctx.body = {
       code: "200",
       message: "更新成功",
@@ -180,9 +183,9 @@ class serveController {
     const size = ctx.request.query.pageSize;
     const prizeList = await prizeService.listAll(page, size);
     ctx.body = {
-      code: "200",
-      message: "请求成功",
-      data: prizeList,
+    //   code: "200",
+    //   message: "请求成功",
+      ...prizeList,
     };
   }
 
@@ -193,13 +196,13 @@ class serveController {
   async setPrize(ctx) {
     const { id } = ctx.request.body;
     const info = {
-      name: ctx.request.name,
-      type: ctx.request.type,
-      probability: ctx.request.probability,
-      enableDatetime: ctx.request.enableDatetime,
-      prizeSum: ctx.request.prizeSum,
-      prizeRemain: ctx.request.prizeRemain,
-      image: ctx.request.image,
+      name: ctx.request.body.name,
+      type: ctx.request.body.type,
+      probability: ctx.request.body.probability,
+      enableDatetime: ctx.request.body.enableDatetime,
+      prizeSum: ctx.request.body.prizeSum,
+      prizeRemain: ctx.request.body.prizeRemain,
+      image: ctx.request.body.image,
     };
     await prizeService.modifyPrize(id, info);
     ctx.body = {
@@ -213,12 +216,13 @@ class serveController {
    * @param {Object} ctx - 请求参数
    */
   async setEnable(ctx) {
-    const { id } = ctx.request.body;
+    console.log(ctx)
+    const { _id, enable } = ctx.request.query;
+
     const info = {
-      enableDatetime: dateToString({ format: "%Y-%m-%d", date: new Date() }),
-      enable: ctx.request.enable,
+      enable: enable,
     };
-    await prizeService.modifyPrize(id, info);
+    await prizeService.modifyPrize(_id, info);
     ctx.body = {
       code: "200",
       message: "更新成功",

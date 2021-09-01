@@ -39,10 +39,11 @@ class PrizeService {
   }
 
   async modifyPrize(id, info) {
-    const item = await prizeTable.where({_id: ObjectId(id)})
+    const item = await prizeTable.where({_id: ObjectId(id)}).findOne()
     for(let key in info) {
       item[key] = info[key]
     }
+    console.log(item, info)
     const result = await prizeTable.save(item)
     return result;
   }

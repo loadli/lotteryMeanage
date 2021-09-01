@@ -1,4 +1,4 @@
-import { Button, message, Drawer } from 'antd';
+import { Button, message, Drawer, Modal } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -8,14 +8,14 @@ import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { removeRule } from '@/services/ant-design-pro/api';
 import { connect } from 'dva';
-
+import EditForm from './components/EditForm';
 /**
  *  Delete node
  * @zh-CN 删除节点
  *
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: API.RuleListItem[]) => {
+const handleRemove = async (selectedRows: API.Prize[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
@@ -34,26 +34,28 @@ const handleRemove = async (selectedRows: API.RuleListItem[]) => {
 
 const mapState = (state: any) => {
   return {
-    list: state?.lotteryRecord?.list
-  }
-}
+    list: state?.prize?.list,
+  };
+};
 
-const TableList: React.FC<{ dispatch: Function }> = (props) => {
+const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
+  const [currentRow, setCurrentRow] = useState<API.Prize>();
+  const [selectedRowsState, setSelectedRows] = useState<API.Prize[]>([]);
 
   /**
    * 设置页数和数据大小
    */
-  const [ current, setCurrent ] = useState(1);
-  const [ pageSize, setPageSize ] = useState(20);
-  // useEffect(async function () {
+  const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  //   useEffect(async function () {
   //   const dispatch = props?.dispatch;
   //   const list = await dispatch({
-  //     type: 'lotteryRecord/getList',
+  //     type: 'prize/getList',
   //     payload: {
   //       current,
   //       pageSize,
@@ -68,7 +70,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
    * */
   const intl = useIntl();
 
-  const filter: ProColumns<API.RuleListItem>[] = [
+  const filter: ProColumns<API.Prize>[] = [
     {
       title: (
         <FormattedMessage
@@ -92,68 +94,83 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
       },
     },
   ];
+  const showEdit = () => {
+    setIsModalVisible(true);
+  };
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
 
-  const columns: ProColumns<API.RuleListItem>[] =[
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+  const columns: ProColumns<API.Prize>[] = [
     {
-      title: (
-        <FormattedMessage
-          id="ID"
-          defaultMessage="ID"
-        />
-      ),
-      dataIndex: '_id',
-      tip: 'The id is the unique key',
+      title: <FormattedMessage id="pages.prizeTable.name" defaultMessage="Name" />,
+      dataIndex: 'name',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.recordTable.user"
-          defaultMessage="ID"
-        />
-      ),
-      dataIndex: 'userId',
+      title: <FormattedMessage id="pages.prizeTable.prizeRemain" defaultMessage="Prize Remain" />,
+      dataIndex: 'prizeRemain',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.recordTable.oreUsed"
-          defaultMessage="ID"
-        />
-      ),
-      dataIndex: 'oreUse',
+      title: <FormattedMessage id="pages.prizeTable.prizeSum" defaultMessage="Prize Sum" />,
+      dataIndex: 'prizeSum',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.recordTable.oreRemain"
-          defaultMessage="ID"
-        />
-      ),
-      dataIndex: 'oreRemain',
+      title: <FormattedMessage id="pages.prizeTable.type" defaultMessage="Type" />,
+      dataIndex: 'type',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.recordTable.optionTime"
-          defaultMessage="ID"
-        />
-      ),
-      dataIndex: 'updatedAt',
+      title: <FormattedMessage id="pages.prizeTable.probability" defaultMessage="Probability" />,
+      dataIndex: 'probability',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.recordTable.prize"
-          defaultMessage="ID"
-        />
-      ),
-      dataIndex: 'prizeName',
+      title: <FormattedMessage id="pages.prizeTable.enableDatetime" defaultMessage="Enable Time" />,
+      dataIndex: 'enableDatetime',
     },
-  ]
+    {
+      title: <FormattedMessage id="pages.prizeTable.enable" defaultMessage="Enable" />,
+      dataIndex: 'enable',
+      render: (value) => {
+        console.log(value);
+        return <div>{String(value) === 'true' ? '是' : '否'}</div>;
+      },
+    },
+    {
+      title: <FormattedMessage id="pages.prizeTable.options" defaultMessage="Options" />,
+      dataIndex: 'enable',
+      render: (value, record, _, action) => {
+        console.log(value);
+        return (
+          <div>
+            <Button
+              type={String(value) === 'true' ? 'primary' : 'default'}
+              onClick={async () => {
+                await props.dispatch({
+                  type: 'prize/transAble',
+                  payload: {
+                    _id: record._id,
+                    enable: String(record.enable) === 'true' ? false : true,
+                  },
+                });
+                action?.reload();
+              }}
+            >
+              {String(value) === 'true' ? '禁用' : '启用'}
+            </Button>
+            <Button type="text" onClick={() => showEdit()}>
+              编辑
+            </Button>
+          </div>
+        );
+      },
+    },
+  ];
 
   return (
     <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
+      <ProTable<API.Prize, API.PageParams>
         headerTitle={intl.formatMessage({
           id: 'pages.searchTable.title',
           defaultMessage: 'Enquiry form',
@@ -165,13 +182,16 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
         }}
         // dataSource={list}
         // request={rule} // current pageSize
-        request={props?.dispatch.bind(null, {
-          type: 'prize/getList',
-          payload: {
-            current,
-            pageSize,
-          }
-        })}
+        request={(params) => {
+          return props?.dispatch({
+            type: 'prize/getList',
+            payload: {
+              current,
+              pageSize,
+              ...params,
+            },
+          });
+        }}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -228,7 +248,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
         closable={false}
       >
         {currentRow?.name && (
-          <ProDescriptions<API.RuleListItem>
+          <ProDescriptions<API.Prize>
             column={2}
             title={currentRow?.name}
             request={async () => ({
@@ -237,14 +257,22 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
             params={{
               id: currentRow?.name,
             }}
-            columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
+            columns={columns as ProDescriptionsItemProps<API.Prize>[]}
           />
         )}
       </Drawer>
+      <Modal
+        width={1000}
+        title="编辑奖品"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        destroyOnClose={true}
+      >
+        <EditForm />
+      </Modal>
     </PageContainer>
   );
 };
 
-
-
-export default connect(mapState)(TableList);
+export default connect(mapState)(PrizeTable);

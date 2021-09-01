@@ -21,7 +21,7 @@ const serveController = require("../controllers/serveController");
  */
 
 // 文档 => 2.1 登录
-router.post("/login", serveController.login);
+router.get("/login", serveController.login);
 
 // 文档 => 2.2 基础设置
 router.get("/getOreInit", serveController.getOreInit);
@@ -43,7 +43,7 @@ router.get("/transport", serveController.transport);
 router.post("/setTransport", serveController.setTransport);
 
 // 文档 => 2.7 读取奖品信息
-router.post("/lottery", serveController.lottery);
+router.get("/prizeList", serveController.prizeList);
 
 // 文档 => 2.8 修改奖品状态
 router.post("/setLottery", serveController.setPrize);

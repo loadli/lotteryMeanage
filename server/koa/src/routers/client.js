@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:28:58
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 23:11:53
+ * @LastEditTime : 2021-09-01 22:28:18
  * @Description  : 前台接口
  * @FilePath     : \lotteryMeanage\server\koa\src\routers\client.js
  */
@@ -27,10 +27,10 @@ const clientController = require("../controllers/clientController");
 router.post("/ore", clientController.oreRemain);
 
 // 文档 => 1.3 我的奖品
-router.get("/my", clientController.myPrize);
+router.post("/my", clientController.myPrize);
 
 // 文档 => 1.4 抽奖纪录
-router.get("/history", clientController.history);
+router.post("/history", clientController.history);
 
 // 文档 => 1.4 抽奖
 router.get("/lottery", clientController.lottery);
