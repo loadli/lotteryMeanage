@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-01 10:26:08
+ * @LastEditTime : 2021-09-01 10:32:09
  * @Description  : 后台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\serveController.js
  */
@@ -130,11 +130,11 @@ class serveController {
    * @param {Object} ctx - 请求参数
    */
   async transport(ctx) {
-    await deliveryService.listAll();
+    const list = await deliveryService.listAll();
     ctx.body = {
       code: "200",
       message: "请求成功",
-      data: {},
+      data: list,
     };
   }
 
