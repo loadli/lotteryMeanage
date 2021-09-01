@@ -1,6 +1,7 @@
 import type { Effect, Reducer, Subscription } from 'umi';
 import {
-  getPrizeList
+  getPrizeList,
+  transAble
 } from '../../services/prize';
 
 export interface PrizeModelState {
@@ -30,11 +31,20 @@ const Model: PrizeModelType = {
     list: '',
   },
   reducers: {
-
+    // updateList(state: PrizeModelState, { type, payload }) {
+    //     state.list = [...payload.list]
+    //     return state
+    // }
   },
   effects: {
     *getList(action , { call, put }) {
       const res = yield call(getPrizeList, {...action?.payload});
+      return res;
+    },
+    *transAble(action, { call, put }) {
+      const res = yield call(transAble, {...action?.payload});
+      // const list = yield call(getPrizeList, {...action?.payload})
+      // yield put({ type: 'prize/updateList', { list: list } });
       return res;
     }
   },

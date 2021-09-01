@@ -15,7 +15,7 @@ import { connect } from 'dva';
  *
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: API.RuleListItem[]) => {
+const handleRemove = async (selectedRows: API.Prize[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
@@ -42,8 +42,8 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
+  const [currentRow, setCurrentRow] = useState<API.Prize>();
+  const [selectedRowsState, setSelectedRows] = useState<API.Prize[]>([]);
 
   /**
    * 设置页数和数据大小
@@ -70,7 +70,7 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
    * */
   const intl = useIntl();
 
-  const filter: ProColumns<API.RuleListItem>[] = [
+  const filter: ProColumns<API.Prize>[] = [
     {
       title: (
         <FormattedMessage
@@ -95,7 +95,7 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
     },
   ];
 
-  const columns: ProColumns<API.RuleListItem>[] =[
+  const columns: ProColumns<API.Prize>[] =[
     {
       title: (
         <FormattedMessage
@@ -159,8 +159,36 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
       ),
       dataIndex: 'enable',
       render: (value) => {
+        console.log(value)
         return (
-          <div>{ value ? '是' : '否' }</div>
+          <div >{ String(value) === 'true' ? '是' : '否' }</div>
+        );
+      },
+    },
+    {
+      title: (
+        <FormattedMessage
+          id="pages.prizeTable.options"
+          defaultMessage="Options"
+        />
+      ),
+      dataIndex: 'enable',
+      render: (value, record, _, action) => {
+        console.log(value)
+        return (
+          <div >
+            <Button type={ String(value) === 'true' ? "primary" : 'default' } onClick={async () => {
+              await props.dispatch({
+                  type: 'prize/transAble',
+                  payload: {
+                    _id: record._id,
+                    enable: String(record.enable) === 'true' ? false : true
+                  }
+                })
+                action?.reload();
+              }} >{ String(value) === 'true' ? '禁用' : '启用' }</Button>
+              <Button type="text">编辑</Button>
+          </div>
         );
       },
     },
@@ -168,7 +196,7 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
 
   return (
     <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
+      <ProTable<API.Prize, API.PageParams>
         headerTitle={intl.formatMessage({
           id: 'pages.searchTable.title',
           defaultMessage: 'Enquiry form',
@@ -246,7 +274,7 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
         closable={false}
       >
         {currentRow?.name && (
-          <ProDescriptions<API.RuleListItem>
+          <ProDescriptions<API.Prize>
             column={2}
             title={currentRow?.name}
             request={async () => ({
@@ -255,7 +283,7 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
             params={{
               id: currentRow?.name,
             }}
-            columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
+            columns={columns as ProDescriptionsItemProps<API.Prize>[]}
           />
         )}
       </Drawer>

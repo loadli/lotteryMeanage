@@ -193,13 +193,13 @@ class serveController {
   async setPrize(ctx) {
     const { id } = ctx.request.body;
     const info = {
-      name: ctx.request.name,
-      type: ctx.request.type,
-      probability: ctx.request.probability,
-      enableDatetime: ctx.request.enableDatetime,
-      prizeSum: ctx.request.prizeSum,
-      prizeRemain: ctx.request.prizeRemain,
-      image: ctx.request.image,
+      name: ctx.request.body.name,
+      type: ctx.request.body.type,
+      probability: ctx.request.body.probability,
+      enableDatetime: ctx.request.body.enableDatetime,
+      prizeSum: ctx.request.body.prizeSum,
+      prizeRemain: ctx.request.body.prizeRemain,
+      image: ctx.request.body.image,
     };
     await prizeService.modifyPrize(id, info);
     ctx.body = {
@@ -213,12 +213,13 @@ class serveController {
    * @param {Object} ctx - 请求参数
    */
   async setEnable(ctx) {
-    const { id } = ctx.request.body;
+    console.log(ctx)
+    const { _id, enable } = ctx.request.query;
+
     const info = {
-      enableDatetime: dateToString({ format: "%Y-%m-%d", date: new Date() }),
-      enable: ctx.request.enable,
+      enable: enable,
     };
-    await prizeService.modifyPrize(id, info);
+    await prizeService.modifyPrize(_id, info);
     ctx.body = {
       code: "200",
       message: "更新成功",

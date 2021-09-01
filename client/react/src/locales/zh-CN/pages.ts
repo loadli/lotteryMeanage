@@ -80,4 +80,5 @@ export default {
   'pages.prizeTable.probability': '中奖概率',
   'pages.prizeTable.enableDatetime': '可用时间',
   'pages.prizeTable.enable': '是否可用',
+  'pages.prizeTable.options': '操作',
 };

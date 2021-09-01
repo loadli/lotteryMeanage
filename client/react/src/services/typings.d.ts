@@ -98,4 +98,19 @@ declare namespace API {
   };
 
   type LotteryRecordList = LotteryRecordItem[];
+  // 奖品信息
+  interface Prize {
+    _id: string,
+    createdAt: string,
+    updatedAt: string,
+    enable: string,
+    enableDatetime: string,
+    name: string,
+    prizeRemain: string,
+    prizeSum: string,
+    probability: string,
+    type: string,
+  };
+
+  type PrizeList = Prize[];
 }
