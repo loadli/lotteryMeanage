@@ -115,6 +115,14 @@ declare namespace API {
     id:string
   };
 
+  type deliresList = {
+    code?:string
+    data?: DeliveryRecordItem[];
+    /** 列表的内容总数 */
+    total?: number;
+    success?: boolean;
+  };
+
   type DeliveryListItem = {
     key?: number;
     prizeId?: boolean;

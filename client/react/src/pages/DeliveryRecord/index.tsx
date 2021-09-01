@@ -128,11 +128,11 @@ const TableList: React.FC = (props) => {
         all: { text: '全部', status: 'Default' },
         true: {
             text: '已发货',
-            status: 'Error',
+            status: 'Success',
         },
         false: {
             text: '未发货',
-            status: 'Success',
+            status: 'Error',
         },
         },
         search:false
