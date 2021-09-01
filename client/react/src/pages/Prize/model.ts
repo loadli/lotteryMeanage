@@ -16,7 +16,7 @@ export interface PrizeList {
   createdAt: string,
 }
 
-export interface RecordModelType {
+export interface PrizeModelType {
   namespace: 'prize';
   state:PrizeModelState;
   effects: Record<string, Effect>;
@@ -24,7 +24,7 @@ export interface RecordModelType {
   subscriptions?: { setup: Subscription };
 }
 
-const Model: RecordModelType = {
+const Model: PrizeModelType = {
   namespace: 'prize',
   state: {
     list: '',

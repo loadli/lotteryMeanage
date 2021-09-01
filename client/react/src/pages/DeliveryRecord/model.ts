@@ -28,10 +28,11 @@ export interface RecordModelType {
 const Model: RecordModelType = {
   namespace: 'deliveryRecord',
   state: {
-    list: '',
+    list: [],
   },
   reducers: {
     saveList(state, { payload }) {
+        debugger
         return {
           ...state,
           list: payload,
@@ -42,11 +43,15 @@ const Model: RecordModelType = {
     *getList(action , { call, put }) {
         debugger
       const res = yield call(getDeliveryRecordList, {...action?.payload});
-      if(res.code === 200){
+      console.log(res,123);
+      
+      if(res.code === '200'){
+          debugger
            yield put({
         type: "saveList",
         payload: res.data,
       });
+      action?.callback(res)
       }
       return res;
     },

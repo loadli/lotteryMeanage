@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-01 10:32:09
+ * @LastEditTime : 2021-09-01 14:18:08
  * @Description  : 后台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\serveController.js
  */
@@ -58,7 +58,6 @@ class serveController {
    */
   async getOreUse(ctx) {
     const oreUse = await baseSettingService.getOreUse();
-    console.log(oreUse);
     ctx.body = {
       code: "200",
       message: "请求成功",
@@ -184,9 +183,9 @@ class serveController {
     const size = ctx.request.query.pageSize;
     const prizeList = await prizeService.listAll(page, size);
     ctx.body = {
-      code: "200",
-      message: "请求成功",
-      data: prizeList,
+    //   code: "200",
+    //   message: "请求成功",
+      ...prizeList,
     };
   }
 

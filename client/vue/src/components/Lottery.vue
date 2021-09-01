@@ -2,9 +2,9 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-26 19:31:38
+ * @LastEditTime : 2021-09-01 17:27:02
  * @Description  : 抽奖
- * @FilePath     : \lottery\src\components\lottery.vue
+ * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
 <template>
   <div>
@@ -46,27 +46,53 @@
       </div>
     </div>
 
+
     <Dialog
+      title="恭喜中奖!"
+      :buttonText="dialog.isEntity ? '提交' : '再来一次'"
       :visible.sync="dialog.flag"
       v-if="dialog.flag"
-      @closeDialog="closeDialog"
-    ></Dialog>
+      @close="closeDialog"
+      @submit="dialog.isEntity ? submitAddress() : submitAgain()"
+    >
+      <!-- 实物奖 -->
+      <template v-if="dialog.isEntity">
+        <Address v-model="dialog.addressInfo">
+          <Normal title="矿石" image=""/>
+        </Address>
+      </template>
+      <!-- 虚拟奖 -->
+      <template v-else>
+        <Normal title="矿石" image="" desc="本次抽中的矿石已累加到你的当前矿石数中"/>
+      </template>
+    </Dialog>
+
   </div>
 </template>
 
 <script>
 import LotteryItem from "@/components/LotteryItem.vue";
 import Dialog from "@/components/Dialog.vue";
+import Address from "@/components/Address.vue";
+import Normal from "@/components/Normal.vue";
 export default {
   name: "Lottery",
   components: {
     LotteryItem,
     Dialog,
+    Address,
+    Normal
   },
   data() {
     return {
       dialog: {
         flag: false,
+        isEntity: true, // true 实物；false 虚拟
+        addressInfo:{
+          name:'',
+          phone:'',
+          address:''
+        }
       },
       lotteryList: [
         { id: 1, name: "奖品1", order: 0 },
@@ -107,17 +133,24 @@ export default {
       lotteryResult: null, // 结果
     };
   },
+  computed:{},
 
   methods: {
     // 获取奖品列表
     getLotteryList() {
       
     },
-    closeDialog(cb) {
+    closeDialog() {
       this.initLottery(this.options);
-      if (cb === "again") {
-        this.handleLottery();
-      }
+    },
+    // 再来一次
+    submitAgain(){
+      this.handleLottery();
+    },
+    // 提交地址
+    submitAddress(){
+      let {name,phone,address} = this.dialog.addressInfo;
+      console.log({name,phone,address});
     },
     handleLottery() {
       this.start();

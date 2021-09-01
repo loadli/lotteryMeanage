@@ -1,39 +1,12 @@
-import { Button, message, Drawer , Modal, Input,Select } from 'antd';
-import React, { useState, useRef, useEffect } from 'react';
-import { useIntl, FormattedMessage } from 'umi';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import { Button, Modal, Select } from 'antd';
+import React, { useState, useRef } from 'react';
+import {  FormattedMessage } from 'umi';
+import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
-import { rule, addRule, updateRule, removeRule } from '@/services/ant-design-pro/api';
 import { connect } from 'dva';
 import { changeTransportStatus, getDeliveryRecordList } from './services'
-// import { effects } from './model';
-
-/**
- * @en-US Add node
- * @zh-CN 添加节点
- * @param fields
- */
-const handleAdd = async (fields: API.RuleListItem) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addRule({ ...fields });
-    hide();
-    message.success('Added successfully');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Adding failed, please try again!');
-    return false;
-  }
-};
-
-
-
-
 
 const mapState = (state: any) => {
   return {
@@ -42,71 +15,14 @@ const mapState = (state: any) => {
 }
 
 const TableList: React.FC = (props) => {
-  /**
-   * @en-US Pop-up window of new window
-   * @zh-CN 新建窗口的弹窗
-   *  */
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  /**
-   * @en-US The pop-up window of the distribution update window
-   * @zh-CN 分布更新窗口的弹窗
-   * */
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
-
-  const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
 
   /**
    * 设置页数和数据大小
    */
   const [ current, setCurrent ] = useState(1);
   const [ pageSize, setPageSize ] = useState(20);
-  const [ list, setList ] = useState([]);
-  // useEffect(async function () {
-  //   const dispatch = props?.dispatch;
-  //   const list = await dispatch({
-  //     type: 'lotteryRecord/getList',
-  //     payload: {
-  //       current,
-  //       pageSize,
-  //     }
-  //   })
-  //   console.log(list)
-  // }, [])
-
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
-  const intl = useIntl();
-
-  const filter: ProColumns<API.RuleListItem>[] = [
-    {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.updateForm.prizeType.typeLabel"
-          defaultMessage="Rule name"
-        />
-      ),
-      dataIndex: 'name',
-      tip: 'The rule name is the unique key',
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
-    },
-  ];
 
   const changeTransport = (record:API.DeliveryRecordItem)=>{
     Modal.confirm({
@@ -120,13 +36,12 @@ const TableList: React.FC = (props) => {
             debugger
             await changeTransportStatus({id:record._id})
            const res = await getDeliveryRecordList() 
-           if(res?.code === 200 ){
+           if(res?.code === '200' ){
                  props?.dispatch({
                 type:'deliveryRecord/saveList',
-                payload:{
-                    list:res.data
-                }
+                payload:res.data
             })
+            //  actionRef.current.reload()
            }
           
             // props?.dispatch({
@@ -147,7 +62,7 @@ const TableList: React.FC = (props) => {
         }
       });
   }
-
+  const [ searchList, setsearchList ] = useState([])
 
   const columns: ProColumns<API.DeliveryListItem>[] =[
     {
@@ -236,30 +151,54 @@ const TableList: React.FC = (props) => {
             options={[
                 {
                   label: '已发货',
-                  value: 1,
+                  value: '1',
                 },
                 {
                   label: '未发货',
-                  value: 2,
+                  value: '2',
                 },
                 {
                     label: '全部',
-                    value: 3,
+                    value: '3',
                   },
               ]} 
-              value={'全部'} 
+            //   value={'全部'} 
               onChange={(value:string)=>{
+                  let newData = []
                   console.log(value);
-                  
+                  if(value === '1'){
+                    newData = searchList.filter(item => {
+                        return  item.transport === true
+                    })
+                    props?.dispatch({
+                        type:'deliveryRecord/saveList',
+                        payload:newData
+                        })
+                  }else if(value === '2'){
+                    newData = searchList.filter(item => {
+                        return  item.transport === false
+                  })
+                  props?.dispatch({
+                    type:'deliveryRecord/saveList',
+                    payload:newData
+                    })
+                }else{
+                    props?.dispatch({
+                        type: 'deliveryRecord/getList',
+                        payload: {
+                          current,
+                          pageSize,
+                        },
+                        callback:(rr:any)=>{
+                            setsearchList(rr.data)
+                        }
+                      })
+                }
                 debugger
-              }} 
+               
+              }
+            } 
               />
-            // <MySelect
-            //   {...rest}
-            //   state={{
-            //     type: stateType,
-            //   }}
-            // />
           );
         },
       },  
@@ -273,7 +212,7 @@ const TableList: React.FC = (props) => {
         dataIndex: 'prizeName',
         render:(text, record, _, action) => 
            [<Button type='link' disabled={record.transport}
-              key="editable"
+              key="Math.random()"
               onClick={() => {
                   // transport 为true  已发货 false 未发货
                   debugger
@@ -286,54 +225,33 @@ const TableList: React.FC = (props) => {
           search:false
       },
   ]
-//   const {deliveryRecord} = props.state
-
-//   const { list } = deliveryRecord
 
   return (
     <PageContainer>
       <ProTable<API.RuleListItem, API.PageParams>
-        // headerTitle={intl.formatMessage({
-        //   id: 'pages.searchTable.title',
-        //   defaultMessage: 'Enquiry form',
-        // })}
         actionRef={actionRef}
         rowKey="key"
-        // search={{
-        //   labelWidth: 120,
-        // }}
-        // dataSource={list}
+        dataSource={props.list || []}
         // request={rule} // current pageSize
         request={
-            props?.dispatch.bind(null, {
-                type: 'deliveryRecord/getList',
-                payload: {
-                  current,
-                  pageSize,
-                }
-              })
-        // (params, sorter, filter) => {
-        //     // 表单搜索项会从 params 传入，传递给后端接口。
-                
-
-        //     console.log(params, sorter, filter);
-        //     return Promise.resolve({
-        //       data: list,
-        //       success: true,
-        //     });
-        //   }
+            async (params, sorter, filter) => {
+            // 表单搜索项会从 params 传入，传递给后端接口。
+           props?.dispatch({
+              type: 'deliveryRecord/getList',
+              payload: {
+                current,
+                pageSize,
+              },
+              callback:(rr:any)=>{
+                  setsearchList(rr.data)
+              }
+            })
+            return {
+              data: props.list,
+              success: true,
+            };
+          }
     }
-        // request={(params, sorter, filter) => {
-        //     // 表单搜索项会从 params 传入，传递给后端接口。
-        //     debugger
-        //     console.log(params, sorter, filter);}
-        // }
-        // onSubmit={(params)=>{
-        //     console.log(params);
-            
-        //     debugger
-
-        // }}
         columns={columns}
       />
     </PageContainer>
