@@ -68,7 +68,7 @@ export default {
   'pages.recordTable.id': 'ID',
   'pages.recordTable.user': '用户',
   'pages.recordTable.oreUsed': '消耗',
-  'pages.recordTable.oreRemain': '剩余',
+  'pages.recordTable.oreRemains': '剩余',
   'pages.recordTable.optionTime': '操作时间',
   'pages.recordTable.prize': '奖品',
   'pages.recordTable.image': '实物图片',
