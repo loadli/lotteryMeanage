@@ -9,7 +9,7 @@
 <template>
   <div class="lottery_item">
     <img :src="image" />
-    <span :title="name">{{ name }}</span>
+    <span class="text" :title="name">{{ name }}</span>
   </div>
 </template>
 
@@ -42,6 +42,17 @@ export default {
     height: 64px;
     padding: 10px;
     box-sizing: border-box;
+  }
+
+  .text {font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    color: #d25f00;
+    max-width: 100%;
+    white-space: nowrap;
+    text-align: center;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
   }
 }
 </style>

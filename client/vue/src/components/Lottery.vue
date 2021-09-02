@@ -8,7 +8,7 @@
 -->
 <template>
   <div>
-    <div class="header">当前矿石数：</div>
+    <div class="header">当前矿石数：{{ oreNumber }}</div>
     <div class="lottery">
       <div class="turntable-box">
         <!-- <div class="top-border"></div>
@@ -46,27 +46,33 @@
       </div>
     </div>
 
-
     <Dialog
-      title="恭喜中奖!"
+      :title="dialog.title"
       :buttonText="dialog.isEntity ? '提交' : '再来一次'"
       :visible.sync="dialog.flag"
       v-if="dialog.flag"
       @close="closeDialog"
       @submit="dialog.isEntity ? submitAddress() : submitAgain()"
+      :prizeInfo="dialog.prizeInfo"
     >
       <!-- 实物奖 -->
       <template v-if="dialog.isEntity">
         <Address v-model="dialog.addressInfo">
-          <Normal title="矿石" image=""/>
+          <Normal
+            :title="dialog.prizeInfo.name"
+            :image="dialog.prizeInfo.image"
+          />
         </Address>
       </template>
       <!-- 虚拟奖 -->
       <template v-else>
-        <Normal title="矿石" image="" desc="本次抽中的矿石已累加到你的当前矿石数中"/>
+        <Normal
+          :title="dialog.prizeInfo.title"
+          :image="dialog.prizeInfo.image"
+          :desc="dialog.prizeInfo.desc"
+        />
       </template>
     </Dialog>
-
   </div>
 </template>
 
@@ -81,30 +87,37 @@ export default {
     LotteryItem,
     Dialog,
     Address,
-    Normal
+    Normal,
   },
   data() {
     return {
+      userId: null,
       dialog: {
         flag: false,
         isEntity: true, // true 实物；false 虚拟
-        addressInfo:{
-          name:'',
-          phone:'',
-          address:''
-        }
+        addressInfo: {
+          name: "",
+          phone: "",
+          address: "",
+        },
+        prizeInfo: {
+          _id: "",
+          image: "",
+          name: "",
+        },
       },
-      lotteryList: [
-        { id: 1, name: "奖品1", order: 0 },
-        { id: 2, name: "奖品2", order: 7 },
-        { id: 3, name: "奖品3", order: 6 },
-        { id: 4, name: "奖品4", order: 1 },
-        { id: -1, name: "点击抽奖", order: -1 },
-        { id: 5, name: "奖品5", order: 5 },
-        { id: 6, name: "奖品6", order: 2 },
-        { id: 7, name: "奖品7", order: 3 },
-        { id: 8, name: "奖品8", order: 4 },
-      ],
+      lotteryList: [],
+      // lotteryList: [
+      //   { id: 1, name: "奖品1", order: 0 },
+      //   { id: 2, name: "奖品2", order: 7 },
+      //   { id: 3, name: "奖品3", order: 6 },
+      //   { id: 4, name: "奖品4", order: 1 },
+      //   { id: -1, name: "点击抽奖", order: -1 },
+      //   { id: 5, name: "奖品5", order: 5 },
+      //   { id: 6, name: "奖品6", order: 2 },
+      //   { id: 7, name: "奖品7", order: 3 },
+      //   { id: 8, name: "奖品8", order: 4 },
+      // ],
       defaultOption: {
         startIndex: 1, // 初始位置
         pits: 8, // 格子数
@@ -131,61 +144,136 @@ export default {
       interval: 100,
 
       lotteryResult: null, // 结果
+
+      orderList: [0, 7, 6, 1, -1, 5, 2, 3, 4],
+      oreNumber: 0, // 剩余矿石数量
     };
   },
-  computed:{},
-
+  computed: {},
+  async created() {
+    this.getLotteryList();
+    let userId = localStorage.getItem("userId");
+    this.userId = userId
+    this.getOreNumber(userId);
+  },
   methods: {
+    // 请求矿石数量
+    getOreNumber(userId) {
+      this.$axios
+        .post("api/user/ore", {
+          userId,
+        })
+        .then((res) => {
+          this.oreNumber = res.data.data.number;
+        });
+    },
     // 获取奖品列表
     getLotteryList() {
-      
+      this.$axios.get("api/user/lotteryList").then((res) => {
+        if (res.data.code == 200) {
+          let arr =
+            res.data.data.length >= 8 ? res.data.data.slice(0, 8) : res.data.data;
+          // if (!arr) {
+          //   alert("奖品数量不足，请联系管理员添加奖品");
+          //   return;
+          // }
+          arr.splice(4, 0, { id: -1, name: "点击抽奖", order: -1 });
+          arr.forEach((item, index) => {
+            item.order = this.orderList[index];
+          });
+          this.lotteryList = arr;
+        }
+      });
     },
     closeDialog() {
+      this.dialog.flag = false;
       this.initLottery(this.options);
     },
     // 再来一次
-    submitAgain(){
+    submitAgain() {
+      this.closeDialog();
       this.handleLottery();
     },
     // 提交地址
-    submitAddress(){
-      let {name,phone,address} = this.dialog.addressInfo;
-      let userId = localStorage.getItem("userId")
+    submitAddress() {
+      let { name, phone, address } = this.dialog.addressInfo;
+      let userId = localStorage.getItem("userId");
       // TODO 抽奖奖品ID暂时写死
-      let prizeId = '612b77f59b76850241946dcc'  
+      let prizeId = "612b77f59b76850241946dcc";
       let data = {
         name,
         phone,
         address,
         userId,
-        prizeId
-      }
-       this.$axios
-        .post("api/user/address", data)
-        .then((res) => {
-          console.log(res);
-          if(res.data.code == 200) {
-            alert("添加收货地址成功")
-            this.dialog.flag = false
-          }
-        });
+        prizeId,
+      };
+      this.$axios.post("api/user/address", data).then((res) => {
+        console.log(res);
+        if (res.data.code == 200) {
+          alert("添加收货地址成功");
+          this.dialog.flag = false;
+        }
+      });
     },
     handleLottery() {
-      this.start();
-      this.getResult();
-    },
-    getResult() {
       // 模拟获取抽奖结果
-
-      setTimeout(() => {
-        let random = Math.floor(Math.random() * 7) + 1;
-        console.log(random);
-        let res = this.lotteryList.find((item) => item.id === random);
+      let userId = localStorage.getItem("userId");
+      if (!userId) {
+        alert("未获取到用户信息");
+        return;
+      }
+      this.start();
+      this.getResult(userId);
+    },
+    async getResult(userId) {
+      setTimeout(async () => {
+        let lotteryResult = await this.getLotteryResult(userId);
+        let res = this.lotteryList.find(
+          (item) => item._id === lotteryResult._id
+        );
         this.lotteryResult = res;
         this.setPrize([res.order]);
+        //抽一次，刷新奖品数据
+        this.$emit("refresh")
       }, 2000);
     },
 
+    // 获取抽奖结果
+    getLotteryResult(userId) {
+      return new Promise((resolve, reject) => {
+        this.$axios
+          .post("/api/user/lottery", {
+            userId,
+          })
+          .then((res) => {
+            if (res.data.code == 200) {
+              resolve(res.data.data);
+            }
+          })
+          .catch((err) => {
+            this.stop();
+          });
+      });
+    },
+    // 打开弹窗
+    showDialog() {
+      let lotteryResult = { ...this.lotteryResult };
+      this.dialog.title = "恭喜中奖";
+      lotteryResult.title = `恭喜获得${lotteryResult.name}`;
+      if (lotteryResult._id === "612b6b9a6315d10255d12b86") {
+        lotteryResult.desc = "本次抽中的矿石已累加到你的当前矿石数中";
+      } else if (lotteryResult._id == "612b77fd29e75c0238ab1679") {
+        lotteryResult.desc = "恭喜你抽中了一个bug，请保留好，敬请期待妙用";
+        lotteryResult.title = "触发彩蛋";
+        this.dialog.title = "触发彩蛋";
+      }
+      // 01 虚拟物品  02  真实物品
+      this.dialog.isEntity = lotteryResult.type == "01" ? false : true;
+      this.dialog.prizeInfo = lotteryResult;
+      setTimeout(() => {
+        this.dialog.flag = true;
+      }, 800);
+    },
     // 初始化轮盘
     initLottery(options) {
       this.originOptions = options;
@@ -229,8 +317,6 @@ export default {
         let continu = that.judge();
         if (!continu) {
           that.stop();
-          // 停止转动，弹出中奖弹窗
-          that.dialog.flag = true;
           return;
         }
 
@@ -269,7 +355,6 @@ export default {
     judge() {
       let cycle = this.cycle;
       let times = this.times;
-
       // 到达旋转次数
       if (times > cycle) {
         // 没有设置奖项
@@ -279,6 +364,8 @@ export default {
 
         if (this.prizeIndexes.includes(this.index)) {
           console.log("End", this.prizeIndexes, this.index);
+          this.showDialog();
+          this.getOreNumber(this.userId)
           return false;
         }
       }
@@ -334,6 +421,7 @@ export default {
 .lottery {
   width: 486px;
   height: 396px;
+  color: #FDB11F;
   .turntable-box {
     background: #fadd95;
     box-shadow: inset 0 0 16px #ff9a2e;

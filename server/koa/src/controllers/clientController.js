@@ -58,6 +58,19 @@ class clientController {
     }
 
     /**
+     * 奖品列表
+     * @return {Array}
+     */
+    async lotteryList(ctx) {
+        const lotteryList = await clientService.lottery();
+        ctx.body = {
+            code: "200",
+            message: "请求成功",
+            data: lotteryList,
+        };
+    }
+
+    /**
      * 我的奖品
      * @param {Object} ctx - 请求参数
      * @return {Array}

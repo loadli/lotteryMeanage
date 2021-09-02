@@ -20,8 +20,8 @@
         :style="{ transform: 'translateX(' + distance + 'px)' }"
       >
         <lottery-item
-          v-for="item in priceInfo"
-          :key="item.recordId"
+          v-for="(item,index) in priceInfo"
+          :key="index"
           v-bind="item"
           class="content-item"
         >
@@ -48,6 +48,10 @@ export default {
   components: {
     LotteryItem,
   },
+  props: {
+    isRefresh: Boolean
+
+  },
   data() {
     return {
       right_disabled: false, //左侧按钮禁用
@@ -56,6 +60,15 @@ export default {
       distance: 0, //滑动距离
       priceInfo: [], //中奖列表
     };
+  },
+  watch: {
+    isRefresh(val){
+      if(val){
+        this.fetchPriceInfo();
+      }
+
+    }
+
   },
   computed: {
     cLeftDisabled() {
@@ -66,95 +79,16 @@ export default {
     },
   },
   methods: {
-   async fetchPriceInfo() {
-
-
-        let prizeInfo =  await this.$axios.post("api/user/my", 
+    fetchPriceInfo() {
+        this.$axios.post("api/user/my", 
           {userId: "612b6d0129e75c0238ab1651"}
-        )
-// debugger
-//         let prizeImgArr = prizeInfo.data.data;
-//         let mapping = {};
-//         prizeImgArr.forEach( async(v ={}) => {
-          
-//           let prizeId = v.prizeId;
-//           if(mapping[prizeId]){
-//             console.log('1111111111')
-//           }else {
-//             let imgInfo  = await this.$axios.post("api/user/prizeInfo", 
-//               {_id: prizeId}
-//             );
-//             console.log("imgInfo",imgInfo);
-//               mapping[prizeId] = imgInfo
-//         }
-   
-//         })
-//         console.log(prizeInfo);
-
-/*       return new Promise((resolve, reject) => {
-        this.$axios.post("api/user/history", 
-          {userId: "612b6d0129e75c0238ab1651"}
-        ).then((res = {}) => {
-            
-          if(res.data.code == 200) {
-            this.recordList = res.data.data || [];
+        ).then((res= {})=> {
+          console.log(11,res);
+          if(res.data.code ==200) {
+            this.priceInfo = res.data.data||[]
           }
-        });
-      }); */
 
-
-      /*    this.priceInfo = [
-        {
-          image: img1,
-          name: "杯子",
-          recordId: 1,
-        },
-        {
-          image: img2,
-          name: "switch",
-          recordId: 2,
-        },
-        {
-          image: img3,
-          name: "t恤",
-          recordId: 3,
-        },
-        {
-          image: img1,
-          name: "杯子",
-          recordId: 4,
-        },
-        {
-          image: img2,
-          name: "switch",
-          recordId: 5,
-        },
-        {
-          image: img3,
-          name: "t恤",
-          recordId: 6,
-        },
-        {
-          image: img1,
-          name: "杯子",
-          recordId: 7,
-        },
-        {
-          iamge: img2,
-          name: "switch",
-          recordId: 8,
-        },
-        {
-          image: img3,
-          name: "t恤",
-          recordId: 9,
-        },
-        {
-          src: img3,
-          name: "t恤",
-          recordId: 10,
-        },
-      ]; */
+        })
     },
     handleChange(direction) {
       let len = this.priceInfo.length;
@@ -163,7 +97,7 @@ export default {
         if (this.cLeftDisabled) return;
 
         if (this.index == 0 || this.index < 3) {
-          this.diatance += this.index * 88;
+          this.diatance +=  88;
         } else {
           this.index -= 3;
           this.distance += 264;
@@ -206,14 +140,14 @@ export default {
       width: 0;
       height: 0;
       border: 7px solid transparent;
-      border-right-color: #737c8c;
+      border-right-color: #fff;
       position: absolute;
       left: 7px;
-      top: 33px;
+      top: 50px;
       overflow: hidden;
     }
     .icon:after {
-      border-right-color: #fff;
+      border-right-color: #3D83E9;
       left: 9px;
     }
   }
@@ -226,14 +160,14 @@ export default {
       width: 0;
       height: 0;
       border: 7px solid transparent;
-      border-left-color: #737c8c;
+      border-left-color: #fff;
       position: absolute;
       left: 22px;
-      top: 33px;
+      top: 50px;
       overflow: hidden;
     }
     .icon:after {
-      border-left-color: #fff;
+      border-left-color: #3D83E9;
       left: 20px;
     }
   }

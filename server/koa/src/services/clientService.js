@@ -86,12 +86,20 @@ class clientService {
         if (!userId) {
             return [];
         }
-        const prizeRecordList = await recordTable
-            .where({
-                userId,
-            })
-            .find();
-        return prizeRecordList;
+        let prizeRecordList = await recordTable
+        .where({
+            userId,
+        })
+        .find();
+    const prizeAll = await prizeTable.where().find();
+            const all = prizeRecordList.map((item) => {
+                const prize = prizeAll.find((prizeItem) => {
+                    return (prizeItem._id = item.prizeId);
+                });
+                return Object.assign(item, prize);
+            });
+    
+            return all;
     }
 
     /**

@@ -21,7 +21,7 @@ const clientController = require("../controllers/clientController");
  */
 
 // 文档 => 1.1 抽奖列表
-// router.post("/list", clientController.list);
+router.get("/lotteryList", clientController.lotteryList);
 
 // 文档 => 1.2 矿石数量
 router.post("/ore", clientController.oreRemain);
