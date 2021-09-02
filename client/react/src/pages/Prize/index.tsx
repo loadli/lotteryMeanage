@@ -20,7 +20,7 @@ const handleRemove = async (selectedRows: API.Prize[]) => {
   if (!selectedRows) return true;
   try {
     await removeRule({
-      key: selectedRows.map((row) => row.key),
+      key: selectedRows.map((row) => row._id),
     });
     hide();
     message.success('Deleted successfully and will refresh soon');
