@@ -85,7 +85,7 @@ export default {
   'pages.prizeTable.prizeSum': '奖品总数',
   'pages.prizeTable.type': '奖品种类',
   'pages.prizeTable.probability': '中奖概率',
-  'pages.prizeTable.enableDatetime': '可用时间',
+  'pages.prizeTable.enableDatetime': '放奖时间',
   'pages.prizeTable.enable': '是否可用',
   'pages.prizeTable.options': '操作',
 };

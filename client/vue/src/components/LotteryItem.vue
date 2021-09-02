@@ -50,6 +50,7 @@ export default {
     color: #d25f00;
     max-width: 100%;
     white-space: nowrap;
+    text-align: center;
     // overflow: hidden;
     // text-overflow: ellipsis;
   }

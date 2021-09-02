@@ -233,6 +233,8 @@ export default {
         );
         this.lotteryResult = res;
         this.setPrize([res.order]);
+        //抽一次，刷新奖品数据
+        this.$emit("refresh")
       }, 2000);
     },
 
@@ -419,6 +421,7 @@ export default {
 .lottery {
   width: 486px;
   height: 396px;
+  color: #FDB11F;
   .turntable-box {
     background: #fadd95;
     box-shadow: inset 0 0 16px #ff9a2e;

@@ -12,10 +12,13 @@ export default (): React.ReactNode => {
         <Typography.Text
           strong
           style={{
-            marginBottom: 12,
+            marginBottom: 12
           }}
         >
+          <div className={styles.empty}>
             <img src={require("@/assets/welcome.svg")}></img>
+            <p>我找到了彩票中奖机率增加了一倍的方法</p>
+          </div>
         </Typography.Text>
       </Card>
     </PageContainer>

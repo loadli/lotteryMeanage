@@ -26,7 +26,7 @@ declare namespace API {
   type PageParams = {
     current?: number;
     pageSize?: number;
-   
+
   };
 
   type RuleListItem = {
@@ -133,4 +133,21 @@ declare namespace API {
     transport?: string;
     prizeName?: number;
   };
+
+
+    // 奖品信息
+    interface Prize {
+      _id: string,
+      createdAt: string,
+      updatedAt: string,
+      enable: string,
+      enableDatetime: string,
+      name: string,
+      prizeRemain: string,
+      prizeSum: string,
+      probability: string,
+      type: string,
+    };
+
+    type PrizeList = Prize[];
 }
