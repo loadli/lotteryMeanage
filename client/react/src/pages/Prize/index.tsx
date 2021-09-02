@@ -1,5 +1,5 @@
 import { Button, message, Drawer, Modal, Form, Input, Select, DatePicker, Row, Col, InputNumber } from 'antd';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -10,7 +10,6 @@ import { removeRule } from '@/services/ant-design-pro/api';
 import { connect } from 'dva';
 import { savePrizeInfo } from './services';
 import moment from 'moment';
-import EditForm from './components/EditForm';
 /**
  *  Delete node
  * @zh-CN 删除节点
@@ -64,7 +63,6 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
     //       pageSize,
     //     }
     //   })
-    //   console.log(list)
     // }, [])
 
     /**
@@ -73,46 +71,15 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
      * */
     const intl = useIntl();
 
-    const filter: ProColumns<API.Prize>[] = [
-        {
-            title: (
-                <FormattedMessage
-                    id="pages.searchTable.updateForm.prizeType.typeLabel"
-                    defaultMessage="Rule name"
-                />
-            ),
-            dataIndex: 'name',
-            tip: 'The rule name is the unique key',
-            render: (dom, entity) => {
-                return (
-                    <a
-                        onClick={() => {
-                            setCurrentRow(entity);
-                            setShowDetail(true);
-                        }}
-                    >
-                        {dom}
-                    </a>
-                );
-            },
-        },
-    ];
-    const showEdit = (record: any) => {
-        setPr_record(record)
-        setIsModalVisible(true);
-    };
     React.useEffect(() => {
         form.resetFields()
     }, [pr_record]);
     const handleOk = () => {
         setIsModalVisible(false);
+        actionRef.current?.reload()
     };
 
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
     const onFinish = async (values: any) => {
-        debugger
         const subData = {
             id: pr_record._id,
             name: values.name,
@@ -123,7 +90,6 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
             prizeRemain: values.prizeRemain,
             image: values.image
         }
-        console.log('Success:', values);
         const res: any = await savePrizeInfo({ ...subData })
         if (res.code === '200') {
             message.success('您已成功修改奖品信息！')
@@ -152,7 +118,6 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
             title: <FormattedMessage id="pages.prizeTable.type" defaultMessage="Type" />,
             dataIndex: 'type',
             render: (value) => {
-                console.log(value);
                 return <div>{String(value) === '01' ? '虚拟' : '实物'}</div>;
             },
         },
@@ -160,7 +125,6 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
             title: <FormattedMessage id="pages.prizeTable.probability" defaultMessage="Probability" />,
             dataIndex: 'probability',
             render: (value, record, _, action) => {
-                console.log(value);
                 return <div>{String(value)}%</div>;
             },
         },
@@ -172,7 +136,6 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
             title: <FormattedMessage id="pages.prizeTable.enable" defaultMessage="Enable" />,
             dataIndex: 'enable',
             render: (value) => {
-                console.log(value);
                 return <div>{String(value) === 'true' ? '是' : '否'}</div>;
             },
         },
@@ -180,7 +143,6 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
             title: <FormattedMessage id="pages.prizeTable.options" defaultMessage="Options" />,
             dataIndex: 'enable',
             render: (value, record, _, action) => {
-                console.log(value);
                 return (
                     <div>
                         <Button
@@ -201,7 +163,6 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
                         <Button type="text" onClick={() => {
                             setPr_record(record)
                             setIsModalVisible(true);
-                            debugger
                         }}>
                             编辑
             </Button>
@@ -314,7 +275,6 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
                 onCancel={handleOk}
                 maskClosable={true}
             >
-                {/* {pr_record ? <EditForm  record={pr_record} form={form} handleOk={handleOk}/> : null} */}
                 <Form form={form}
                     labelCol={{ span: 4 }}
                     style={{ width: '60%', margin: 'auto' }}
