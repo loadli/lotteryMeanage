@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:37:11
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-01 23:45:56
+ * @LastEditTime : 2021-09-02 14:55:30
  * @Description  : 前台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\clientController.js
  */
@@ -87,20 +87,20 @@ class clientController {
         };
     }
 
-        /**
+    /**
      * 奖品信息
      * @param {Object} ctx - 请求参数
      * @return {Array}
      */
     async prizeInfo(ctx) {
         const { _id } = ctx.request.body;
-            const prizeInfoList = await clientService.prizeInfo(_id);
-            ctx.body = {
-                code: "200",
-                message: "请求成功",
-                data: prizeInfoList,
+        const prizeInfoList = await clientService.prizeInfo(_id);
+        ctx.body = {
+            code: "200",
+            message: "请求成功",
+            data: prizeInfoList,
         };
-        }
+    }
 
     /**
      * @description: 抽奖
@@ -108,7 +108,21 @@ class clientController {
      */
     async lottery(ctx) {
         const { userId } = ctx.request.body;
+
+        const user = await clientService.oreRemain(userId);
+        const oreUse = await clientService.oreUse();
+
+        if (user.oreRemain < oreUse) {
+            ctx.body = {
+                code: "300",
+                message: "矿石不足",
+                data: null,
+            };
+            return;
+        }
+
         const prizeList = await clientService.lottery();
+        // 抽奖算法
         let probablySum = prizeList.reduce((sum, item) => (sum += Number(item.probability)), 0);
         let prize = null;
         const probabilityList = prizeList.map((item) => item.probability);
@@ -120,18 +134,24 @@ class clientController {
                 probablySum -= probabilityList[i];
             }
         }
+        console.log("本次抽中 --------------------------------");
+        console.log(prize);
+        console.log("----------------------------------------");
         if (prize) {
-            // 抽奖算法
+            await clientService.LotteryEnd(userId, prize);
+            const user = await clientService.oreRemain(userId);
+            console.log("------------------------------");
+            console.log("剩余矿石" + user.oreRemain);
+            console.log("-------------------------------");
             ctx.body = {
                 code: "200",
                 message: "请求成功",
-                data: prize,
+                data: Object.assign(prize, user),
             };
-            await clientService.LotteryEnd(userId,prize);
         } else {
             ctx.body = {
-                code: "200",
-                message: "请求成功",
+                code: "300",
+                message: "无可用奖品",
                 data: null,
             };
         }
@@ -148,10 +168,10 @@ class clientController {
             name,
             prizeId,
             phone,
-            address
-        }
+            address,
+        };
         const addressList = await clientService.address(data);
-        console.log('addressList', addressList)
+        console.log("addressList", addressList);
         ctx.body = {
             code: "200",
             message: "请求成功",

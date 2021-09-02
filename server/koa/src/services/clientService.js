@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-02 10:01:50
+ * @LastEditTime : 2021-09-02 14:53:21
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -21,6 +21,7 @@ const deliveryTable = require("../models/deliveryTable");
 const prizeTable = require("../models/prizeTable");
 // 抽奖纪录表
 const recordTable = require("../models/recordTable");
+const { user } = require("../controllers/clientController");
 // ---------------------------------------------------
 // 通过new ObjectId(id)去生成ObjectId
 const ObjectId = inspirecloud.db.ObjectId;
@@ -34,16 +35,8 @@ class clientService {
      * 创建一个用户id
      */
     async createUser() {
-        const oreInit = await baseSettingTable
-            .where({
-                key: "oreInit",
-            })
-            .findOne();
-
-        const initUser = {
-            oreRemain: oreInit.value,
-        };
-        return await userTable.save(initUser);
+        const oreInit = await this.oreUse();
+        return await userTable.save(oreInit);
     }
     /**
      * 获取用户剩余矿石
@@ -51,6 +44,18 @@ class clientService {
     async oreRemain(id) {
         const user = await userTable.where({ _id: ObjectId(id) }).findOne();
         return user;
+    }
+
+    /**
+     * 获取用户剩余矿石
+     */
+    async oreUse() {
+        const oreUse = await baseSettingTable
+            .where({
+                key: "oreUse",
+            })
+            .findOne();
+        return oreUse.value || 999999;
     }
     /**
      * 获取抽奖记录
@@ -88,10 +93,15 @@ class clientService {
             .find();
         return prizeRecordList;
     }
+
+    /**
+     * 获取参与抽奖的奖品
+     */
     async lottery() {
         const prizeList = await prizeTable
             .where(function () {
-                return this.prizeRemain > 0;
+                const current = new Date();
+                return this.prizeRemain > 0 && this.enable && current >= new Date(this.enableDatetime);
             })
             .find();
         return prizeList;
@@ -103,11 +113,28 @@ class clientService {
      * @param {object} prize 奖品
      */
     async LotteryEnd(userid, prize) {
-        await LotteryReamin(prize);
+        // 减少商品库存
+        await this.LotteryReamin(prize);
+        console.log("库存减少成功");
 
-        await LotteryRecord(userid, prize);
+        // 减少用户剩余矿石数
+        await this.oreReaminLess(userid);
+        console.log("矿石减少成功");
+
+        // 抽中矿石增加66
+        if (prize.name == "66矿石") {
+            await this.oreReaminAdd(userid);
+            console.log("矿石增加成功");
+        }
+
+        // 写入抽奖纪录
+        await this.LotteryRecord(userid, prize);
+        console.log("抽奖纪录写入成功");
+
         if (prize.type == "02") {
-            await LotteryDelivery(prize);
+            // 写入实物纪录
+            await this.LotteryDelivery(userid, prize);
+            console.log("实物纪录写入成功");
         }
     }
 
@@ -127,24 +154,29 @@ class clientService {
     }
 
     /**
+     * 抽奖结束，添加矿石数量
+     * @param {object} prize 奖品
+     */
+    async oreReaminAdd(userid) {
+        // 修改矿石数
+        const user = await userTable.where({ _id: ObjectId(userid) }).findOne();
+        user.oreRemain += 66;
+        await userTable.save(user);
+        return user;
+    }
+
+    /**
      * 抽奖结束，减少用户矿石数
      * @param {object} prize 奖品
      */
     async oreReaminLess(userid) {
         // 获取单次消耗
-        const baseSetting = await baseSettingTable
-            .where({
-                key: "oreUse",
-            })
-            .findOne();
+        const oreUse = await this.oreUse();
         // 修改矿石数
-        const user = await userTable
-            .where({
-                _id: userid,
-            })
-            .findOne();
+        const user = await userTable.where({ _id: ObjectId(userid) }).findOne();
 
-        prizeData.oreRemain - baseSetting.value;
+        user.oreRemain -= oreUse;
+        // console.log(user.oreRemain,baseSetting.value);
         await userTable.save(user);
         return user;
     }
@@ -154,21 +186,16 @@ class clientService {
      * @param {object} prize 奖品
      */
     async LotteryRecord(userid, prize) {
-        const baseSetting = await baseSettingTable
-            .where({
-                key: "oreUse",
-            })
-            .findOne();
+        const oreUse = await this.oreUse();
 
-        const remain = await oreRemain(userid);
+        const remain = await this.oreRemain(userid);
 
         const recordItem = {
-            ...userid,
+            userid: userid,
             przeId: prize._id,
-            oreUse: baseSetting.value,
+            oreUse: oreUse,
             oreRemain: remain.oreRemain,
             datetime: new Date(),
-            prizeName: prize.name,
             prizeType: prize.type,
         };
 
@@ -179,8 +206,14 @@ class clientService {
      * 抽奖结束，写入实物纪录
      * @param {object} prize 奖品
      */
-    async LotteryDelivery(prize) {
-        return await deliveryTable.save(prize);
+    async LotteryDelivery(userid, prize) {
+        const deliveryItem = {
+            userId: userid,
+            prizeId: prize._id,
+            prizeName: prize.name,
+        };
+
+        return await deliveryTable.save(deliveryItem);
     }
 
     /**
