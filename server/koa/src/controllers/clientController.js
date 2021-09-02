@@ -152,14 +152,13 @@ class clientController {
         console.log("----------------------------------------");
         if (prize) {
             await clientService.LotteryEnd(userId, prize);
-            const user = await clientService.oreRemain(userId);
             console.log("------------------------------");
             console.log("剩余矿石" + user.oreRemain);
             console.log("-------------------------------");
             ctx.body = {
                 code: "200",
                 message: "请求成功",
-                data: Object.assign(prize, user),
+                data: Object.assign(prize),
             };
         } else {
             ctx.body = {
