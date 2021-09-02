@@ -120,10 +120,18 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
     {
       title: <FormattedMessage id="pages.prizeTable.type" defaultMessage="Type" />,
       dataIndex: 'type',
+      render: (value) => {
+        console.log(value);
+        return <div>{String(value) === '01' ? '虚拟' : '实物'}</div>;
+      },
     },
     {
       title: <FormattedMessage id="pages.prizeTable.probability" defaultMessage="Probability" />,
       dataIndex: 'probability',
+      render: (value) => {
+        console.log(value);
+        return <div>{String(value)}%</div>;
+      },
     },
     {
       title: <FormattedMessage id="pages.prizeTable.enableDatetime" defaultMessage="Enable Time" />,

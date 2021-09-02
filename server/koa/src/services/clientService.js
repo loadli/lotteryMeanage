@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-02 14:53:21
+ * @LastEditTime : 2021-09-02 15:20:10
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -191,8 +191,8 @@ class clientService {
         const remain = await this.oreRemain(userid);
 
         const recordItem = {
-            userid: userid,
-            przeId: prize._id,
+            userId: userid,
+            prizeId: prize._id,
             oreUse: oreUse,
             oreRemain: remain.oreRemain,
             datetime: new Date(),
