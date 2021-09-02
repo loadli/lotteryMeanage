@@ -159,7 +159,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
           defaultMessage="ID"
         />
       ),
-      dataIndex: 'prizeName',
+      dataIndex: 'name',
     },
   ]
 

@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-01 14:18:08
+ * @LastEditTime : 2021-09-02 15:34:03
  * @Description  : 后台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\serveController.js
  */
@@ -112,6 +112,7 @@ class serveController {
     const page = ctx.request.query.current;
     const size = ctx.request.query.pageSize;
     const list = await recordService.listAll(page, size);
+
     ctx.body = {
       ...list,
     };

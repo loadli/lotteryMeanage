@@ -1,4 +1,5 @@
 const recordTable = require('../models/recordTable');
+const prizeTable = require('../models/prizeTable');
 const inspirecloud = require('@byteinspire/api');
 const ObjectId = inspirecloud.db.ObjectId;
 
@@ -19,7 +20,16 @@ class RecordService {
         success: false,
       };
     }
-    const all = await recordTable.where().skip(start).limit(end).find();
+    const recordAll = await recordTable.where().skip(start).limit(end).find();
+    const prizeAll = await prizeTable.where().find();
+    const all = recordAll.map((item) => {
+        const prize = prizeAll.find((prizeItem) => {
+            return (prizeItem._id = item.prizeId);
+        });
+        return Object.assign(item, prize);
+    });
+    console.log(all);
+    
     const total = await recordTable.where().count();
 
     const listMsg = {
