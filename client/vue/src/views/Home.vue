@@ -6,17 +6,17 @@
     <div class="home__container is-flex">
       <div class="container_left">
         <Module title="幸运抽奖">
-          <Lottery />
+          <Lottery @refresh="isRefresh = true" />
         </Module>
       </div>
 
       <div class="container-right">
         <Module title="我的奖品">
-          <Prize />
+          <Prize  :isRefresh="isRefresh"/>
         </Module>
 
         <Module title="抽奖纪录">
-          <Record />
+          <Record :isRefresh="isRefresh"/>
         </Module>
       </div>
     </div>
@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       userId: null,
+      isRefresh: false
     };
   },
   async created() {
@@ -48,6 +49,11 @@ export default {
     this.getOreNumber(userId);
   },
   methods: {
+    //
+
+
+
+
     // 获取用户信息
     async getUserInfo() {
       let userId = localStorage.getItem("userId");
@@ -101,6 +107,13 @@ export default {
   &__title {
     padding: 2em;
     margin-bottom: 2em;
+  }
+  .home__container {
+    overflow: scroll;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .container_left {

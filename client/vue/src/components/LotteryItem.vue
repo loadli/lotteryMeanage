@@ -43,5 +43,8 @@ export default {
     padding: 10px;
     box-sizing: border-box;
   }
+  span {
+    text-align:center;
+  }
 }
 </style>
