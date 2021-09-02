@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:36:18
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 23:41:22
+ * @LastEditTime : 2021-09-02 10:02:41
  * @Description  : 奖品
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Prize.vue
 -->
@@ -72,24 +72,24 @@ export default {
         let prizeInfo =  await this.$axios.post("api/user/my", 
           {userId: "612b6d0129e75c0238ab1651"}
         )
-
-        let prizeImgArr = prizeInfo.data.data;
-        let mapping = {};
-        prizeImgArr.forEach( async(v ={}) => {
+// debugger
+//         let prizeImgArr = prizeInfo.data.data;
+//         let mapping = {};
+//         prizeImgArr.forEach( async(v ={}) => {
           
-          let prizeId = v.prizeId;
-          if(mapping[prizeId]){
-            console.log('1111111111')
-          }else {
-            let imgInfo  = await this.$axios.post("api/user/prizeInfo", 
-              {_id: prizeId}
-            );
-            console.log("imgInfo",imgInfo);
-              mapping[prizeId] = imgInfo
-        }
+//           let prizeId = v.prizeId;
+//           if(mapping[prizeId]){
+//             console.log('1111111111')
+//           }else {
+//             let imgInfo  = await this.$axios.post("api/user/prizeInfo", 
+//               {_id: prizeId}
+//             );
+//             console.log("imgInfo",imgInfo);
+//               mapping[prizeId] = imgInfo
+//         }
    
-        })
-        console.log(prizeInfo);
+//         })
+//         console.log(prizeInfo);
 
 /*       return new Promise((resolve, reject) => {
         this.$axios.post("api/user/history", 

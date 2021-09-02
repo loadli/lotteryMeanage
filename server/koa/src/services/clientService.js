@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-02 00:13:59
+ * @LastEditTime : 2021-09-02 10:01:50
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -60,13 +60,21 @@ class clientService {
         if (!userId) {
             return [];
         }
-
-        const prizeRecordList = await deliveryTable
+        let prizeRecordList = await recordTable
             .where({
                 userId,
             })
             .find();
-        return prizeRecordList;
+        const prizeAll = await prizeTable.where().find();
+
+        const all = prizeRecordList.map((item) => {
+            const prize = prizeAll.find((prizeItem) => {
+                return (prizeItem._id = item.prizeId);
+            });
+            return Object.assign(item, prize);
+        });
+
+        return all;
     }
 
     async history(userId) {
@@ -78,30 +86,12 @@ class clientService {
                 userId,
             })
             .find();
-        
         return prizeRecordList;
     }
-
-    async prizeInfo(_id) {
-        if (!_id) {
-            return [];
-        }
-        const prizeInfo = await prizeTable
-            .where({
-                    _id
-                }
-            )
-            .find();
-        console.log("walk.....",_id)
-        return prizeInfo;
-    }
-
-
-
     async lottery() {
         const prizeList = await prizeTable
             .where(function () {
-                userId
+                return this.prizeRemain > 0;
             })
             .find();
         return prizeList;
@@ -120,6 +110,22 @@ class clientService {
             await LotteryDelivery(prize);
         }
     }
+
+    /**
+     * 抽奖结束，减少奖品库存
+     * @param {object} prize 奖品
+     */
+    async LotteryReamin(prize) {
+        const prizeData = await prizeTable
+            .where({
+                _id: prize._id,
+            })
+            .findOne();
+        prizeData.prizeRemain--;
+        await prizeTable.save(prizeData);
+        return prizeData;
+    }
+
     /**
      * 抽奖结束，减少用户矿石数
      * @param {object} prize 奖品
@@ -141,21 +147,6 @@ class clientService {
         prizeData.oreRemain - baseSetting.value;
         await userTable.save(user);
         return user;
-    }
-
-    /**
-     * 抽奖结束，减少奖品库存
-     * @param {object} prize 奖品
-     */
-    async LotteryReamin(prize) {
-        const prizeData = await prizeTable
-            .where({
-                _id: prize._id,
-            })
-            .findOne();
-        prizeData.prizeRemain--;
-        await prizeTable.save(prizeData);
-        return prizeData;
     }
 
     /**
@@ -201,12 +192,12 @@ class clientService {
      * @param {string} address 地址
      */
     async address(body) {
-        let prizeInfo = await prizeTable.where({_id: new ObjectId(body.prizeId)}).findOne()
+        let prizeInfo = await prizeTable.where({ _id: new ObjectId(body.prizeId) }).findOne();
         let requestBody = {
             ...body,
-            transport: false,   // 是否发货
-            prizeName: prizeInfo.name,  // 奖品名
-        }
+            transport: false, // 是否发货
+            prizeName: prizeInfo.name, // 奖品名
+        };
         return await deliveryTable.save(requestBody);
     }
 }
