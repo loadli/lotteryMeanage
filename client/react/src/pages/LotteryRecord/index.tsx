@@ -71,7 +71,6 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
   //       pageSize,
   //     }
   //   })
-  //   console.log(list)
   // }, [])
 
   /**

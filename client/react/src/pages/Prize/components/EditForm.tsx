@@ -1,15 +1,11 @@
-import React from 'react';
 import { Form, Input, Select, DatePicker, InputNumber, Button, message, Row, Col } from 'antd';
 import { savePrizeInfo } from '../services'
 
 export default (props: any) => {
     const { record, form, handleOk } = props
-    const { getFieldsValue } = form
     if (!record) return
-    console.log(record, '123123');
 
     const onFinish = async (values: any) => {
-        debugger
         const subData = {
             id: record._id,
             name: values.name,
@@ -20,7 +16,6 @@ export default (props: any) => {
             prizeRemain: values.prizeRemain,
             image: values.image
         }
-        console.log('Success:', values);
         const res: any = await savePrizeInfo({ ...subData })
         if (res.code === '200') {
             message.success('您已成功修改奖品信息！')

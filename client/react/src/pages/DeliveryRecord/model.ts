@@ -32,7 +32,6 @@ const Model: RecordModelType = {
   },
   reducers: {
     saveList(state, { payload }) {
-        debugger
         return {
           ...state,
           list: payload,
@@ -41,12 +40,8 @@ const Model: RecordModelType = {
   },
   effects: {
     *getList(action , { call, put }) {
-        debugger
       const res = yield call(getDeliveryRecordList, {...action?.payload});
-      console.log(res,123);
-      
       if(res.code === '200'){
-          debugger
            yield put({
         type: "saveList",
         payload: res.data,
@@ -56,7 +51,6 @@ const Model: RecordModelType = {
       return res;
     },
     *changeTransportStatus(action , { call, put }) {
-        debugger
         const res = yield call(changeTransportStatus, {...action?.payload});
         action?.callback()
         return res;

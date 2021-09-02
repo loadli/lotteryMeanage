@@ -17,7 +17,6 @@ export async function getDeliveryRecordList(options?: { [key: string]: any }) {
 }
 
 export async function changeTransportStatus(body: any) {
-    debugger
     return request(`${requestUrl}/serve/setTransport`, {
       method: 'POST',
       headers: {
