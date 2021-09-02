@@ -50,10 +50,10 @@ export default {
     },
     methods: {
     fetchRecordList() {
-
+        let userId = localStorage.getItem('userId')
       return new Promise((resolve, reject) => {
         this.$axios.post("api/user/history", 
-          {userId: "612b6d0129e75c0238ab1651"}
+          {userId: userId}
         ).then((res = {}) => {
             console.log(res)
           if(res.data.code == 200) {

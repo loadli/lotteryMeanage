@@ -198,8 +198,7 @@ export default {
     submitAddress() {
       let { name, phone, address } = this.dialog.addressInfo;
       let userId = localStorage.getItem("userId");
-      // TODO 抽奖奖品ID暂时写死
-      let prizeId = "612b77f59b76850241946dcc";
+      let prizeId = this.lotteryResult.prizeId;
       let data = {
         name,
         phone,
@@ -208,7 +207,6 @@ export default {
         prizeId,
       };
       this.$axios.post("api/user/address", data).then((res) => {
-        console.log(res);
         if (res.data.code == 200) {
           alert("添加收货地址成功");
           this.dialog.flag = false;
@@ -335,7 +333,6 @@ export default {
     },
     next(cb) {
       let interval = this.getInterval();
-      console.log("interval:", interval, this.times);
       this.ticketId = setTimeout(cb, interval);
     },
     getInterval() {
@@ -379,7 +376,7 @@ export default {
       this.times = 0;
       this.processing = false;
       this.interval = this.options.interval;
-      console.log(this.options.interval);
+      // console.log(this.options.interval);
     },
     setPrize(prizeIndexes) {
       if (this.animatingResult) {
