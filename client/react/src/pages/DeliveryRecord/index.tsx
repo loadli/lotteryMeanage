@@ -33,7 +33,6 @@ const TableList: React.FC = (props) => {
         cancelText: '取消',
         onOk: async()=>{
             // 修改发货状态
-            debugger
             await changeTransportStatus({id:record._id})
            const res : API.deliresList = await getDeliveryRecordList() 
            if(res?.code === '200' ){
@@ -43,6 +42,7 @@ const TableList: React.FC = (props) => {
             })
             //  actionRef.current.reload()
             setsearchList(res.data)
+            props.f
            }
           
             // props?.dispatch({
@@ -195,7 +195,6 @@ const TableList: React.FC = (props) => {
                         }
                       })
                 }
-                debugger
                
               }
             } 
@@ -216,7 +215,6 @@ const TableList: React.FC = (props) => {
               key="Math.random()"
               onClick={() => {
                   // transport 为true  已发货 false 未发货
-                  debugger
                   changeTransport(record)
               }}
             >
