@@ -9,7 +9,7 @@
 <template>
     <div class="wrapper is-flex is-column is-middle">
         <img :src="image" alt="奖品图片" />
-        <div class="title">恭喜获得{{title}}</div>
+        <div class="title">{{title}}</div>
         <div class="desc" v-show="desc">
             <p>{{desc}}</p>
         </div>

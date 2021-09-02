@@ -6,7 +6,7 @@
     <div class="home__container is-flex">
       <div class="container_left">
         <Module title="幸运抽奖">
-          <Lottery />
+          <Lottery/>
         </Module>
       </div>
 
@@ -40,12 +40,12 @@ export default {
   data() {
     return {
       userId: null,
+      lotteryList: [],
     };
   },
   async created() {
     let userId = await this.getUserInfo();
     this.userId = userId;
-    this.getOreNumber(userId);
   },
   methods: {
     // 获取用户信息
@@ -55,21 +55,6 @@ export default {
         userId = await this.createUser();
       }
       return userId;
-    },
-    // 请求矿石数量
-    getOreNumber(userId) {
-      if (!userId) {
-        alert("未找到用户");
-      }
-      return new Promise((resolve, reject) => {
-        this.$axios
-          .post("api/user/ore", {
-            userId,
-          })
-          .then((res) => {
-            console.log(res);
-          });
-      });
     },
     // 创建用户
     createUser() {
@@ -111,19 +96,19 @@ export default {
   }
 }
 ::-webkit-scrollbar {
-    width: 12px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.3);
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 ::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    border-radius: 12px;
+  /*滚动条里面轨道*/
+  border-radius: 12px;
 }
 </style>
