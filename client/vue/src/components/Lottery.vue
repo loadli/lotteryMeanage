@@ -163,7 +163,7 @@ export default {
         // 请求矿石数量
         getOreNumber(userId) {
             this.$axios
-                .post("api/user/ore", {
+                .post("/api/user/ore", {
                     userId,
                 })
                 .then((res) => {
@@ -172,13 +172,13 @@ export default {
         },
         // 请求矿石数量
         getOreUse() {
-            this.$axios.get("api/serve/getOreUse").then((res) => {
+            this.$axios.get("/api/serve/getOreUse").then((res) => {
                 this.oreUse = +res.data.data.oreUse;
             });
         },
         // 获取奖品列表
         getLotteryList() {
-            this.$axios.get("api/user/lotteryList").then((res) => {
+            this.$axios.get("/api/user/lotteryList").then((res) => {
                 if (res.data.code == 200) {
                     let arr =
                         res.data.data.length >= 8
@@ -218,7 +218,7 @@ export default {
                 prizeId,
             };
             this.$axios
-                .post("api/user/address", data)
+                .post("/api/user/address", data)
                 .then((res) => {
                     if (res.data.code == 200) {
                         alert("添加收货地址成功");
@@ -262,7 +262,7 @@ export default {
         getLotteryResult(userId) {
             return new Promise((resolve) => {
                 this.$axios
-                    .post("api/user/lottery", {
+                    .post("/api/user/lottery", {
                         userId,
                     })
                     .then((res) => {

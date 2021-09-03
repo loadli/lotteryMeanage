@@ -77,7 +77,7 @@ export default {
         fetchprizeInfo() {
             let userId = localStorage.getItem("userId");
             this.$axios
-                .post("api/user/my", { userId: userId })
+                .post("/api/user/my", { userId: userId })
                 .then((res = {}) => {
                     console.log(11, res);
                     if (res.data.code == 200) {
