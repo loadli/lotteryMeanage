@@ -59,6 +59,7 @@ export default {
             let userId = localStorage.getItem("userId");
             if (!userId) {
                 userId = await this.createUser();
+                location.reload();
             }
             return userId;
         },
