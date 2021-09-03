@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:37:11
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-02 14:55:30
+ * @LastEditTime : 2021-09-03 17:47:56
  * @Description  : 前台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\clientController.js
  */
@@ -147,14 +147,10 @@ class clientController {
                 probablySum -= probabilityList[i];
             }
         }
-        console.log("本次抽中 --------------------------------");
-        console.log(prize);
-        console.log("----------------------------------------");
+        console.log("本次抽中 :" + prize._id +  " " + prize.name);
         if (prize) {
             await clientService.LotteryEnd(userId, prize);
-            console.log("------------------------------");
             console.log("剩余矿石" + user.oreRemain);
-            console.log("-------------------------------");
             ctx.body = {
                 code: "200",
                 message: "请求成功",
@@ -183,7 +179,6 @@ class clientController {
             address,
         };
         const addressList = await clientService.address(data);
-        console.log("addressList", addressList);
         ctx.body = {
             code: "200",
             message: "请求成功",
