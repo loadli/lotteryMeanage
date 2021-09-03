@@ -16,7 +16,7 @@
             </div>
 
             <div class="container-right">
-                <Module title="我的奖品">
+                <Module title="我的待收货奖品">
                     <Prize :isRefresh="isRefresh" />
                 </Module>
 

@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 11:44:05
+ * @LastEditTime : 2021-09-03 14:00:17
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -76,6 +76,18 @@ class clientService {
                 userId,
             })
             .find();
+        let prizeAll = await prizeTable.where().find();
+
+        deliveryList.forEach((item) => {
+            console.log(item.prizeId.toString());
+            console.log("---");
+            let prize = prizeAll.find((prizeItem) => {
+                console.log(prizeItem._id);
+                return prizeItem._id.toString() == item.prizeId.toString();
+            });
+            item.image = prize.image;
+
+        });
 
         return deliveryList;
     }

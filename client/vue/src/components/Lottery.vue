@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 12:47:03
+ * @LastEditTime : 2021-09-03 13:44:43
  * @Description  : 抽奖
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
@@ -37,6 +37,7 @@
                                     <LotteryItem
                                         :image="item.image"
                                         :name="item.name"
+                                        color="#e37815"
                                     ></LotteryItem>
                                 </div>
                             </template>
@@ -147,6 +148,7 @@ export default {
 
             orderList: [0, 7, 6, 1, -1, 5, 2, 3, 4],
             oreNumber: 0, // 剩余矿石数量
+            oreUse: 9999, //单次使用矿石
         };
     },
     computed: {},
@@ -155,6 +157,7 @@ export default {
         let userId = localStorage.getItem("userId");
         this.userId = userId;
         this.getOreNumber(userId);
+        this.getOreUse();
     },
     methods: {
         // 请求矿石数量
@@ -166,6 +169,12 @@ export default {
                 .then((res) => {
                     this.oreNumber = res.data.data.number;
                 });
+        },
+        // 请求矿石数量
+        getOreUse() {
+            this.$axios.get("api/serve/getOreUse").then((res) => {
+                this.oreUse = +res.data.data.oreUse;
+            });
         },
         // 获取奖品列表
         getLotteryList() {
@@ -200,7 +209,7 @@ export default {
         submitAddress() {
             let { name, phone, address } = this.dialog.addressInfo;
             let userId = localStorage.getItem("userId");
-            let prizeId = this.lotteryResult.prizeId;
+            let prizeId = this.lotteryResult._id;
             let data = {
                 name,
                 phone,
@@ -208,20 +217,29 @@ export default {
                 userId,
                 prizeId,
             };
-            this.$axios.post("api/user/address", data).then((res) => {
-                if (res.data.code == 200) {
-                    alert("添加收货地址成功");
-                    this.dialog.flag = false;
-                } else {
+            this.$axios
+                .post("api/user/address", data)
+                .then((res) => {
+                    if (res.data.code == 200) {
+                        alert("添加收货地址成功");
+                        this.dialog.flag = false;
+                    }
+                })
+                .catch((err) => {
                     alert("出问题了呢，要不咱下次再送？😜");
-                }
-            });
+                });
         },
         handleLottery() {
             // 模拟获取抽奖结果
             let userId = localStorage.getItem("userId");
             if (!userId) {
                 alert("未获取到用户信息");
+                return;
+            }
+            this.getOreNumber(userId);
+            this.getOreUse();
+            if (this.oreNumber < this.oreUse) {
+                alert("矿石不足");
                 return;
             }
             this.start();
