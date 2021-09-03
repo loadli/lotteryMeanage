@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 08:46:55
+ * @LastEditTime : 2021-09-03 10:48:13
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -190,7 +190,7 @@ class clientService {
             oreRemain: remain.oreRemain,
             datetime: new Date(),
             prizeType: prize.type,
-            prizeName:prize.name
+            prizeName: prize.name,
         };
 
         return await recordTable.save(recordItem);

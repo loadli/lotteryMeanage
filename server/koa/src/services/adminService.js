@@ -1,7 +1,7 @@
 const adminTable = require("../models/adminTable");
 const inspirecloud = require("@byteinspire/api");
 const ObjectId = inspirecloud.db.ObjectId;
-const dateToString = inspirecloud.db.dateToString
+const dateToString = inspirecloud.db.dateToString;
 
 /**
  * adminService
