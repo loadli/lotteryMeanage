@@ -1,0 +1,19 @@
+.module__title {
+    margin-bottom: 2em;
+
+    .text {
+        &::before {
+            content: "";
+            display: inline-block;
+            border-radius: 8px;
+            width: 10px;
+            height: 1em;
+            margin-right: 10px;
+            background-color: #e37815;
+        }
+    }
+}
+
+.module__body {
+    margin-bottom: 2em;
+}

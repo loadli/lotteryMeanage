@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:33:25
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-31 23:47:57
+ * @LastEditTime : 2021-09-03 10:42:22
  * @Description  : 抽奖纪录
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Record.vue
 -->
@@ -17,10 +17,13 @@
                 <span
                     >🎉 恭喜抽中 <span>{{ item.name }}</span>
                 </span>
-                <span>{{ new Date(item.datetime).toLocaleDateString().replace(/\//g, "-") + " " + new Date(item.datetime).toTimeString().substr(0, 8)
-                
-                
-                  }}</span>
+                <span>{{
+                    new Date(item.datetime)
+                        .toLocaleDateString()
+                        .replace(/\//g, "-") +
+                    " " +
+                    new Date(item.datetime).toTimeString().substr(0, 8)
+                }}</span>
             </li>
         </ul>
     </div>
@@ -30,7 +33,7 @@
 export default {
     name: "Record",
     props: {
-        isRefresh: Boolean
+        isRefresh: Boolean,
     },
     data() {
         return {
@@ -40,27 +43,25 @@ export default {
         };
     },
     watch: {
-        isRefresh(val){
-            if(val){
+        isRefresh(val) {
+            if (val) {
                 this.fetchRecordList();
             }
-
-        }
-
+        },
     },
     methods: {
-    fetchRecordList() {
-        let userId = localStorage.getItem('userId')
-      return new Promise((resolve, reject) => {
-        this.$axios.post("api/user/history", 
-          {userId: userId}
-        ).then((res = {}) => {
-            console.log(res)
-          if(res.data.code == 200) {
-            this.recordList = res.data.data || [];
-          }
-        });
-      });
+        fetchRecordList() {
+            let userId = localStorage.getItem("userId");
+            return new Promise(() => {
+                this.$axios
+                    .post("api/user/history", { userId: userId })
+                    .then((res = {}) => {
+                        console.log(res);
+                        if (res.data.code == 200) {
+                            this.recordList = res.data.data || [];
+                        }
+                    });
+            });
         },
     },
 
@@ -74,17 +75,5 @@ export default {
 </script>
 
 <style lang="scss">
-.record {
-    height: 250px;
-    overflow: auto;
-    .record_inner {
-        position: relative;
-    }
-    .record-item {
-        width: 380px;
-        display: flex;
-        justify-content: space-between;
-        line-height: 32px;
-    }
-}
+@import "./Record.scss";
 </style>

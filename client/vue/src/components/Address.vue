@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 23:50:53
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-01 17:24:14
+ * @LastEditTime : 2021-09-03 10:39:39
  * @Description  : 地址填写
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Address.vue
 -->
@@ -40,27 +40,10 @@ export default {
                 };
             },
         },
-    }
+    },
 };
 </script>
 
 <style lang="scss">
-.info {
-    &__item {
-        margin-bottom: 1em;
-        text-align: center;
-
-        input {
-            margin-left: 1em;
-            outline: none;
-            border-radius: 4px;
-            border: 1px solid #939aa3;
-            padding: 4px 4px;
-
-            &:focus {
-                border-color: #1d7dfa;
-            }
-        }
-    }
-}
+@import "./Address.scss";
 </style>

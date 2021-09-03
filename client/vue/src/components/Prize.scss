@@ -1,0 +1,78 @@
+.prize {
+    margin-right: 1em;
+    background: rgba(255, 247, 232, 0.3);
+    padding: 8px 16px;
+    border-radius: 12px;
+    display: flex;
+
+    .btn {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .btn-left {
+        margin-right: 48px;
+
+        .icon:before,
+        .icon:after {
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            border: 7px solid transparent;
+            border-right-color: #fff;
+            position: absolute;
+            left: 7px;
+            top: 50px;
+            overflow: hidden;
+        }
+
+        .icon:after {
+            border-right-color: #3d83e9;
+            left: 9px;
+        }
+    }
+
+    .btn-right {
+        margin-right: 48px;
+
+        .icon:before,
+        .icon:after {
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            border: 7px solid transparent;
+            border-left-color: #fff;
+            position: absolute;
+            left: 22px;
+            top: 50px;
+            overflow: hidden;
+        }
+
+        .icon:after {
+            border-left-color: #3d83e9;
+            left: 20px;
+        }
+    }
+
+    .is_active {
+        cursor: not-allowed;
+    }
+
+    .content {
+        display: flex;
+        width: 250px;
+        overflow: hidden;
+
+        .content_inner {
+            display: flex;
+            transition: transform 0.5s;
+        }
+
+        .content-item {
+            margin-right: 12px;
+        }
+    }
+}

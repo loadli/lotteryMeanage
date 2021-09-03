@@ -1,26 +1,31 @@
 <template>
-  <div class="home is-flex is-column is-middle">
-    <div class="home__title">
-      <img draggable="false" width="400" src="@/assets/img/title.png" alt="" />
-    </div>
-    <div class="home__container is-flex">
-      <div class="container_left">
-        <Module title="幸运抽奖">
-          <Lottery @refresh="isRefresh = true" />
-        </Module>
-      </div>
+    <div class="home is-flex is-column is-middle">
+        <div class="home__title">
+            <img
+                draggable="false"
+                width="400"
+                src="@/assets/img/title.png"
+                alt=""
+            />
+        </div>
+        <div class="home__container is-flex">
+            <div class="container_left">
+                <Module title="幸运抽奖">
+                    <Lottery @refresh="isRefresh = true" />
+                </Module>
+            </div>
 
-      <div class="container-right">
-        <Module title="我的奖品">
-          <Prize  :isRefresh="isRefresh"/>
-        </Module>
+            <div class="container-right">
+                <Module title="我的奖品">
+                    <Prize :isRefresh="isRefresh" />
+                </Module>
 
-        <Module title="抽奖纪录">
-          <Record :isRefresh="isRefresh"/>
-        </Module>
-      </div>
+                <Module title="抽奖纪录">
+                    <Record :isRefresh="isRefresh" />
+                </Module>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -30,98 +35,49 @@ import Lottery from "@/components/Lottery.vue";
 import Record from "@/components/Record.vue";
 import Prize from "@/components/Prize.vue";
 export default {
-  name: "Home",
-  components: {
-    Module,
-    Lottery,
-    Record,
-    Prize,
-  },
-  data() {
-    return {
-      userId: null,
-      lotteryList: [],
-      isRefresh: false
-    };
-  },
-  async created() {
-    let userId = await this.getUserInfo();
-    this.userId = userId;
-  },
-  methods: {
-    //
-
-
-
-
-    // 获取用户信息
-    async getUserInfo() {
-      let userId = localStorage.getItem("userId");
-      if (!userId) {
-        userId = await this.createUser();
-      }
-      return userId;
+    name: "Home",
+    components: {
+        Module,
+        Lottery,
+        Record,
+        Prize,
     },
-    // 创建用户
-    createUser() {
-      return new Promise((resolve, reject) => {
-        this.$axios.get("api/user/create").then((res) => {
-          let { data } = res;
-          if (data.code == 200) {
-            localStorage.setItem("userId", data.data.id);
-            resolve(data.data.id);
-          }
-        });
-      });
+    data() {
+        return {
+            userId: null,
+            lotteryList: [],
+            isRefresh: false,
+        };
     },
-  },
+    async created() {
+        let userId = await this.getUserInfo();
+        this.userId = userId;
+    },
+    methods: {
+        // 获取用户信息
+        async getUserInfo() {
+            let userId = localStorage.getItem("userId");
+            if (!userId) {
+                userId = await this.createUser();
+            }
+            return userId;
+        },
+        // 创建用户
+        createUser() {
+            return new Promise((resolve) => {
+                this.$axios.get("api/user/create").then((res) => {
+                    let { data } = res;
+                    if (data.code == 200) {
+                        localStorage.setItem("userId", data.data.id);
+                        resolve(data.data.id);
+                    }
+                });
+            });
+        },
+    },
 };
 </script>
 
 <style lang="scss">
-.home {
-  height: 100vh;
-  background-color: #4976e7;
-  background-repeat: no-repeat;
-  background-image: url("../assets/img/background.png");
-  background-position: top;
-  background-size: cover;
-  position: relative;
-  color: white;
-
-  &__title {
-    padding: 2em;
-    margin-bottom: 2em;
-  }
-  .home__container {
-    overflow: scroll;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .container_left {
-    width: 486px;
-    margin-right: 32px;
-  }
-  .container_right {
-  }
-}
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.3);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.8);
-}
-
-::-webkit-scrollbar-track {
-  /*滚动条里面轨道*/
-  border-radius: 12px;
-}
+@import "./Home.scss";
 </style>
