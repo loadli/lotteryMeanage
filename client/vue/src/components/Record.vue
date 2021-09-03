@@ -54,7 +54,7 @@ export default {
             let userId = localStorage.getItem("userId");
             return new Promise(() => {
                 this.$axios
-                    .post("api/user/history", { userId: userId })
+                    .post("/api/user/history", { userId: userId })
                     .then((res = {}) => {
                         console.log(res);
                         if (res.data.code == 200) {

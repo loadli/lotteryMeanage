@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 13:44:43
+ * @LastEditTime : 2021-09-03 17:38:45
  * @Description  : 抽奖
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
@@ -163,7 +163,7 @@ export default {
         // 请求矿石数量
         getOreNumber(userId) {
             this.$axios
-                .post("api/user/ore", {
+                .post("/api/user/ore", {
                     userId,
                 })
                 .then((res) => {
@@ -172,13 +172,13 @@ export default {
         },
         // 请求矿石数量
         getOreUse() {
-            this.$axios.get("api/serve/getOreUse").then((res) => {
+            this.$axios.get("/api/serve/getOreUse").then((res) => {
                 this.oreUse = +res.data.data.oreUse;
             });
         },
         // 获取奖品列表
         getLotteryList() {
-            this.$axios.get("api/user/lotteryList").then((res) => {
+            this.$axios.get("/api/user/lotteryList").then((res) => {
                 if (res.data.code == 200) {
                     let arr =
                         res.data.data.length >= 8
@@ -218,7 +218,7 @@ export default {
                 prizeId,
             };
             this.$axios
-                .post("api/user/address", data)
+                .post("/api/user/address", data)
                 .then((res) => {
                     if (res.data.code == 200) {
                         alert("添加收货地址成功");

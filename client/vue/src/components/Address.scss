@@ -14,5 +14,10 @@
                 border-color: #1d7dfa;
             }
         }
+
+        label::after {
+            content: '*';
+            color: red;
+        }
     }
 }

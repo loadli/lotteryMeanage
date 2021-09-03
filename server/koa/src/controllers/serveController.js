@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 10:48:54
+ * @LastEditTime : 2021-09-03 17:48:17
  * @Description  : 后台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\serveController.js
  */
@@ -130,7 +130,6 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async transport(ctx) {
-        console.log(ctx, "这是第一个ctx");
 
         const list = await deliveryService.listAll();
         ctx.body = {
@@ -217,7 +216,6 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async setEnable(ctx) {
-        console.log(ctx);
         const { _id, enable } = ctx.request.query;
 
         const info = {

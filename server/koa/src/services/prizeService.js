@@ -43,7 +43,6 @@ class PrizeService {
         for (let key in info) {
             item[key] = info[key];
         }
-        console.log(item, info);
         const result = await prizeTable.save(item);
         return result;
     }

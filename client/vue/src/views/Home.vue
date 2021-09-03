@@ -66,7 +66,7 @@ export default {
         // 创建用户
         createUser() {
             return new Promise((resolve) => {
-                this.$axios.get("api/user/create").then((res) => {
+                this.$axios.get("/api/user/create").then((res) => {
                     let { data } = res;
                     if (data.code == 200) {
                         localStorage.setItem("userId", data.data.id);
