@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 11:04:53
+ * @LastEditTime : 2021-09-03 11:44:05
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -117,12 +117,12 @@ class clientService {
         console.log("库存减少成功");
 
         // 减少用户剩余矿石数
-        await this.oreReaminLess(userid);
+        await this.oreRemainLess(userid);
         console.log("矿石减少成功");
 
         // 抽中矿石增加66
         if (prize.name == "66矿石") {
-            await this.oreReaminAdd(userid);
+            await this.oreRemainAdd(userid);
             console.log("矿石增加成功");
         }
 
@@ -156,7 +156,7 @@ class clientService {
      * 抽奖结束，添加矿石数量
      * @param {object} prize 奖品
      */
-    async oreReaminAdd(userid) {
+    async oreRemainAdd(userid) {
         // 修改矿石数
         const user = await userTable.where({ _id: ObjectId(userid) }).findOne();
         user.oreRemain += 66;
@@ -168,7 +168,7 @@ class clientService {
      * 抽奖结束，减少用户矿石数
      * @param {object} prize 奖品
      */
-    async oreReaminLess(userid) {
+    async oreRemainLess(userid) {
         // 获取单次消耗
         const oreUse = await this.oreUse();
         // 修改矿石数
