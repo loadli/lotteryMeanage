@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 10:48:13
+ * @LastEditTime : 2021-09-03 11:04:53
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -21,7 +21,6 @@ const deliveryTable = require("../models/deliveryTable");
 const prizeTable = require("../models/prizeTable");
 // 抽奖纪录表
 const recordTable = require("../models/recordTable");
-const { user } = require("../controllers/clientController");
 // ---------------------------------------------------
 // 通过new ObjectId(id)去生成ObjectId
 const ObjectId = inspirecloud.db.ObjectId;
@@ -35,7 +34,14 @@ class clientService {
      * 创建一个用户id
      */
     async createUser() {
-        const oreInit = await this.oreUse();
+        const baseSetting = await baseSettingTable
+            .where({
+                key: "oreInit",
+            })
+            .findOne();
+        const oreInit = {
+            oreRemain: baseSetting.value,
+        };
         return await userTable.save(oreInit);
     }
     /**

@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:36:18
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 10:44:28
+ * @LastEditTime : 2021-09-03 11:00:06
  * @Description  : 奖品
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Prize.vue
 -->
@@ -81,7 +81,6 @@ export default {
                 .then((res = {}) => {
                     console.log(11, res);
                     if (res.data.code == 200) {
-                        debugger;
                         this.prizeInfo = res.data.data || [];
                     }
                 });
