@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-02 15:20:10
+ * @LastEditTime : 2021-09-03 08:46:55
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -65,21 +65,13 @@ class clientService {
         if (!userId) {
             return [];
         }
-        let prizeRecordList = await recordTable
+        let deliveryList = await deliveryTable
             .where({
                 userId,
             })
             .find();
-        const prizeAll = await prizeTable.where().find();
 
-        const all = prizeRecordList.map((item) => {
-            const prize = prizeAll.find((prizeItem) => {
-                return (prizeItem._id = item.prizeId);
-            });
-            return Object.assign(item, prize);
-        });
-
-        return all;
+        return deliveryList;
     }
 
     async history(userId) {
@@ -87,19 +79,12 @@ class clientService {
             return [];
         }
         let prizeRecordList = await recordTable
-        .where({
-            userId,
-        })
-        .find();
-    const prizeAll = await prizeTable.where().find();
-            const all = prizeRecordList.map((item) => {
-                const prize = prizeAll.find((prizeItem) => {
-                    return (prizeItem._id = item.prizeId);
-                });
-                return Object.assign(item, prize);
-            });
-    
-            return all;
+            .where({
+                userId,
+            })
+            .find();
+
+        return prizeRecordList;
     }
 
     /**
@@ -205,6 +190,7 @@ class clientService {
             oreRemain: remain.oreRemain,
             datetime: new Date(),
             prizeType: prize.type,
+            prizeName:prize.name
         };
 
         return await recordTable.save(recordItem);

@@ -2,9 +2,9 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:15
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-08-26 19:31:34
+ * @LastEditTime : 2021-09-03 08:55:20
  * @Description  : 
- * @FilePath     : \lottery\src\components\lotteryItem.vue
+ * @FilePath     : \lotteryMeanage\client\vue\src\components\LotteryItem.vue
 -->
 <template>
   <div class="lottery_item">

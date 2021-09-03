@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:36:18
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-02 10:02:41
+ * @LastEditTime : 2021-09-03 08:56:22
  * @Description  : 奖品
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Prize.vue
 -->
@@ -20,9 +20,10 @@
         :style="{ transform: 'translateX(' + distance + 'px)' }"
       >
         <lottery-item
-          v-for="(item,index) in priceInfo"
+          v-for="(item,index) in prizeInfo"
           :key="index"
-          v-bind="item"
+          :image="item.image"
+          :name="item.prizeName"
           class="content-item"
         >
         </lottery-item>
@@ -58,13 +59,13 @@ export default {
       left_disabled: false, //右侧按钮禁用
       index: 0,
       distance: 0, //滑动距离
-      priceInfo: [], //中奖列表
+      prizeInfo: [], //中奖列表
     };
   },
   watch: {
     isRefresh(val){
       if(val){
-        this.fetchPriceInfo();
+        this.fetchprizeInfo();
       }
 
     }
@@ -75,23 +76,24 @@ export default {
       return this.index == 0 || this.index < 3 ? true : false;
     },
     cRightDisabled() {
-      return this.priceInfo.length - this.index >= 3 ? false : true;
+      return this.prizeInfo.length - this.index >= 3 ? false : true;
     },
   },
   methods: {
-    fetchPriceInfo() {
+    fetchprizeInfo() {
         this.$axios.post("api/user/my", 
           {userId: "612b6d0129e75c0238ab1651"}
         ).then((res= {})=> {
           console.log(11,res);
           if(res.data.code ==200) {
-            this.priceInfo = res.data.data||[]
+            debugger
+            this.prizeInfo = res.data.data||[]
           }
 
         })
     },
     handleChange(direction) {
-      let len = this.priceInfo.length;
+      let len = this.prizeInfo.length;
 
       if (direction == "left") {
         if (this.cLeftDisabled) return;
@@ -112,7 +114,7 @@ export default {
     },
   },
   created() {
-    this.fetchPriceInfo();
+    this.fetchprizeInfo();
   },
 };
 </script>
