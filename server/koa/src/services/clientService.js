@@ -79,10 +79,7 @@ class clientService {
         let prizeAll = await prizeTable.where().find();
 
         deliveryList.forEach((item) => {
-            console.log(item.prizeId.toString());
-            console.log("---");
             let prize = prizeAll.find((prizeItem) => {
-                console.log(prizeItem._id);
                 return prizeItem._id.toString() == item.prizeId.toString();
             });
             item.image = prize.image;
