@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 11:06:52
+ * @LastEditTime : 2021-09-03 12:47:03
  * @Description  : 抽奖
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
@@ -212,6 +212,8 @@ export default {
                 if (res.data.code == 200) {
                     alert("添加收货地址成功");
                     this.dialog.flag = false;
+                } else {
+                    alert("出问题了呢，要不咱下次再送？😜");
                 }
             });
         },

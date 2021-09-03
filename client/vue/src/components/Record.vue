@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:33:25
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 10:42:22
+ * @LastEditTime : 2021-09-03 12:48:05
  * @Description  : 抽奖纪录
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Record.vue
 -->
@@ -15,7 +15,7 @@
                 class="record-item"
             >
                 <span
-                    >🎉 恭喜抽中 <span>{{ item.name }}</span>
+                    >🎉 恭喜抽中 <span>{{ item.prizeName }}</span>
                 </span>
                 <span>{{
                     new Date(item.datetime)
@@ -56,6 +56,7 @@ export default {
                 this.$axios
                     .post("api/user/history", { userId: userId })
                     .then((res = {}) => {
+                        debugger
                         console.log(res);
                         if (res.data.code == 200) {
                             this.recordList = res.data.data || [];
