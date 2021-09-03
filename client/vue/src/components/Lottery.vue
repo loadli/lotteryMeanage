@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 13:44:43
+ * @LastEditTime : 2021-09-03 14:06:32
  * @Description  : 抽奖
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
@@ -262,7 +262,7 @@ export default {
         getLotteryResult(userId) {
             return new Promise((resolve) => {
                 this.$axios
-                    .post("/api/user/lottery", {
+                    .post("api/user/lottery", {
                         userId,
                     })
                     .then((res) => {
