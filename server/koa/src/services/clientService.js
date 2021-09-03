@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 14:00:17
+ * @LastEditTime : 2021-09-03 17:38:02
  * @Description  : 前台业务逻辑
  * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
  */
@@ -139,11 +139,12 @@ class clientService {
         await this.LotteryRecord(userid, prize);
         console.log("抽奖纪录写入成功");
 
-        if (prize.type == "02") {
-            // 写入实物纪录
-            await this.LotteryDelivery(userid, prize);
-            console.log("实物纪录写入成功");
-        }
+        // 更新数据获取不到id导致重复
+        // if (prize.type == "02") {
+        //     // 写入实物纪录
+        //     await this.LotteryDelivery(userid, prize);
+        //     console.log("实物纪录写入成功");
+        // }
     }
 
     /**
@@ -184,7 +185,7 @@ class clientService {
         const user = await userTable.where({ _id: ObjectId(userid) }).findOne();
 
         user.oreRemain -= oreUse;
-        // console.log(user.oreRemain,baseSetting.value);
+        console.log("用户："+ userid + "剩余" + user.oreRemain);
         await userTable.save(user);
         return user;
     }
@@ -234,7 +235,7 @@ class clientService {
      * @param {string} address 地址
      */
     async address(body) {
-        let prizeInfo = await prizeTable.where({ _id: new ObjectId(body.prizeId) }).findOne();
+        let prizeInfo = await prizeTable.where({ _id: ObjectId(body.prizeId) }).findOne();
         let requestBody = {
             ...body,
             transport: false, // 是否发货
