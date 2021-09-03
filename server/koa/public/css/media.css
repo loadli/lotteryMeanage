@@ -1,0 +1,48 @@
+@charset "utf-8";
+/*
+ * CSS变量
+ */
+:root {
+}
+
+.container {
+    margin: 0 auto;
+}
+
+/* <= 768px */
+@media screen and (max-width: 768px) {
+    .container {
+        max-width: 100%;
+    }
+}
+
+/* 769px - 1203px */
+@media screen and (min-width: 769px) and (max-width: 1203px) {
+    .container {
+        width: 100%;
+    }
+}
+/* 1024 - 1215px */
+@media screen and (min-width: 1024px) and (max-width: 1215px) {
+    .container {
+        max-width: 960px;
+    }
+}
+/* 1216px - 1407px */
+@media screen and (min-width: 1216px) and (max-width: 1407px) {
+    .container {
+        max-width: 1152px;
+    }
+}
+/* >=1408px - 1679px */
+@media screen and (min-width: 1408px) and (max-width: 1679px) {
+    .container {
+        max-width: 1344px;
+    }
+}
+/* >=1600px */
+@media screen and (min-width: 1680px) {
+    .container {
+        max-width: 1600px;
+    }
+}
