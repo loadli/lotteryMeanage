@@ -28,7 +28,6 @@ class RecordService {
             });
             return Object.assign(item, prize);
         });
-        console.log(all);
 
         const total = await recordTable.where().count();
 
