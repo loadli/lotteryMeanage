@@ -21,11 +21,15 @@ export async function outLogin(options?: { [key: string]: any }) {
 
 /** 登录接口 POST */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
+  console.log(body)
   return request<{
     data: API.CurrentUser;
     error?: string;
   }>(`${requestUrl}/serve/login`, {
     method: 'GET',
+    params: {
+      ...body
+    },
     headers: {
       'Content-Type': 'application/json',
     },

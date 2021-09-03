@@ -31,6 +31,7 @@ const Login: React.FC = () => {
     setSubmitting(true);
     try {
       // 登录
+      console.log(values)
       const msg = await login({ ...values });
       if (msg.error || !msg.data) {
         const defaultLoginFailureMessage = intl.formatMessage({

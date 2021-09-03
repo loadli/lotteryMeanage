@@ -30,7 +30,7 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async login(ctx) {
-        const { username, password } = ctx.request.body;
+        const { username, password } = ctx.request.query;
         const user = await adminService.login({ username, password });
         ctx.body = {
             code: "200",
