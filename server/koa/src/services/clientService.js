@@ -1,10 +1,10 @@
 /*
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:41:28
- * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 17:38:02
+ * @LastEditors: liuhaoxuan
+ * @LastEditTime: 2021-09-04 13:43:10
  * @Description  : 前台业务逻辑
- * @FilePath     : \lotteryMeanage\server\koa\src\services\clientService.js
+ * @FilePath: \lotteryMeanage\server\koa\src\services\clientService.js
  */
 
 const inspirecloud = require("@byteinspire/api");
@@ -109,7 +109,7 @@ class clientService {
         const prizeList = await prizeTable
             .where(function () {
                 const current = new Date();
-                return this.prizeRemain > 0 && this.enable && current >= new Date(this.enableDatetime);
+                return this.enable && current >= new Date(this.enableDatetime);
             })
             .find();
         return prizeList;
