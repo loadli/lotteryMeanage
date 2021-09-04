@@ -1,11 +1,25 @@
-const deliveryTable = require("../models/deliveryTable");
+/*
+ * @Author       : xiaolin
+ * @Date         : 2021-09-03 15:28:21
+ * @LastEditors  : xiaolin
+ * @LastEditTime : 2021-09-05 01:41:23
+ * @Description  : 实物相关
+ * @FilePath     : \lotteryMeanage\server\koa\src\services\deliveryService.js
+ */
+
 const inspirecloud = require("@byteinspire/api");
+
+// ---------------------------------------------------
+// 实物表
+const deliveryTable = require("../models/deliveryTable");
+// 奖品表
+const prizeTable = require("../models/prizeTable");
+// ---------------------------------------------------
 const ObjectId = inspirecloud.db.ObjectId;
+const dateToString = inspirecloud.db.dateToString;
 
 /**
  * DeliveryService
- * Service 是业务具体实现，由 Controller 或其它 Service 调用
- * 包含待办事项的增删改查功能
  */
 class DeliveryService {
     /**
@@ -23,6 +37,62 @@ class DeliveryService {
         const item = await deliveryTable.where({ _id: ObjectId(id) }).findOne();
         Object.assign(item, { transport: true });
         await deliveryTable.save(item);
+    }
+
+    /**
+     * 抽奖结束，写入实物纪录
+     * @param {object} prize 奖品
+     */
+    async LotteryDelivery(userid, prize) {
+        const deliveryItem = {
+            userId: userid,
+            prizeId: prize._id,
+            prizeName: prize.name,
+        };
+
+        return await deliveryTable.save(deliveryItem);
+    }
+
+    /**
+     * 写入地址
+     * @param {string} userId 用户ID
+     * @param {string} prizeId 奖品ID
+     * @param {string} name 姓名
+     * @param {string} phone 手机号
+     * @param {string} address 地址
+     */
+    async address(body) {
+        let prizeInfo = await prizeTable.where({ _id: ObjectId(body.prizeId) }).findOne();
+        let requestBody = {
+            ...body,
+            transport: false, // 是否发货
+            prizeName: prizeInfo.name, // 奖品名
+        };
+        return await deliveryTable.save(requestBody);
+    }
+    /**
+     * 获取抽奖记录
+     * @param {string} userId 用户ID
+     */
+    async myPrize(userId) {
+        if (!userId) {
+            return [];
+        }
+        let deliveryList = await deliveryTable
+            .where({
+                userId,
+            })
+            .find();
+        let prizeAll = await prizeTable.where().find();
+
+        deliveryList.forEach((item) => {
+            let prize = prizeAll.find((prizeItem) => {
+                return prizeItem._id.toString() == item.prizeId.toString();
+            });
+            item.image = prize.image;
+        });
+
+        return deliveryList;
     }
 }
 

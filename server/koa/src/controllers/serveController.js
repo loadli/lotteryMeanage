@@ -1,24 +1,25 @@
 /*
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
- * @LastEditors: xiaorui
- * @LastEditTime: 2021-09-04 22:03:41
+ * @LastEditors  : xiaolin
+ * @LastEditTime : 2021-09-05 01:40:02
  * @Description  : 后台服务
- * @FilePath: /lotteryMeanage/server/koa/src/controllers/serveController.js
+ * @FilePath     : \lotteryMeanage\server\koa\src\controllers\serveController.js
  */
 
-// 后台用户
-const adminService = require("../services/adminService");
-// 基础设置
-const baseSettingService = require("../services/baseSettingService");
-// 历史纪录
-const recordService = require("../services/recordService");
-// 发货纪录
-const deliveryService = require("../services/deliveryService");
-// 奖品
-const prizeService = require("../services/prizeService");
 const inspirecloud = require("@byteinspire/api");
 const dateToString = inspirecloud.db.dateToString;
+
+// 后台用户
+const AdminService = require("../services/AdminService");
+// 矿石
+const oreService = require("../services/OreService");
+// 历史纪录
+const recordService = require("../services/RecordService");
+// 发货纪录
+const DeliveryService = require("../services/DeliveryService");
+// 奖品
+const prizeService = require("../services/PrizeService");
 
 /**
  * serveController
@@ -31,7 +32,7 @@ class serveController {
      */
     async getUser(ctx) {
         const { userid } = ctx.request.query;
-        const user = await adminService.getUserInfo(userid);
+        const user = await AdminService.getUserInfo(userid);
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -45,7 +46,7 @@ class serveController {
      */
     async login(ctx) {
         const { username, password } = ctx.request.query;
-        const user = await adminService.login({ username, password });
+        const user = await AdminService.login({ username, password });
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -58,7 +59,7 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async getOreInit(ctx) {
-        const oreInit = await baseSettingService.getOreInit();
+        const oreInit = await oreService.getOreInit();
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -71,7 +72,7 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async getOreUse(ctx) {
-        const oreUse = await baseSettingService.getOreUse();
+        const oreUse = await oreService.getOreUse();
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -85,7 +86,7 @@ class serveController {
      */
     async setOreInit(ctx) {
         const { count } = ctx.request.body;
-        const oreInit = await baseSettingService.setOreInit(count);
+        const oreInit = await oreService.setOreInit(count);
         ctx.body = {
             code: "200",
             message: "修改成功",
@@ -99,7 +100,7 @@ class serveController {
      */
     async setOreUse(ctx) {
         const { count } = ctx.request.body;
-        const oreUse = await baseSettingService.setOreUse(count);
+        const oreUse = await oreService.setOreUse(count);
         ctx.body = {
             code: "200",
             message: "修改成功",
@@ -144,8 +145,7 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async transport(ctx) {
-
-        const list = await deliveryService.listAll();
+        const list = await DeliveryService.listAll();
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -160,7 +160,7 @@ class serveController {
     async setTransport(ctx) {
         console.log(ctx, "这是ctx");
         const { id } = ctx.request.body;
-        await deliveryService.updateTransport(id);
+        await DeliveryService.updateTransport(id);
         ctx.body = {
             code: "200",
             message: "更新成功",

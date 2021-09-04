@@ -1,25 +1,28 @@
-const adminTable = require("../models/adminTable");
+/*
+ * @Author       : xiaolin
+ * @Date         : 2021-09-04 23:21:37
+ * @LastEditors  : xiaolin
+ * @LastEditTime : 2021-09-05 01:44:15
+ * @Description  : 管理员相关
+ * @FilePath     : \lotteryMeanage\server\koa\src\services\adminService.js
+ */
+
 const inspirecloud = require("@byteinspire/api");
+
+// ---------------------------------------------------
+// 管理用户表
+const adminTable = require("../models/adminTable");
+// ---------------------------------------------------
 const ObjectId = inspirecloud.db.ObjectId;
 const dateToString = inspirecloud.db.dateToString;
 
 /**
- * adminService
- * 登陆、登出、获取用户信息的具体实现
+ * AdminService
  */
-class adminService {
-    async getUserInfo(id) {
-        if (!id) return null;
-        const user = await adminTable
-            .where({
-                _id: ObjectId(id),
-            })
-            .findOne();
-        delete user.secret;
-        delete user.updatedAt;
-        delete user.createdAt;
-        return user;
-    }
+class AdminService {
+    /**
+     * 登录
+     */
     async login(loginParam) {
         const { username, password } = loginParam;
         const user = await adminTable
@@ -33,7 +36,22 @@ class adminService {
         delete user.createdAt;
         return user;
     }
+    /**
+     * 获取用户信息
+     */
+    async getUserInfo(id) {
+        if (!id) return null;
+        const user = await adminTable
+            .where({
+                _id: ObjectId(id),
+            })
+            .findOne();
+        delete user.secret;
+        delete user.updatedAt;
+        delete user.createdAt;
+        return user;
+    }
 }
 
 // 导出 Service 的实例
-module.exports = new adminService();
+module.exports = new AdminService();

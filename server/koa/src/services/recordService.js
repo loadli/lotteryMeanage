@@ -1,11 +1,27 @@
-const recordTable = require("../models/recordTable");
-const prizeTable = require("../models/prizeTable");
+/*
+ * @Author       : xiaolin
+ * @Date         : 2021-09-03 15:28:21
+ * @LastEditors  : xiaolin
+ * @LastEditTime : 2021-09-05 01:45:28
+ * @Description  : 历史纪录相关
+ * @FilePath     : \lotteryMeanage\server\koa\src\services\recordService.js
+ */
+
 const inspirecloud = require("@byteinspire/api");
 const ObjectId = inspirecloud.db.ObjectId;
 
+// ---------------------------------------------------
+// 历史纪录表
+const recordTable = require("../models/recordTable");
+// 奖品表
+const prizeTable = require("../models/prizeTable");
+// ---------------------------------------------------
+
+// 矿石
+const OreService = require("../services/OreService");
+
 /**
  * RecordService
- * Service 是业务具体实现，由 Controller 或其它 Service 调用
  */
 class RecordService {
     async listAll(page, size) {
@@ -60,6 +76,42 @@ class RecordService {
      */
     async deleteAll() {
         await recordTable.where().delete();
+    }
+    /**
+     * 前台获取历史纪录
+     */
+    async history(userId) {
+        if (!userId) {
+            return [];
+        }
+        let prizeRecordList = await recordTable
+            .where({
+                userId,
+            })
+            .find();
+
+        return prizeRecordList;
+    }
+    /**
+     * 抽奖结束，写入抽奖纪录
+     * @param {object} prize 奖品
+     */
+    async LotteryRecord(userid, prize) {
+        const oreUse = await OreService.oreUse();
+
+        const remain = await OreService.oreRemain(userid);
+
+        const recordItem = {
+            userId: userid,
+            prizeId: prize._id,
+            oreUse: oreUse,
+            oreRemain: remain.oreRemain,
+            datetime: new Date(),
+            prizeType: prize.type,
+            prizeName: prize.name,
+        };
+
+        return await recordTable.save(recordItem);
     }
 }
 

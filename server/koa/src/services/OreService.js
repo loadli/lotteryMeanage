@@ -1,11 +1,24 @@
-const baseSettingTable = require("../models/baseSettingTable");
+/*
+ * @Author       : xiaolin
+ * @Date         : 2021-09-05 00:47:13
+ * @LastEditors  : xiaolin
+ * @LastEditTime : 2021-09-05 01:41:49
+ * @Description  : 矿石相关服务
+ * @FilePath     : \lotteryMeanage\server\koa\src\services\oreService.js
+ */
+
 const inspirecloud = require("@byteinspire/api");
-const ObjectId = inspirecloud.db.ObjectId;
+
+
+// ---------------------------------------------------
+// 基础设置表
+const baseSettingTable = require("../models/baseSettingTable");
+// ---------------------------------------------------
 
 /**
- * BaseSettingService
+ * OreService
  */
-class BaseSettingService {
+class OreService {
     /**
      * 获取矿石初始值
      */
@@ -57,4 +70,4 @@ class BaseSettingService {
 }
 
 // 导出 Service 的实例
-module.exports = new BaseSettingService();
+module.exports = new OreService();

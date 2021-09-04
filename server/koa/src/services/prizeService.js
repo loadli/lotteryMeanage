@@ -1,29 +1,32 @@
-const recordTable = require("../models/recordTable");
-const prizeTable = require("../models/prizeTable");
+/*
+ * @Author       : xiaolin
+ * @Date         : 2021-09-04 23:21:37
+ * @LastEditors  : xiaolin
+ * @LastEditTime : 2021-09-05 01:44:02
+ * @Description  : 奖品相关
+ * @FilePath     : \lotteryMeanage\server\koa\src\services\prizeService.js
+ */
+
+
 const inspirecloud = require("@byteinspire/api");
+
+
+// ---------------------------------------------------
+// 奖品表
+const prizeTable = require("../models/prizeTable");
+// ---------------------------------------------------
+
 const ObjectId = inspirecloud.db.ObjectId;
 
 /**
  * PrizeService
- * Service 是业务具体实现，由 Controller 或其它 Service 调用
- * 包含奖品的增删改查功能
  */
 class PrizeService {
     /**
      * 列出所有奖品
      * @return {Promise<>} 返回奖品数组
      */
-    async listAll({
-        page,
-        size,
-        name,
-        prizeRemain,
-        prizeSum,
-        type,
-        probability,
-        enableDatetime,
-        enable,
-    }) {
+    async listAll({ page, size, name, prizeRemain, prizeSum, type, probability, enableDatetime, enable }) {
         const start = (page - 1) * size;
         const end = start + (size - 1);
         if (Number.isNaN(start) || Number.isNaN(end)) {
@@ -43,15 +46,15 @@ class PrizeService {
             probability,
             enableDatetime,
             enable,
-        }
-        let trimObj = {}
-        for(let key in obj) {
+        };
+        let trimObj = {};
+        for (let key in obj) {
             if (obj[key] !== null || obj[key] !== undefined) {
-                trimObj[key] = obj[key]
+                trimObj[key] = obj[key];
             }
         }
         const all = await prizeTable.where(trimObj).skip(start).limit(end).find();
-        console.log(all)
+        console.log(all);
         const total = await prizeTable.where().count();
 
         const listMsg = {
@@ -63,7 +66,9 @@ class PrizeService {
         };
         return listMsg;
     }
-
+    /**
+     * 修改奖品
+     */
     async modifyPrize(id, info) {
         const item = await prizeTable.where({ _id: ObjectId(id) }).findOne();
         for (let key in info) {
@@ -85,6 +90,33 @@ class PrizeService {
             error.status = 404;
             throw error;
         }
+    }
+    /**
+     * 抽奖结束，减少奖品库存
+     * @param {object} prize 奖品
+     */
+    async LotteryReamin(prize) {
+        const prizeData = await prizeTable
+            .where({
+                _id: prize._id,
+            })
+            .findOne();
+        prizeData.prizeRemain--;
+        await prizeTable.save(prizeData);
+        return prizeData;
+    }
+
+    /**
+     * 前台获取参与抽奖的奖品
+     */
+    async lottery() {
+        const prizeList = await prizeTable
+            .where(function () {
+                const current = new Date();
+                return this.enable && current >= new Date(this.enableDatetime);
+            })
+            .find();
+        return prizeList;
     }
 }
 
