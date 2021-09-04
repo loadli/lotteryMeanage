@@ -1,10 +1,10 @@
 /*
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
- * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 17:48:17
+ * @LastEditors: xiaorui
+ * @LastEditTime: 2021-09-04 22:03:41
  * @Description  : 后台服务
- * @FilePath     : \lotteryMeanage\server\koa\src\controllers\serveController.js
+ * @FilePath: /lotteryMeanage/server/koa/src/controllers/serveController.js
  */
 
 // 后台用户
@@ -25,6 +25,20 @@ const dateToString = inspirecloud.db.dateToString;
  * 包含后台所有功能
  */
 class serveController {
+    /**
+     * @description: 获取用户信息
+     * @param {Object} ctx - 请求参数
+     */
+    async getUser(ctx) {
+        const { userid } = ctx.request.query;
+        const user = await adminService.getUserInfo(userid);
+        ctx.body = {
+            code: "200",
+            message: "请求成功",
+            data: user,
+        };
+    }
+
     /**
      * @description: 登录
      * @param {Object} ctx - 请求参数

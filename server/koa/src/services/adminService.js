@@ -15,6 +15,9 @@ class adminService {
                 _id: ObjectId(id),
             })
             .findOne();
+        delete user.secret;
+        delete user.updatedAt;
+        delete user.createdAt;
         return user;
     }
     async login(loginParam) {
@@ -25,7 +28,9 @@ class adminService {
                 secret: password,
             })
             .findOne();
-
+        delete user.secret;
+        delete user.updatedAt;
+        delete user.createdAt;
         return user;
     }
 }
