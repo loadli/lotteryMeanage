@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:37:11
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 17:47:56
+ * @LastEditTime : 2021-09-04 23:58:12
  * @Description  : 前台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\clientController.js
  */
@@ -97,21 +97,6 @@ class clientController {
             code: "200",
             message: "请求成功",
             data: historyList,
-        };
-    }
-
-    /**
-     * 奖品信息
-     * @param {Object} ctx - 请求参数
-     * @return {Array}
-     */
-    async prizeInfo(ctx) {
-        const { _id } = ctx.request.body;
-        const prizeInfoList = await clientService.prizeInfo(_id);
-        ctx.body = {
-            code: "200",
-            message: "请求成功",
-            data: prizeInfoList,
         };
     }
 
