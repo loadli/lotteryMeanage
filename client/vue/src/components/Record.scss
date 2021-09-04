@@ -1,9 +1,15 @@
 .record {
     height: 250px;
-    overflow: auto;
+    overflow: hidden;
 
     .record_inner {
         position: relative;
+        animation: 6s wordsLoop linear infinite normal;
+    position: relative;
+    }
+    .no_data_tip {
+        color: #ccc;
+        margin-left: 20px;
     }
 
     .record-item {
@@ -11,5 +17,15 @@
         display: flex;
         justify-content: space-between;
         line-height: 32px;
+    }
+
+
+    @keyframes wordsLoop {
+        0% {
+            transform: translateY(0);
+        }
+        100% {
+            transform: translateY(-250px);
+        }
     }
 }

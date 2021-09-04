@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-09-04 13:06:59
+ * @LastEditTime: 2021-09-04 15:39:47
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \lotteryMeanage\client\vue\src\views\Home.vue
+-->
 <template>
     <div class="home is-flex is-column is-middle">
         <div class="home__title">
@@ -11,17 +19,17 @@
         <div class="home__container is-flex">
             <div class="container_left">
                 <Module title="幸运抽奖">
-                    <Lottery @refresh="isRefresh = true" />
+                    <Lottery  />
                 </Module>
             </div>
 
             <div class="container-right">
                 <Module title="我的待收货奖品">
-                    <Prize :isRefresh="isRefresh" />
+                    <Prize  />
                 </Module>
 
                 <Module title="抽奖纪录">
-                    <Record :isRefresh="isRefresh" />
+                    <Record  />
                 </Module>
             </div>
         </div>

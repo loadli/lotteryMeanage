@@ -1,4 +1,5 @@
 .prize {
+    width: 380px;
     margin-right: 1em;
     background: rgba(255, 247, 232, 0.3);
     padding: 8px 16px;
@@ -21,11 +22,11 @@
             display: block;
             width: 0;
             height: 0;
-            border: 7px solid transparent;
+            border:12px solid transparent;
             border-right-color: #fff;
             position: absolute;
             left: 7px;
-            top: 50px;
+            top: 40px;
             overflow: hidden;
         }
 
@@ -44,11 +45,11 @@
             display: block;
             width: 0;
             height: 0;
-            border: 7px solid transparent;
+            border: 12px solid transparent;
             border-left-color: #fff;
             position: absolute;
             left: 22px;
-            top: 50px;
+            top: 40px;
             overflow: hidden;
         }
 
@@ -75,5 +76,11 @@
         .content-item {
             margin-right: 12px;
         }
+    }
+    .no_data_tip {
+        width: 264px;
+        text-align: center;
+        color: #ccc;
+        line-height: 104px;
     }
 }

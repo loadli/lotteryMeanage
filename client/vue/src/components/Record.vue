@@ -1,14 +1,14 @@
 <!--
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:33:25
- * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 13:45:21
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-04 18:40:12
  * @Description  : 抽奖纪录
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Record.vue
 -->
 <template>
     <div class="record">
-        <ul class="record_inner">
+        <ul class="record_inner" v-if="recordList.length">
             <li
                 v-for="item in recordList"
                 :key="item.recordId"
@@ -25,52 +25,53 @@
                     new Date(item.datetime).toTimeString().substr(0, 8)
                 }}</span>
             </li>
+                        <li
+                v-for="item in recordList"
+                :key="item.recordId+'2'"
+                class="record-item"
+            >
+                <span
+                    >🎉 恭喜抽中 <span>{{ item.prizeName }}</span>
+                </span>
+                <span>{{
+                    new Date(item.datetime)
+                        .toLocaleDateString()
+                        .replace(/\//g, "-") +
+                    " " +
+                    new Date(item.datetime).toTimeString().substr(0, 8)
+                }}</span>
+            </li>
         </ul>
+        <div class="no_data_tip" v-else>暂无内容</div>
     </div>
 </template>
 
 <script>
+import { eventBus } from '../main'
+import Api from '@/common/api.js'
 export default {
     name: "Record",
-    props: {
-        isRefresh: Boolean,
-    },
     data() {
         return {
-            index: 0,
-            timer: null,
-            recordList: [],
+            recordList: [],//抽奖记录列表
         };
     },
-    watch: {
-        isRefresh(val) {
-            if (val) {
-                this.fetchRecordList();
-            }
-        },
-    },
     methods: {
+        //获取奖品记录
         fetchRecordList() {
             let userId = localStorage.getItem("userId");
-            return new Promise(() => {
-                this.$axios
-                    .post("/api/user/history", { userId: userId })
-                    .then((res = {}) => {
-                        console.log(res);
-                        if (res.data.code == 200) {
-                            this.recordList = res.data.data || [];
-                        }
-                    });
-            });
+            Api.getRecordList({userId}).then( res => {
+             this.recordList = res.data || [];
+            })
         },
     },
 
     created() {
         this.fetchRecordList();
-    },
-    beforeDestroy() {
-        clearInterval(this.timer);
-    },
+        eventBus.$on("refresh",()=>{
+        this.fetchRecordList();
+        })
+    }
 };
 </script>
 
