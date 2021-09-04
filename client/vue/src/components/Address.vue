@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 23:50:53
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-03 17:34:56
+ * @LastEditTime : 2021-09-04 22:01:24
  * @Description  : 地址填写
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Address.vue
 -->
@@ -23,7 +23,9 @@
                 <label>地址</label><input v-model="value.address" type="text" />
             </div>
             <div class="info__item">
-                <span style="font-size:.8em;color:red">不正确填写信息等于放弃哦 👀</span>
+                <span style="font-size: 0.8em; color: red"
+                    >不正确填写信息等于放弃哦 👀</span
+                >
             </div>
         </div>
     </div>

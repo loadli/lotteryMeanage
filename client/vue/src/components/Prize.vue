@@ -1,8 +1,8 @@
 <!--
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:36:18
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-04 18:24:50
+ * @LastEditors  : xiaolin
+ * @LastEditTime : 2021-09-04 22:01:10
  * @Description  : 奖品
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Prize.vue
 -->
@@ -29,11 +29,8 @@
                 >
                 </lottery-item>
             </div>
-        
         </div>
-            <div class="no_data_tip" v-else>
-            暂无内容
-            </div>
+        <div class="no_data_tip" v-else>暂无内容</div>
         <span
             :class="['btn', 'btn-right', cRightDisabled ? 'is_active' : '']"
             @click="handleChange('right')"
@@ -45,9 +42,9 @@
 
 <script>
 import LotteryItem from "@/components/LotteryItem";
-import { eventBus } from '../main'
+import { eventBus } from "../main";
 
-import Api from '@/common/api.js'
+import Api from "@/common/api.js";
 
 export default {
     name: "Prize",
@@ -75,8 +72,8 @@ export default {
         //获取待收货奖品列表
         fetchprizeInfo() {
             let userId = localStorage.getItem("userId");
-                 Api.getPrizeList({userId}).then( res => {
-             this.recordList = res.data || [];
+            Api.getPrizeList({ userId }).then((res) => {
+                this.recordList = res.data || [];
             });
         },
         //左右切换按钮
@@ -84,20 +81,21 @@ export default {
             let len = this.prizeInfo.length;
             if (direction == "left") {
                 if (this.cLeftDisabled) return;
-                this.distance+= this.index<3 ?  this.index * 88 : 264;
-                this.index -= this.index>=3 ? 3 : this.index;
+                this.distance += this.index < 3 ? this.index * 88 : 264;
+                this.index -= this.index >= 3 ? 3 : this.index;
             } else {
                 if (this.cRightDisabled) return;
-                this.index+= (len- this.index-3)>=3 ? 3 : len % 3;
-                    this.distance+= parseInt(this.index%3) == 0 ? -264 : -(len % 3) * 88
+                this.index += len - this.index - 3 >= 3 ? 3 : len % 3;
+                this.distance +=
+                    parseInt(this.index % 3) == 0 ? -264 : -(len % 3) * 88;
             }
         },
     },
     created() {
         this.fetchprizeInfo();
-        eventBus.$on("refresh",()=>{
+        eventBus.$on("refresh", () => {
             this.fetchprizeInfo();
-        })
+        });
     },
 };
 </script>

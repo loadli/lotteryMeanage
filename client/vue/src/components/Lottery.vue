@@ -1,8 +1,8 @@
 <!--
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-04 15:38:30
+ * @LastEditors  : xiaolin
+ * @LastEditTime : 2021-09-04 22:01:41
  * @Description  : 抽奖
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
@@ -82,7 +82,7 @@ import LotteryItem from "@/components/LotteryItem.vue";
 import Dialog from "@/components/Dialog.vue";
 import Address from "@/components/Address.vue";
 import Normal from "@/components/Normal.vue";
-import { eventBus } from '../main'
+import { eventBus } from "../main";
 export default {
     name: "Lottery",
     components: {
@@ -256,7 +256,7 @@ export default {
                 this.setPrize([res.order]);
                 //抽一次，刷新奖品数据
                 this.$emit("refresh");
-                eventBus.$emit('refresh')
+                eventBus.$emit("refresh");
             }, 2000);
         },
 

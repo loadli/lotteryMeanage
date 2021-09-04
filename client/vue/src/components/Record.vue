@@ -1,8 +1,8 @@
 <!--
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:33:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-04 18:40:12
+ * @LastEditors  : xiaolin
+ * @LastEditTime : 2021-09-04 22:01:05
  * @Description  : 抽奖纪录
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Record.vue
 -->
@@ -25,9 +25,9 @@
                     new Date(item.datetime).toTimeString().substr(0, 8)
                 }}</span>
             </li>
-                        <li
+            <li
                 v-for="item in recordList"
-                :key="item.recordId+'2'"
+                :key="item.recordId + '2'"
                 class="record-item"
             >
                 <span
@@ -47,31 +47,31 @@
 </template>
 
 <script>
-import { eventBus } from '../main'
-import Api from '@/common/api.js'
+import { eventBus } from "../main";
+import Api from "@/common/api.js";
 export default {
     name: "Record",
     data() {
         return {
-            recordList: [],//抽奖记录列表
+            recordList: [], //抽奖记录列表
         };
     },
     methods: {
         //获取奖品记录
         fetchRecordList() {
             let userId = localStorage.getItem("userId");
-            Api.getRecordList({userId}).then( res => {
-             this.recordList = res.data || [];
-            })
+            Api.getRecordList({ userId }).then((res) => {
+                this.recordList = res.data || [];
+            });
         },
     },
 
     created() {
         this.fetchRecordList();
-        eventBus.$on("refresh",()=>{
-        this.fetchRecordList();
-        })
-    }
+        eventBus.$on("refresh", () => {
+            this.fetchRecordList();
+        });
+    },
 };
 </script>
 
