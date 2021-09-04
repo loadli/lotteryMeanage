@@ -181,7 +181,24 @@ class serveController {
     async prizeList(ctx) {
         const page = ctx.request.query.current;
         const size = ctx.request.query.pageSize;
-        const prizeList = await prizeService.listAll(page, size);
+        const name = ctx.request.query.name;
+        const prizeRemain = ctx.request.query.prizeRemain;
+        const prizeSum = ctx.request.query.prizeSum;
+        const type = ctx.request.query.type;
+        const probability = ctx.request.query.probability;
+        const enableDatetime = ctx.request.query.enableDatetime;
+        const enable = ctx.request.query.enable;
+        const prizeList = await prizeService.listAll({
+            page,
+            size,
+            name,
+            prizeRemain,
+            prizeSum,
+            type,
+            probability,
+            enableDatetime,
+            enable,
+        });
         ctx.body = {
             //   code: "200",
             //   message: "请求成功",

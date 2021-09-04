@@ -109,14 +109,17 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
         {
             title: <FormattedMessage id="pages.prizeTable.prizeRemain" defaultMessage="Prize Remain" />,
             dataIndex: 'prizeRemain',
-        },
+            hideInSearch: true,
+          },
         {
             title: <FormattedMessage id="pages.prizeTable.prizeSum" defaultMessage="Prize Sum" />,
             dataIndex: 'prizeSum',
-        },
+            hideInSearch: true,
+          },
         {
             title: <FormattedMessage id="pages.prizeTable.type" defaultMessage="Type" />,
             dataIndex: 'type',
+            hideInSearch: true,
             render: (value) => {
                 return <div>{String(value) === '01' ? '虚拟' : '实物'}</div>;
             },
@@ -124,6 +127,7 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
         {
             title: <FormattedMessage id="pages.prizeTable.probability" defaultMessage="Probability" />,
             dataIndex: 'probability',
+            hideInSearch: true,
             render: (value, record, _, action) => {
                 return <div>{String(value)}%</div>;
             },
@@ -131,10 +135,12 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
         {
             title: <FormattedMessage id="pages.prizeTable.enableDatetime" defaultMessage="Enable Time" />,
             dataIndex: 'enableDatetime',
-        },
+            hideInSearch: true,
+          },
         {
             title: <FormattedMessage id="pages.prizeTable.enable" defaultMessage="Enable" />,
             dataIndex: 'enable',
+            hideInSearch: true,
             render: (value) => {
                 return <div>{String(value) === 'true' ? '是' : '否'}</div>;
             },
@@ -142,6 +148,7 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
         {
             title: <FormattedMessage id="pages.prizeTable.options" defaultMessage="Options" />,
             dataIndex: 'enable',
+            hideInSearch: true,
             render: (value, record, _, action) => {
                 return (
                     <div>
@@ -174,7 +181,7 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
 
     return (
         <PageContainer>
-            <ProTable<API.Prize, API.PageParams>
+            <ProTable<API.Prize>
                 headerTitle={intl.formatMessage({
                     id: 'pages.searchTable.title',
                     defaultMessage: 'Enquiry form',
@@ -187,6 +194,10 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
                 // dataSource={list}
                 // request={rule} // current pageSize
                 request={(params) => {
+                    if (params.name) {
+                      params.name = params.name.trim();
+                    }
+                    // console.log(params)
                     return props?.dispatch({
                         type: 'prize/getList',
                         payload: {

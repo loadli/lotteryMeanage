@@ -13,7 +13,17 @@ class PrizeService {
      * 列出所有奖品
      * @return {Promise<>} 返回奖品数组
      */
-    async listAll(page, size) {
+    async listAll({
+        page,
+        size,
+        name,
+        prizeRemain,
+        prizeSum,
+        type,
+        probability,
+        enableDatetime,
+        enable,
+    }) {
         const start = (page - 1) * size;
         const end = start + (size - 1);
         if (Number.isNaN(start) || Number.isNaN(end)) {
@@ -25,7 +35,23 @@ class PrizeService {
                 success: false,
             };
         }
-        const all = await prizeTable.where().skip(start).limit(end).find();
+        let obj = {
+            name,
+            prizeRemain,
+            prizeSum,
+            type,
+            probability,
+            enableDatetime,
+            enable,
+        }
+        let trimObj = {}
+        for(let key in obj) {
+            if (obj[key] !== null || obj[key] !== undefined) {
+                trimObj[key] = obj[key]
+            }
+        }
+        const all = await prizeTable.where(trimObj).skip(start).limit(end).find();
+        console.log(all)
         const total = await prizeTable.where().count();
 
         const listMsg = {
