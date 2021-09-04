@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 01:40:02
+ * @LastEditTime : 2021-09-05 02:19:31
  * @Description  : 后台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\serveController.js
  */
@@ -13,13 +13,13 @@ const dateToString = inspirecloud.db.dateToString;
 // 后台用户
 const AdminService = require("../services/AdminService");
 // 矿石
-const oreService = require("../services/OreService");
+const OreService = require("../services/OreService");
 // 历史纪录
-const recordService = require("../services/RecordService");
+const RecordService = require("../services/RecordService");
 // 发货纪录
 const DeliveryService = require("../services/DeliveryService");
 // 奖品
-const prizeService = require("../services/PrizeService");
+const PrizeService = require("../services/PrizeService");
 
 /**
  * serveController
@@ -59,7 +59,7 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async getOreInit(ctx) {
-        const oreInit = await oreService.getOreInit();
+        const oreInit = await OreService.getOreInit();
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -72,7 +72,7 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async getOreUse(ctx) {
-        const oreUse = await oreService.getOreUse();
+        const oreUse = await OreService.getOreUse();
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -86,7 +86,7 @@ class serveController {
      */
     async setOreInit(ctx) {
         const { count } = ctx.request.body;
-        const oreInit = await oreService.setOreInit(count);
+        const oreInit = await OreService.setOreInit(count);
         ctx.body = {
             code: "200",
             message: "修改成功",
@@ -100,7 +100,7 @@ class serveController {
      */
     async setOreUse(ctx) {
         const { count } = ctx.request.body;
-        const oreUse = await oreService.setOreUse(count);
+        const oreUse = await OreService.setOreUse(count);
         ctx.body = {
             code: "200",
             message: "修改成功",
@@ -126,14 +126,14 @@ class serveController {
     async listAllRecord(ctx) {
         const page = ctx.request.query.current;
         const size = ctx.request.query.pageSize;
-        const list = await recordService.listAll(page, size);
+        const list = await RecordService.listAll(page, size);
 
         ctx.body = {
             ...list,
         };
     }
     async deleteRecord(ctx) {
-        await recordService.delete(ctx.params.id);
+        await RecordService.delete(ctx.params.id);
         ctx.body = {
             code: "200",
             message: "删除成功",
@@ -173,7 +173,7 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async lottery(ctx) {
-        await prizeService.listAll();
+        await PrizeService.listAll();
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -202,7 +202,7 @@ class serveController {
         const probability = ctx.request.query.probability;
         const enableDatetime = ctx.request.query.enableDatetime;
         const enable = ctx.request.query.enable;
-        const prizeList = await prizeService.listAll({
+        const prizeList = await PrizeService.listAll({
             page,
             size,
             name,
@@ -235,7 +235,7 @@ class serveController {
             prizeRemain: ctx.request.body.prizeRemain,
             image: ctx.request.body.image,
         };
-        await prizeService.modifyPrize(id, info);
+        await PrizeService.modifyPrize(id, info);
         ctx.body = {
             code: "200",
             message: "更新成功",
@@ -252,7 +252,7 @@ class serveController {
         const info = {
             enable: enable,
         };
-        await prizeService.modifyPrize(_id, info);
+        await PrizeService.modifyPrize(_id, info);
         ctx.body = {
             code: "200",
             message: "更新成功",
