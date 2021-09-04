@@ -1,24 +1,12 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, message, Tabs } from 'antd';
+import { message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
 import { useIntl, Link, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import { login } from '@/services/user';
 
 import styles from './index.less';
-
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => (
-  <Alert
-    style={{
-      marginBottom: 24,
-    }}
-    message={content}
-    type="error"
-    showIcon
-  />
-);
+import { setUserId } from '@/utils';
 
 const Login: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -31,7 +19,7 @@ const Login: React.FC = () => {
     setSubmitting(true);
     try {
       // 登录
-      console.log(values)
+      console.log(values);
       const msg = await login({ ...values });
       if (msg.error || !msg.data) {
         const defaultLoginFailureMessage = intl.formatMessage({
@@ -49,6 +37,7 @@ const Login: React.FC = () => {
           ...s,
           currentUser: msg.data,
         }));
+        setUserId(msg.data._id);
         /** 此方法会跳转到 redirect 参数所在的位置 */
         if (!history) return;
         const { query } = history.location;
@@ -61,7 +50,6 @@ const Login: React.FC = () => {
         id: 'pages.login.failure',
         defaultMessage: '登录失败，请重试！',
       });
-
       message.error(defaultLoginFailureMessage);
     }
     setSubmitting(false);

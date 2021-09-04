@@ -3,30 +3,14 @@
 
 declare namespace API {
   type CurrentUser = {
-    username?: string;
-    avatar?: string;
-    userid?: string;
-    email?: string;
-    signature?: string;
-    title?: string;
-    group?: string;
-    tags?: { key?: string; label?: string }[];
-    notifyCount?: number;
-    unreadCount?: number;
-    country?: string;
-    access?: string;
-    geographic?: {
-      province?: { label?: string; key?: string };
-      city?: { label?: string; key?: string };
-    };
-    address?: string;
-    phone?: string;
+    oreRemain: string;
+    username: string;
+    _id: string;
   };
 
   type PageParams = {
     current?: number;
     pageSize?: number;
-
   };
 
   type RuleListItem = {
@@ -42,7 +26,7 @@ declare namespace API {
     updatedAt?: string;
     createdAt?: string;
     progress?: number;
-    data?:Array;
+    data?: Array;
   };
 
   type RuleList = {
@@ -87,36 +71,36 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
-// 抽奖记录
+  // 抽奖记录
   interface LotteryRecordItem {
-    _id: string,
-    createdAt: string,
-    updatedAt: string,
-    user: string,
-    remaining: string,
-    prize_name: string,
-    description: string,
-    spending: string
-  };
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    user: string;
+    remaining: string;
+    prize_name: string;
+    description: string;
+    spending: string;
+  }
 
   type LotteryRecordList = LotteryRecordItem[];
 
   // 发货记录
   interface DeliveryRecordItem {
-    _id: string,
-    address: string,
-    createdAt: string,
-    name: string,
-    phone: string,
-    prizeId: string,
-    transport: boolean,
-    updatedAt: string,
-    userId: string,
-    id:string
-  };
+    _id: string;
+    address: string;
+    createdAt: string;
+    name: string;
+    phone: string;
+    prizeId: string;
+    transport: boolean;
+    updatedAt: string;
+    userId: string;
+    id: string;
+  }
 
   type deliresList = {
-    code?:string
+    code?: string;
     data?: DeliveryRecordItem[];
     /** 列表的内容总数 */
     total?: number;
@@ -134,20 +118,20 @@ declare namespace API {
     prizeName?: number;
   };
 
+  // 奖品信息
+  interface Prize {
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    enable: string;
+    enableDatetime: string;
+    name: string;
+    prizeRemain: string;
+    prizeSum: string;
+    probability: string;
+    type: string;
+    image: string;
+  }
 
-    // 奖品信息
-    interface Prize {
-      _id: string,
-      createdAt: string,
-      updatedAt: string,
-      enable: string,
-      enableDatetime: string,
-      name: string,
-      prizeRemain: string,
-      prizeSum: string,
-      probability: string,
-      type: string,
-    };
-
-    type PrizeList = Prize[];
+  type PrizeList = Prize[];
 }

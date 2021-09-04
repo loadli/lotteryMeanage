@@ -1,3 +1,11 @@
+/*
+ * @Author: xiaorui
+ * @Date: 2021-09-04 20:20:34
+ * @LastEditors: xiaorui
+ * @LastEditTime: 2021-09-04 22:19:03
+ * @Description: umi相关配置
+ * @FilePath: /lotteryMeanage/client/react/config/config.ts
+ */
 // https://umijs.org/config/
 import { defineConfig } from 'umi';
 

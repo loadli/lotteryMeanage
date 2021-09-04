@@ -4,3 +4,4 @@ node_modules/
 .DS_Store
 .inspirecloud.service.conf
 package-lock.json
+yarn.lock
