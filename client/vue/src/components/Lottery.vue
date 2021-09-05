@@ -98,50 +98,48 @@ export default {
             ID_66ORE: "612b6b9a6315d10255d12b86",
             ID_BUG: "612b77fd29e75c0238ab1679",
             dialog: {
-                flag: false,
-                isEntity: true, // true 实物；false 虚拟
+                flag       : false,
+                isEntity   : true,    // true 实物；false 虚拟
                 addressInfo: {
-                    name: "",
-                    phone: "",
+                    name   : "",
+                    phone  : "",
                     address: "",
                 },
                 prizeInfo: {
-                    _id: "",
+                    _id  : "",
                     image: "",
-                    name: "",
+                    name : "",
                 },
             },
             lotteryList: [],
             defaultOption: {
-                startIndex: 1, // 初始位置
-                pits: 8, // 格子数
-                interval: 100, // 初始间隔
-                rate: 2.5, // 系数
-                cycle: 2.5, //转动基本次数：即至少需要转动多少次再进入抽奖环节
-                getInterval: null, // 自定义旋转间隔函数
+                startIndex : 1,      // 初始位置
+                pits       : 8,      // 格子数
+                interval   : 100,    // 初始间隔
+                rate       : 2.5,    // 系数
+                cycle      : 2.5,    // 转动基本次数：即至少需要转动多少次再进入抽奖环节
+                getInterval: null,   // 自定义旋转间隔函数
             },
             options: {
-                startIndex: 1, // 初始位置
-                pits: 8, // 格子数
-                interval: 100, // 初始间隔
-                rate: 5, // 系数
-                cycle: 4, //转动基本次数：即至少需要转动多少次再进入抽奖环节
+                startIndex: 1,     // 初始位置
+                pits      : 8,     // 格子数
+                interval  : 100,   // 初始间隔
+                rate      : 5,     // 系数
+                cycle     : 4,     // 转动基本次数：即至少需要转动多少次再进入抽奖环节
             },
-            ticketId: null, // 定时器ID
-            prizeIndexes: null, // 奖项
-            times: 0, // 转动次数
-            index: 1, // 当前位置
-            animatingResult: false, //  模拟结束
-            cycle: 4, // 实际的转动基本次数
-            processing: false, // 进行中
-            lastTime: null, // 上次转动时间
-            interval: 100,
-
-            lotteryResult: null, // 结果
-
-            orderList: [0, 7, 6, 1, -1, 5, 2, 3, 4],
-            oreNumber: 0, // 剩余矿石数量
-            oreUse: 9999, //单次使用矿石
+            ticketId       : null,    // 定时器ID
+            prizeIndexes   : null,    // 奖项
+            times          : 0,       // 转动次数
+            index          : 1,       // 当前位置
+            animatingResult: false,   //  模拟结束
+            cycle          : 4,       // 实际的转动基本次数
+            processing     : false,   // 进行中
+            lastTime       : null,    // 上次转动时间
+            interval       : 100,
+            lotteryResult  : null,    // 结果
+            orderList      : [0, 7, 6, 1, -1, 5, 2, 3, 4],
+            oreNumber      : 0,      // 剩余矿石数量
+            oreUse         : 9999,   // 单次使用矿石
         };
     },
     computed: {},
