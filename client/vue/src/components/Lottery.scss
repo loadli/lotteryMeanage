@@ -82,6 +82,12 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                     }
+
+                    &--disable {
+                        cursor: no-drop;
+                        border-radius: 4px;
+                        background-color: #ccc;
+                    }
                 }
 
                 .chosen {

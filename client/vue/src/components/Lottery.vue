@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 17:39:53
+ * @LastEditTime : 2021-09-05 18:49:26
  * @Description  : 抽奖
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
@@ -22,7 +22,7 @@
                             :key="item.id"
                         >
                             <template v-if="item.id < 0">
-                                <div class="lottery-btn" @click="handleLottery">
+                                <div class="lottery-btn" :class="lotteryLoading ? 'lottery-btn--disable' : ''" @click="handleLottery">
                                     <div class="lottery-text">抽奖</div>
                                     <div class="text">200矿石/次</div>
                                 </div>
@@ -108,10 +108,11 @@ export default {
                     name : "",
                 },
             },
-            lotteryList  : [],
-            lotteryResult: null,   // 结果
-            oreNumber    : 0,      // 剩余矿石数量
-            oreUse       : 9999,   // 单次使用矿石
+            lotteryList   : [],
+            lotteryResult : null,   // 结果
+            oreNumber     : 0,      // 剩余矿石数量
+            oreUse        : 9999,   // 单次使用矿石
+            lotteryLoading: false,   // 抽奖中
             // 引入动画参数
             ...animationOptions,
         };
@@ -190,6 +191,9 @@ export default {
                 });
         },
         handleLottery() {
+            if(this.lotteryLoading){
+                return
+            }
             // 模拟获取抽奖结果
             let userId = localStorage.getItem("userId");
             if (!userId) {
@@ -202,6 +206,7 @@ export default {
                 alert("矿石不足");
                 return;
             }
+            this.lotteryLoading = true;
             this.start();
             this.getResult(userId);
         },
@@ -250,6 +255,7 @@ export default {
             this.dialog.prizeInfo = lotteryResult;
             setTimeout(() => {
                 this.dialog.flag = true;
+                this.lotteryLoading = false;
             }, 800);
         },
         // 引入动画方法
