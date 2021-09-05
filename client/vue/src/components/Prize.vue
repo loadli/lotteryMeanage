@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:36:18
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 12:28:28
+ * @LastEditTime : 2021-09-05 14:51:21
  * @Description  : 奖品
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Prize.vue
 -->
@@ -24,7 +24,7 @@
                     <lottery-item
                         :key="index"
                         :image="item.image"
-                        :name="item.name"
+                        :name="item.prizeName"
                         class="content-item"
                     />
                 </template>
@@ -73,7 +73,7 @@ export default {
         fetchprizeInfo() {
             let userId = localStorage.getItem("userId");
             Api.getPrizeList({ userId }).then((res) => {
-                this.recordList = res.data || [];
+                this.prizeInfo = res.data || [];
             });
         },
         //左右切换按钮
