@@ -1,33 +1,33 @@
 /*
  * @Author       : xiaolin
  * @Date         : 2021-09-03 15:28:21
- * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 16:55:10
+ * @LastEditors: xiaorui
+ * @LastEditTime: 2021-09-05 20:47:03
  * @Description  : 历史纪录相关
- * @FilePath     : \lotteryMeanage\server\koa\src\services\RecordService.js
+ * @FilePath: /lotteryMeanage/server/koa/src/services/RecordService.js
  */
 
 const inspirecloud = require("@byteinspire/api");
-const ObjectId     = inspirecloud.db.ObjectId;
+const ObjectId = inspirecloud.db.ObjectId;
 
 // ---------------------------------------------------
 const recordTable = require("../models/recordTable");  // 历史纪录表
-const prizeTable  = require("../models/prizeTable");   // 奖品表
+const prizeTable = require("../models/prizeTable");   // 奖品表
 // ---------------------------------------------------
 
 /**
  * 引用service
  * ---------------------------------------------------
  */
-const OreService   = require("./OreService");      // 矿石
-const UserService  = require("./UserService");     // 用户
+const OreService = require("./OreService");      // 矿石
+const UserService = require("./UserService");     // 用户
 /**
  * ---------------------------------------------------
  */
 
 class RecordService {
     async listAll({
-        page, 
+        page,
         size,
         name,
         userId
@@ -60,6 +60,7 @@ class RecordService {
             const prize = prizeAll.find((prizeItem) => {
                 return (prizeItem._id = item.prizeId);
             });
+            delete prize._id;
             return Object.assign(item, prize);
         });
 

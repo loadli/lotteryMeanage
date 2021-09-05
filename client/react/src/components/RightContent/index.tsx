@@ -1,7 +1,14 @@
+/*
+ * @Author: xiaorui
+ * @Date: 2021-09-04 20:20:34
+ * @LastEditors: xiaorui
+ * @LastEditTime: 2021-09-05 20:39:31
+ * @Description: 页头右侧相关操作
+ * @FilePath: /lotteryMeanage/client/react/src/components/RightContent/index.tsx
+ */
 import { Space } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import { useModel, SelectLang } from 'umi';
+import { useModel } from 'umi';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
@@ -32,7 +39,6 @@ const GlobalHeaderRight: React.FC = () => {
         }}
       />
       <Avatar />
-      <SelectLang className={styles.action} />
     </Space>
   );
 };
