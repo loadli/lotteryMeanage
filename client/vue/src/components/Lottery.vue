@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 16:21:58
+ * @LastEditTime : 2021-09-05 17:39:53
  * @Description  : 抽奖
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
@@ -91,27 +91,27 @@ export default {
     },
     data() {
         return {
-            userId: null,
+            userId  : null,
             ID_66ORE: "612b6b9a6315d10255d12b86",
-            ID_BUG: "612b77fd29e75c0238ab1679",
+            ID_BUG  : "612b77fd29e75c0238ab1679",
             dialog: {
                 flag: false,
                 isEntity: true, // true 实物；false 虚拟
                 addressInfo: {
-                    name: "",
-                    phone: "",
+                    name   : "",
+                    phone  : "",
                     address: "",
                 },
                 prizeInfo: {
-                    _id: "",
+                    _id  : "",
                     image: "",
-                    name: "",
+                    name : "",
                 },
             },
-            lotteryList: [],
-            lotteryResult: null, // 结果
-            oreNumber: 0, // 剩余矿石数量
-            oreUse: 9999, // 单次使用矿石
+            lotteryList  : [],
+            lotteryResult: null,   // 结果
+            oreNumber    : 0,      // 剩余矿石数量
+            oreUse       : 9999,   // 单次使用矿石
             // 引入动画参数
             ...animationOptions,
         };
@@ -156,11 +156,13 @@ export default {
         closeDialog() {
             this.dialog.flag = false;
             this.initLottery(this.options);
+            eventBus.$emit("refresh");
         },
         // 再来一次
         submitAgain() {
             this.closeDialog();
             this.handleLottery();
+            eventBus.$emit("refresh");
         },
         // 提交地址
         submitAddress() {
@@ -180,7 +182,7 @@ export default {
                     alert("添加收货地址成功");
                     this.dialog.flag = false;
                     //抽一次，刷新奖品数据
-                    this.$emit("refresh");
+    
                     eventBus.$emit("refresh");
                 })
                 .catch((err) => {
@@ -204,17 +206,17 @@ export default {
             this.getResult(userId);
         },
         async getResult(userId) {
-            setTimeout(async () => {
-                let lotteryResult = await this.fetchLotteryResult(userId);
-                let res = this.lotteryList.find(
-                    (item) => item._id === lotteryResult._id
-                );
-                this.lotteryResult = res;
-                this.setPrize([res.order]);
-                //抽一次，刷新奖品数据
-                this.$emit("refresh");
-                eventBus.$emit("refresh");
-            }, 2000);
+            // setTimeout(async () => {
+            let lotteryResult = await this.fetchLotteryResult(userId);
+            let res = this.lotteryList.find(
+                (item) => item._id === lotteryResult._id
+            );
+            this.lotteryResult = res;
+            this.setPrize([res.order]);
+            //抽一次，刷新奖品数据
+            // this.$emit("refresh");
+            // eventBus.$emit("refresh");
+            // }, 2000);
         },
 
         // 获取抽奖结果
