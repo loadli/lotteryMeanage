@@ -13,39 +13,16 @@ import {
 import { useDebounceFn } from 'ahooks';
 import React, { useState, useRef } from 'react';
 import { useIntl, FormattedMessage } from 'umi';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { removeRule } from '@/services/ant-design-pro/api';
 import { connect } from 'dva';
 import { savePrizeInfo } from './services';
 import moment from 'moment';
 import { isUrl } from '@/utils';
 import { LoadingOutlined } from '@ant-design/icons';
-/**
- *  Delete node
- * @zh-CN 删除节点
- *
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: API.Prize[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      key: selectedRows.map((row) => row._id),
-    });
-    hide();
-    message.success('Deleted successfully and will refresh soon');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Delete failed, please try again');
-    return false;
-  }
-};
 
 const mapState = (state: any) => {
   return {
@@ -58,13 +35,6 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.Prize>();
-  const [selectedRowsState, setSelectedRows] = useState<API.Prize[]>([]);
-
-  /**
-   * 设置页数和数据大小
-   */
-  const [current, setCurrent] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -78,16 +48,6 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
   });
 
   const [form] = Form.useForm();
-  //   useEffect(async function () {
-  //   const dispatch = props?.dispatch;
-  //   const list = await dispatch({
-  //     type: 'prize/getList',
-  //     payload: {
-  //       current,
-  //       pageSize,
-  //     }
-  //   })
-  // }, [])
 
   /**
    * @en-US International configuration
@@ -258,64 +218,19 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
         search={{
           labelWidth: 120,
         }}
-        // dataSource={list}
-        // request={rule} // current pageSize
         request={(params) => {
           return props?.dispatch({
             type: 'prize/getList',
             payload: {
-              current,
-              pageSize,
+              current: params.current || 1,
+              pageSize: params.pageSize || 20,
               ...params,
             },
           });
         }}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-        }}
+        rowSelection={false}
       />
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
-              &nbsp;&nbsp;
-              <span>
-                <FormattedMessage
-                  id="pages.searchTable.totalServiceCalls"
-                  defaultMessage="Total number of service calls"
-                />{' '}
-                {selectedRowsState.reduce((pre, item) => pre + Number(item.prizeRemain)!, 0)}{' '}
-                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
-              </span>
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            <FormattedMessage
-              id="pages.searchTable.batchDeletion"
-              defaultMessage="Batch deletion"
-            />
-          </Button>
-          <Button type="primary">
-            <FormattedMessage
-              id="pages.searchTable.batchApproval"
-              defaultMessage="Batch approval"
-            />
-          </Button>
-        </FooterToolbar>
-      )}
       <Drawer
         width={600}
         visible={showDetail}

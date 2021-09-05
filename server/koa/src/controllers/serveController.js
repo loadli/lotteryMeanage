@@ -1,21 +1,21 @@
 /*
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
- * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 17:42:48
+ * @LastEditors: xiaorui
+ * @LastEditTime: 2021-09-05 21:08:33
  * @Description  : 后台服务
- * @FilePath     : \lotteryMeanage\server\koa\src\controllers\serveController.js
+ * @FilePath: /lotteryMeanage/server/koa/src/controllers/serveController.js
  */
 
 const inspirecloud = require("@byteinspire/api");
 const dateToString = inspirecloud.db.dateToString;
 
 
-const AdminService    = require("../services/AdminService");     // 后台用户
-const OreService      = require("../services/OreService");       // 矿石
-const RecordService   = require("../services/RecordService");    // 历史纪录
+const AdminService = require("../services/AdminService");     // 后台用户
+const OreService = require("../services/OreService");       // 矿石
+const RecordService = require("../services/RecordService");    // 历史纪录
 const DeliveryService = require("../services/DeliveryService");  // 发货纪录
-const PrizeService    = require("../services/PrizeService");     // 奖品
+const PrizeService = require("../services/PrizeService");     // 奖品
 
 class serveController {
     /**
@@ -132,11 +132,18 @@ class serveController {
         };
     }
     async deleteRecord(ctx) {
-        await RecordService.delete(ctx.params.id);
+        const { ids } = ctx.request.body;
+        if (ids) {
+            const task = [];
+            for (const id of ids) {
+                task.push(RecordService.delete(id))
+            }
+            await Promise.all(task)
+        }
         ctx.body = {
             code: "200",
             message: "删除成功",
-            data: {},
+            data: true,
         };
     }
     /**
