@@ -2,23 +2,18 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:37:11
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 10:15:30
+ * @LastEditTime : 2021-09-05 17:43:22
  * @Description  : 前台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\clientController.js
  */
 
-// 用户
-const UserService = require("../services/UserService");
-// 矿石
-const OreService = require("../services/OreService");
-// 奖品
-const PrizeService = require("../services/PrizeService");
-// 历史
-const RecordService = require("../services/RecordService");
-// 实物
-const DeliveryService = require("../services/DeliveryService");
-// 抽奖
-const LotteryService = require("../services/LotteryService");
+
+const UserService     = require("../services/UserService");      // 用户
+const OreService      = require("../services/OreService");       // 矿石
+const PrizeService    = require("../services/PrizeService");     // 奖品
+const RecordService   = require("../services/RecordService");    // 历史
+const DeliveryService = require("../services/DeliveryService");  // 实物
+const LotteryService  = require("../services/LotteryService");   // 抽奖
 
 /**
  * clientController
@@ -46,7 +41,7 @@ class clientController {
      */
     async oreRemain(ctx) {
         const { userId } = ctx.request.body;
-        const user = await UserService.oreRemain(userId);
+        const user = await UserService.userOreRemain(userId);
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -61,7 +56,7 @@ class clientController {
      * @return {Array}
      */
     async lotteryList(ctx) {
-        const lotteryList = await PrizeService.lottery();
+        const lotteryList = await PrizeService.clientList();
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -76,7 +71,7 @@ class clientController {
      */
     async myPrize(ctx) {
         const { userId } = ctx.request.body;
-        const prizeRecordList = await DeliveryService.myPrize(userId);
+        const prizeRecordList = await DeliveryService.listById(userId);
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -89,9 +84,9 @@ class clientController {
      * @param {Object} ctx - 请求参数
      * @return {Array}
      */
-    async history(ctx) {
+    async listByUser(ctx) {
         const { userId } = ctx.request.body;
-        const historyList = await RecordService.history(userId);
+        const historyList = await RecordService.listByUser(userId);
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -106,7 +101,7 @@ class clientController {
     async lottery(ctx) {
         const { userId } = ctx.request.body;
 
-        const user = await UserService.oreRemain(userId);
+        const user = await UserService.userOreRemain(userId);
         const oreUse = await OreService.getOreUse();
 
         if (user.oreRemain < oreUse) {
@@ -118,7 +113,7 @@ class clientController {
             return;
         }
 
-        const prizeList = await PrizeService.lottery();
+        const prizeList = await PrizeService.lotteryUsable();
         // 抽奖算法
         let probablySum = prizeList.reduce((sum, item) => (sum += Number(item.probability)), 0);
         let prize = null;
@@ -162,7 +157,7 @@ class clientController {
             phone,
             address,
         };
-        const addressList = await DeliveryService.address(data);
+        const addressList = await DeliveryService.writeAddress(data);
         ctx.body = {
             code: "200",
             message: "请求成功",

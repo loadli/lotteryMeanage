@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-03 15:28:21
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 12:17:58
+ * @LastEditTime : 2021-09-05 16:55:10
  * @Description  : 历史纪录相关
  * @FilePath     : \lotteryMeanage\server\koa\src\services\RecordService.js
  */
@@ -95,29 +95,31 @@ class RecordService {
     async deleteAll() {
         await recordTable.where().delete();
     }
+
     /**
      * 前台获取历史纪录
      */
-    async history(userId) {
+    async listByUser(userId) {
         if (!userId) {
             return [];
         }
-        let prizeRecordList = await recordTable
+        let recordList = await recordTable
             .where({
                 userId,
             })
             .find();
 
-        return prizeRecordList;
+        return recordList;
     }
+
     /**
      * 抽奖结束，写入抽奖纪录
      * @param {object} prize 奖品
      */
-    async LotteryRecord(userid, prize) {
+    async writeRecord(userid, prize) {
         const oreUse = await OreService.getOreUse();
 
-        const remain = await UserService.oreRemain(userid);
+        const remain = await UserService.userOreRemain(userid);
 
         const recordItem = {
             userId: userid,

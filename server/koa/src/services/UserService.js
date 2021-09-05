@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-05 00:51:44
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 14:08:32
+ * @LastEditTime : 2021-09-05 16:48:10
  * @Description  : 前台用户相关
  * @FilePath     : \lotteryMeanage\server\koa\src\services\UserService.js
  */
@@ -43,15 +43,15 @@ class UserService {
     /**
      * 获取用户剩余矿石
      */
-    async oreRemain(userid) {
+    async userOreRemain(userid) {
         const user = await userTable.where({ _id: ObjectId(userid) }).findOne();
         return user;
     }
     /**
      * 抽奖结束，添加矿石数量
-     * @param {object} prize 奖品
+     * @param {object} userid 用户id
      */
-    async oreRemainAdd(userid) {
+    async userOreRemainAdd(userid) {
         // 修改矿石数
         const user = await userTable.where({ _id: ObjectId(userid) }).findOne();
         user.oreRemain += 66;
@@ -61,9 +61,9 @@ class UserService {
 
     /**
      * 抽奖结束，减少用户矿石数
-     * @param {object} prize 奖品
+     * @param {object} userid 用户id
      */
-    async oreRemainLess(userid) {
+    async userOreRemainLess(userid) {
         // 获取单次消耗
         const oreUse = await OreService.getOreUse();
         // 修改矿石数

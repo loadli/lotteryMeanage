@@ -2,14 +2,13 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-05 01:10:47
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 14:09:10
+ * @LastEditTime : 2021-09-05 17:09:22
  * @Description  : 抽奖相关
  * @FilePath     : \lotteryMeanage\server\koa\src\services\LotteryService.js
  */
 
 const inspirecloud = require("@byteinspire/api");
 const ObjectId     = inspirecloud.db.ObjectId;
-const dateToString = inspirecloud.db.dateToString;
 
 // ---------------------------------------------------
 const PrizeService    = require("./PrizeService");     // 奖品
@@ -26,28 +25,28 @@ class LotteryService {
      */
     async LotteryEnd(userid, prize) {
         // 减少商品库存
-        await PrizeService.LotteryReamin(prize);
-        console.log("库存减少成功");
+        await PrizeService.reaminLess(prize);
+        console.log(userid + "库存减少成功");
 
         // 减少用户剩余矿石数
-        await UserService.oreRemainLess(userid);
-        console.log("矿石减少成功");
+        await UserService.userOreRemainLess(userid);
+        console.log(userid + "矿石减少成功");
 
         // 抽中矿石增加66
         if (prize.name == "66矿石") {
-            await UserService.oreRemainAdd(userid);
-            console.log("矿石增加成功");
+            await UserService.userOreRemainAdd(userid);
+            console.log(userid + "矿石增加成功");
         }
 
         // 写入抽奖纪录
-        await RecordService.LotteryRecord(userid, prize);
-        console.log("抽奖纪录写入成功");
+        await RecordService.writeRecord(userid, prize);
+        console.log(userid + "抽奖纪录写入成功");
 
         // 更新数据获取不到id导致重复
         // if (prize.type == "02") {
         //     // 写入实物纪录
-        //     await DeliveryService.LotteryDelivery(userid, prize);
-        //     console.log("实物纪录写入成功");
+        //     await DeliveryService.writeDelivery(userid, prize);
+        //     console.log(userid + "实物纪录写入成功");
         // }
     }
 }

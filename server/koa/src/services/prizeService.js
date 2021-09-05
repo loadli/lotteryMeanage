@@ -2,9 +2,9 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-04 23:21:37
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 01:44:02
+ * @LastEditTime : 2021-09-05 17:07:40
  * @Description  : 奖品相关
- * @FilePath     : \lotteryMeanage\server\koa\src\services\prizeService.js
+ * @FilePath     : \lotteryMeanage\server\koa\src\services\PrizeService.js
  */
 
 const inspirecloud = require("@byteinspire/api");
@@ -62,6 +62,7 @@ class PrizeService {
         };
         return listMsg;
     }
+
     /**
      * 修改奖品
      */
@@ -87,11 +88,12 @@ class PrizeService {
             throw error;
         }
     }
+
     /**
      * 抽奖结束，减少奖品库存
      * @param {object} prize 奖品
      */
-    async LotteryReamin(prize) {
+    async reaminLess(prize) {
         const prizeData = await prizeTable
             .where({
                 _id: prize._id,
@@ -105,12 +107,35 @@ class PrizeService {
     /**
      * 前台获取参与抽奖的奖品
      */
-    async lottery() {
+    async lotteryUsable() {
         const prizeList = await prizeTable
             .where(function () {
                 const current = new Date();
                 return this.enable && current >= new Date(this.enableDatetime);
             })
+            .find();
+        return prizeList;
+    }
+
+    /**
+     * 后台获取参与抽奖的奖品
+     */
+    async lotteryUsable() {
+        const prizeList = await prizeTable
+            .where(function () {
+                const current = new Date();
+                return this.enable && current >= new Date(this.enableDatetime);
+            })
+            .find();
+        return prizeList;
+    }
+
+    /**
+     * 前台获取参与抽奖的奖品
+     */
+    async clientList() {
+        const prizeList = await prizeTable
+            .where()
             .find();
         return prizeList;
     }

@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 02:19:31
+ * @LastEditTime : 2021-09-05 17:42:48
  * @Description  : 后台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\serveController.js
  */
@@ -10,21 +10,13 @@
 const inspirecloud = require("@byteinspire/api");
 const dateToString = inspirecloud.db.dateToString;
 
-// 后台用户
-const AdminService = require("../services/AdminService");
-// 矿石
-const OreService = require("../services/OreService");
-// 历史纪录
-const RecordService = require("../services/RecordService");
-// 发货纪录
-const DeliveryService = require("../services/DeliveryService");
-// 奖品
-const PrizeService = require("../services/PrizeService");
 
-/**
- * serveController
- * 包含后台所有功能
- */
+const AdminService    = require("../services/AdminService");     // 后台用户
+const OreService      = require("../services/OreService");       // 矿石
+const RecordService   = require("../services/RecordService");    // 历史纪录
+const DeliveryService = require("../services/DeliveryService");  // 发货纪录
+const PrizeService    = require("../services/PrizeService");     // 奖品
+
 class serveController {
     /**
      * @description: 获取用户信息
@@ -167,7 +159,7 @@ class serveController {
     async setTransport(ctx) {
         console.log(ctx, "这是ctx");
         const { id } = ctx.request.body;
-        await DeliveryService.updateTransport(id);
+        await DeliveryService.modifyTransportById(id);
         ctx.body = {
             code: "200",
             message: "更新成功",

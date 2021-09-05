@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-03 15:28:21
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 14:10:29
+ * @LastEditTime : 2021-09-05 17:23:52
  * @Description  : 实物相关
  * @FilePath     : \lotteryMeanage\server\koa\src\services\DeliveryService.js
  */
@@ -15,9 +15,6 @@ const deliveryTable = require("../models/deliveryTable");  // 实物表
 const prizeTable    = require("../models/prizeTable");     // 奖品表
 // ---------------------------------------------------
 
-/**
- * DeliveryService
- */
 class DeliveryService {
     /**
      * 获取所有发货商品
@@ -30,7 +27,7 @@ class DeliveryService {
     /**
      * 更新发货状态
      */
-    async updateTransport(id) {
+    async modifyTransportById(id) {
         const item = await deliveryTable.where({ _id: ObjectId(id) }).findOne();
         Object.assign(item, { transport: true });
         await deliveryTable.save(item);
@@ -38,9 +35,10 @@ class DeliveryService {
 
     /**
      * 抽奖结束，写入实物纪录
+     * @param {object} userid 奖品
      * @param {object} prize 奖品
      */
-    async LotteryDelivery(userid, prize) {
+    async writeDelivery(userid, prize) {
         const deliveryItem = {
             userId: userid,
             prizeId: prize._id,
@@ -58,7 +56,7 @@ class DeliveryService {
      * @param {string} phone 手机号
      * @param {string} address 地址
      */
-    async address(body) {
+    async writeAddress(body) {
         let prizeInfo = await prizeTable.where({ _id: ObjectId(body.prizeId) }).findOne();
         let requestBody = {
             ...body,
@@ -72,7 +70,7 @@ class DeliveryService {
      * 获取抽奖记录
      * @param {string} userId 用户ID
      */
-    async myPrize(userId) {
+    async listById(userId) {
         if (!userId) {
             return [];
         }
