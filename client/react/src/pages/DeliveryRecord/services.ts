@@ -2,7 +2,7 @@
  * @Author: bohua
  * @Date: 2021-09-04 20:20:34
  * @LastEditors: xiaorui
- * @LastEditTime: 2021-09-05 21:25:19
+ * @LastEditTime: 2021-09-05 22:13:21
  * @Description: 发货记录请求
  * @FilePath: /lotteryMeanage/client/react/src/pages/DeliveryRecord/services.ts
  */
@@ -32,5 +32,6 @@ export async function changeTransportStatus(body: any) {
       'Content-Type': 'application/json',
     },
     data: body,
+    skipErrorHandler: true,
   });
 }

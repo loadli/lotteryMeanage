@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 10:19:38
  * @LastEditors: xiaorui
- * @LastEditTime: 2021-09-05 21:48:56
+ * @LastEditTime: 2021-09-05 22:12:29
  * @Description  : 后台服务
  * @FilePath: /lotteryMeanage/server/koa/src/controllers/serveController.js
  */
@@ -165,13 +165,12 @@ class serveController {
      * @param {Object} ctx - 请求参数
      */
     async setTransport(ctx) {
-        console.log(ctx, "这是ctx");
         const { id } = ctx.request.body;
         await DeliveryService.modifyTransportById(id);
         ctx.body = {
             code: "200",
             message: "更新成功",
-            data: {},
+            data: true,
         };
     }
 

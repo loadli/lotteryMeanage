@@ -1,4 +1,4 @@
-import { Button, Modal, Select } from 'antd';
+import { Button, message, Modal, Select } from 'antd';
 import React, { useRef } from 'react';
 import { FormattedMessage, useDispatch } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -6,8 +6,7 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
-import { changeTransportStatus, getDeliveryRecordList } from './services';
-import { useEffect } from 'react';
+import { changeTransportStatus } from './services';
 
 const mapState = (state: any) => {
   return {
@@ -28,10 +27,14 @@ const TableList: React.FC = () => {
       cancelText: '取消',
       onOk: async () => {
         // 修改发货状态
-        await changeTransportStatus({ id: record._id });
-        const res = await getDeliveryRecordList();
-        if (res?.code === '200') {
-          actionRef.current?.reload();
+        try {
+          const res = await changeTransportStatus({ id: record._id });
+          if (res.data) {
+            message.success('发货成功');
+            actionRef.current?.reload();
+          }
+        } catch (e) {
+          message.error('发货失败');
         }
       },
     });
