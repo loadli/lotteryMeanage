@@ -34,6 +34,7 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
+
   const [currentRow, setCurrentRow] = useState<API.Prize>();
 
   const [isModalVisible, setIsModalVisible] = useState(false);

@@ -1,20 +1,23 @@
+/*
+ * @Author: xiaorui
+ * @Date: 2021-09-04 20:20:34
+ * @LastEditors: xiaorui
+ * @LastEditTime: 2021-09-05 21:42:23
+ * @Description: cookie相关操作
+ * @FilePath: /lotteryMeanage/client/react/src/pages/DeliveryRecord/model.ts
+ */
 import type { Effect, Reducer, Subscription } from 'umi';
-import {
-    getDeliveryRecordList,
-    changeTransportStatus
-} from './services';
+import { getDeliveryRecordList, changeTransportStatus } from './services';
 
-export interface RecordModelState {
-  list: any;
-}
+export interface RecordModelState {}
 
 export interface RecordList {
-  id: string,
-  user: string,
-  spending: string,
-  remaining: string,
-  description: string,
-  createdAt: string,
+  id: string;
+  user: string;
+  spending: string;
+  remaining: string;
+  description: string;
+  createdAt: string;
 }
 
 export interface RecordModelType {
@@ -27,34 +30,18 @@ export interface RecordModelType {
 
 const Model: RecordModelType = {
   namespace: 'deliveryRecord',
-  state: {
-    list: [],
-  },
-  reducers: {
-    saveList(state, { payload }) {
-        return {
-          ...state,
-          list: payload,
-        };
-      },
-  },
+  state: {},
+  reducers: {},
   effects: {
-    *getList(action , { call, put }) {
-      const res = yield call(getDeliveryRecordList, {...action?.payload});
-      if(res.code === '200'){
-           yield put({
-        type: "saveList",
-        payload: res.data,
-      });
-      action?.callback(res)
-      }
+    *getList(action, { call, put }) {
+      const res = yield call(getDeliveryRecordList, { ...action?.payload });
       return res;
     },
-    *changeTransportStatus(action , { call, put }) {
-        const res = yield call(changeTransportStatus, {...action?.payload});
-        action?.callback()
-        return res;
-      },
+    *changeTransportStatus(action, { call, put }) {
+      const res = yield call(changeTransportStatus, { ...action?.payload });
+      action?.callback();
+      return res;
+    },
   },
 };
 
