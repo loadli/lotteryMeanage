@@ -25,7 +25,12 @@ const UserService = require("./UserService");
  * RecordService
  */
 class RecordService {
-    async listAll(page, size) {
+    async listAll({
+        page, 
+        size,
+        name,
+        userId
+    }) {
         const start = (page - 1) * size;
         const end = start + (size - 1);
         if (Number.isNaN(start) || Number.isNaN(end)) {
@@ -37,8 +42,19 @@ class RecordService {
                 success: false,
             };
         }
-        const recordAll = await recordTable.where().skip(start).limit(end).find();
-        const prizeAll = await prizeTable.where().find();
+        let recordQuery = {}
+        let prizeQuery = {}
+        if (userId) {
+            recordQuery.userId = userId
+        }
+        if (name) {
+            prizeQuery.name = name
+        }
+        // console.log('########################### recordQuery, prizeQuery')
+        // console.log(recordQuery, prizeQuery)
+        // console.log('########################### recordQuery, prizeQuery')
+        const recordAll = await recordTable.where(recordQuery).skip(start).limit(end).find();
+        const prizeAll = await prizeTable.where(prizeQuery).find();
         const all = recordAll.map((item) => {
             const prize = prizeAll.find((prizeItem) => {
                 return (prizeItem._id = item.prizeId);

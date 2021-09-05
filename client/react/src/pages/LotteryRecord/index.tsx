@@ -79,32 +79,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
    * */
   const intl = useIntl();
 
-  const filter: ProColumns<API.RuleListItem>[] = [
-    {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.updateForm.prizeType.typeLabel"
-          defaultMessage="Rule name"
-        />
-      ),
-      dataIndex: 'name',
-      tip: 'The rule name is the unique key',
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
-    },
-  ];
-
-  const columns: ProColumns<API.RuleListItem>[] =[
+  const columns: ProColumns<API.LotteryRecordItem>[] =[
     {
       title: (
         <FormattedMessage
@@ -114,6 +89,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
       ),
       dataIndex: '_id',
       tip: 'The id is the unique key',
+      hideInSearch: true,
     },
     {
       title: (
@@ -132,6 +108,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
         />
       ),
       dataIndex: 'oreUse',
+      hideInSearch: true,
     },
     {
       title: (
@@ -141,6 +118,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
         />
       ),
       dataIndex: 'oreRemain',
+      hideInSearch: true,
     },
     {
       title: (
@@ -150,6 +128,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
         />
       ),
       dataIndex: 'updatedAt',
+      hideInSearch: true,
     },
     {
       title: (
@@ -164,7 +143,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
 
   return (
     <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
+      <ProTable<API.LotteryRecordItem>
         headerTitle={intl.formatMessage({
           id: 'pages.searchTable.title',
           defaultMessage: 'Enquiry form',
@@ -177,6 +156,12 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
         // dataSource={list}
         // request={rule} // current pageSize
         request={(params) => {
+          if (params.name) {
+            params.name = params.name.trim();
+          }
+          if (params.userId) {
+            params.userId = params.userId.trim();
+          }
           return props?.dispatch({
             type: 'lotteryRecord/getList',
             payload: {

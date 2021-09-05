@@ -126,7 +126,14 @@ class serveController {
     async listAllRecord(ctx) {
         const page = ctx.request.query.current;
         const size = ctx.request.query.pageSize;
-        const list = await RecordService.listAll(page, size);
+        const name = ctx.request.query.name;
+        const userId = ctx.request.query.userId;
+        const list = await RecordService.listAll({
+            page,
+            size,
+            name,
+            userId
+        });
 
         ctx.body = {
             ...list,
