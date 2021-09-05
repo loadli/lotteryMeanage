@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 15:28:47
+ * @LastEditTime : 2021-09-05 16:21:58
  * @Description  : 抽奖
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
@@ -131,7 +131,7 @@ export default {
                 this.oreNumber = res.data.number;
             });
         },
-        // 请求矿石数量
+        // 请求矿石使用
         fetchOreUse() {
             Api.getOreUseNumber().then((res) => {
                 this.oreUse = res.data.oreUse;

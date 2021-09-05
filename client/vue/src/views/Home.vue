@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-04 13:06:59
- * @LastEditTime : 2021-09-05 12:29:34
+ * @LastEditTime : 2021-09-05 16:24:46
  * @LastEditors  : xiaolin
  * @Description: In User Settings Edit
  * @FilePath     : \lotteryMeanage\client\vue\src\views\Home.vue
@@ -22,7 +22,7 @@
         <div class="home__container is-flex">
             <div class="container_left">
                 <Module title="幸运抽奖">
-                    <Lottery />
+                    <Lottery ref="lottery" />
                 </Module>
             </div>
 
@@ -45,6 +45,7 @@ import Module from "@/components/Module.vue";
 import Lottery from "@/components/Lottery.vue";
 import Record from "@/components/Record.vue";
 import Prize from "@/components/Prize.vue";
+import { eventBus } from "../main";
 export default {
     name: "Home",
     components: {
@@ -70,7 +71,7 @@ export default {
             let userId = localStorage.getItem("userId");
             if (!userId) {
                 userId = await this.createUser();
-                location.reload();
+                this.$refs.lottery.fetchOreNumber(userId);
             }
             return userId;
         },
