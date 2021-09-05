@@ -90,6 +90,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
       dataIndex: '_id',
       tip: 'The id is the unique key',
       hideInSearch: true,
+      search:false
     },
     {
       title: (
@@ -109,6 +110,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
       ),
       dataIndex: 'oreUse',
       hideInSearch: true,
+      search:false
     },
     {
       title: (
@@ -119,6 +121,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
       ),
       dataIndex: 'oreRemain',
       hideInSearch: true,
+      search:false
     },
     {
       title: (
@@ -129,6 +132,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
       ),
       dataIndex: 'updatedAt',
       hideInSearch: true,
+      search:false
     },
     {
       title: (
@@ -138,6 +142,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
         />
       ),
       dataIndex: 'name',
+      search:false
     },
   ]
 
