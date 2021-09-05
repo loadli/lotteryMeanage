@@ -306,7 +306,7 @@ const PrizeTable: React.FC<{ dispatch: Function }> = (props) => {
               {fetchImageLoading ? (
                 <LoadingOutlined />
               ) : (
-                <img src={imgInfo.current.src} alt="图片不存在" />
+                <img src={imgInfo.current.src} alt="图片不存在" width="260"/>
               )}
             </Form.Item>
           ) : (
