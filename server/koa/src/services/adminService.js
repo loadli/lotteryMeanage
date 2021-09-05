@@ -14,7 +14,6 @@ const ObjectId     = inspirecloud.db.ObjectId;
 const adminTable = require("../models/adminTable"); // 管理用户表
 // ---------------------------------------------------
 
-
 class AdminService {
 
     /**

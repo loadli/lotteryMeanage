@@ -6,6 +6,7 @@
  * @Description  : 抽奖相关
  * @FilePath     : \lotteryMeanage\server\koa\src\services\LotteryService.js
  */
+
 const inspirecloud = require("@byteinspire/api");
 const ObjectId     = inspirecloud.db.ObjectId;
 const dateToString = inspirecloud.db.dateToString;

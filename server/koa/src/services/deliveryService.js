@@ -8,15 +8,12 @@
  */
 
 const inspirecloud = require("@byteinspire/api");
-const ObjectId = inspirecloud.db.ObjectId;
+const ObjectId     = inspirecloud.db.ObjectId;
 
 // ---------------------------------------------------
-// 实物表
-const deliveryTable = require("../models/deliveryTable");
-// 奖品表
-const prizeTable = require("../models/prizeTable");
+const deliveryTable = require("../models/deliveryTable");  // 实物表
+const prizeTable    = require("../models/prizeTable");     // 奖品表
 // ---------------------------------------------------
-
 
 /**
  * DeliveryService

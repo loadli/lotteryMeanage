@@ -9,10 +9,8 @@
 
 const inspirecloud = require("@byteinspire/api");
 
-
 // ---------------------------------------------------
-// 基础设置表
-const baseSettingTable = require("../models/baseSettingTable");
+const baseSettingTable = require("../models/baseSettingTable"); // 基础设置表
 // ---------------------------------------------------
 
 /**

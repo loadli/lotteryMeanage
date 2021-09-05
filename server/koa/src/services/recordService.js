@@ -8,22 +8,23 @@
  */
 
 const inspirecloud = require("@byteinspire/api");
-const ObjectId = inspirecloud.db.ObjectId;
+const ObjectId     = inspirecloud.db.ObjectId;
 
 // ---------------------------------------------------
-// 历史纪录表
-const recordTable = require("../models/recordTable");
-// 奖品表
-const prizeTable = require("../models/prizeTable");
+const recordTable = require("../models/recordTable");  // 历史纪录表
+const prizeTable  = require("../models/prizeTable");   // 奖品表
 // ---------------------------------------------------
-
-// 矿石
-const OreService = require("./OreService");
-const UserService = require("./UserService");
 
 /**
- * RecordService
+ * 引用service
+ * ---------------------------------------------------
  */
+const OreService   = require("./OreService");      // 矿石
+const UserService  = require("./UserService");     // 用户
+/**
+ * ---------------------------------------------------
+ */
+
 class RecordService {
     async listAll({
         page, 

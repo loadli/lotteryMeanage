@@ -7,16 +7,12 @@
  * @FilePath     : \lotteryMeanage\server\koa\src\services\prizeService.js
  */
 
-
 const inspirecloud = require("@byteinspire/api");
-
+const ObjectId     = inspirecloud.db.ObjectId;
 
 // ---------------------------------------------------
-// 奖品表
-const prizeTable = require("../models/prizeTable");
+const prizeTable = require("../models/prizeTable"); // 奖品表
 // ---------------------------------------------------
-
-const ObjectId = inspirecloud.db.ObjectId;
 
 /**
  * PrizeService
