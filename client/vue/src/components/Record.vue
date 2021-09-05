@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:33:25
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 12:27:56
+ * @LastEditTime : 2021-09-05 17:25:37
  * @Description  : 抽奖纪录
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Record.vue
 -->
@@ -23,7 +23,7 @@
                     }}</span>
                 </li>
             </template>
-            <template v-for="item in recordList">
+            <!-- <template v-for="item in recordList">
                 <li :key="item._id + '_2'" class="record-item">
                     <span
                         >🎉 恭喜抽中 <span>{{ item.prizeName }}</span>
@@ -36,7 +36,7 @@
                         new Date(item.datetime).toTimeString().substr(0, 8)
                     }}</span>
                 </li>
-            </template>
+            </template> -->
         </ul>
         <div class="no_data_tip" v-else>暂无内容</div>
     </div>

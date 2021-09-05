@@ -1,11 +1,10 @@
 .record {
     height: 250px;
-    overflow: hidden;
+    overflow: auto;
 
     .record_inner {
         position: relative;
-        animation: 6s wordsLoop linear infinite normal;
-    position: relative;
+        // animation: 6s wordsLoop linear infinite normal;
     }
     .no_data_tip {
         color: #ccc;
@@ -20,12 +19,12 @@
     }
 
 
-    @keyframes wordsLoop {
-        0% {
-            transform: translateY(0);
-        }
-        100% {
-            transform: translateY(-250px);
-        }
-    }
+    // @keyframes wordsLoop {
+    //     0% {
+    //         transform: translateY(0);
+    //     }
+    //     100% {
+    //         transform: translateY(-250px);
+    //     }
+    // }
 }
