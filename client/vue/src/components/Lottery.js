@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-05 14:53:20
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 15:08:17
+ * @LastEditTime : 2021-09-05 15:18:05
  * @Description  : 轮盘动画相关
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.js
  */
@@ -14,7 +14,7 @@ const animationOptions = {
         pits       : 8,      // 格子数
         interval   : 100,    // 初始间隔
         rate       : 2.5,    // 系数
-        cycle      : 2.5,    // 转动基本次数：即至少需要转动多少次再进入抽奖环节
+        cycle      : 1,    // 转动基本次数：即至少需要转动多少次再进入抽奖环节
         getInterval: null,   // 自定义旋转间隔函数
     },
     options: {
@@ -22,14 +22,14 @@ const animationOptions = {
         pits      : 8,     // 格子数
         interval  : 100,   // 初始间隔
         rate      : 5,     // 系数
-        cycle     : 4,     // 转动基本次数：即至少需要转动多少次再进入抽奖环节
+        cycle     : 2,     // 转动基本次数：即至少需要转动多少次再进入抽奖环节
     },
     ticketId       : null,    // 定时器ID
     prizeIndexes   : null,    // 奖项
     times          : 0,       // 转动次数
     index          : 1,       // 当前位置
     animatingResult: false,   //  模拟结束
-    cycle          : 4,       // 实际的转动基本次数
+    cycle          : 2,       // 实际的转动基本次数
     processing     : false,   // 进行中
     lastTime       : null,    // 上次转动时间
     interval       : 100,
