@@ -2,24 +2,21 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-04 23:21:37
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 11:01:53
+ * @LastEditTime : 2021-09-05 14:12:17
  * @Description  : 管理员相关
  * @FilePath     : \lotteryMeanage\server\koa\src\services\AdminService.js
  */
 
 const inspirecloud = require("@byteinspire/api");
-
-// ---------------------------------------------------
-// 管理用户表
-const adminTable = require("../models/adminTable");
-// ---------------------------------------------------
 const ObjectId     = inspirecloud.db.ObjectId;
-const dateToString = inspirecloud.db.dateToString;
 
-/**
- * AdminService
- */
+// ---------------------------------------------------
+const adminTable = require("../models/adminTable"); // 管理用户表
+// ---------------------------------------------------
+
+
 class AdminService {
+
     /**
      * 登录
      */
@@ -36,6 +33,7 @@ class AdminService {
         delete user.createdAt;
         return user;
     }
+
     /**
      * 获取用户信息
      */

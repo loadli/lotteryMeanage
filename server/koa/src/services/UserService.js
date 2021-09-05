@@ -2,26 +2,28 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-05 00:51:44
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 12:16:08
+ * @LastEditTime : 2021-09-05 14:08:32
  * @Description  : 前台用户相关
  * @FilePath     : \lotteryMeanage\server\koa\src\services\UserService.js
  */
 const inspirecloud = require("@byteinspire/api");
+const ObjectId     = inspirecloud.db.ObjectId;
 
 // ---------------------------------------------------
-// 基础设置表
-const baseSettingTable = require("../models/baseSettingTable");
-// 用户表
-const userTable = require("../models/userTable");
+const baseSettingTable = require("../models/baseSettingTable");  // 基础设置表
+const userTable        = require("../models/userTable");         // 用户表
 // ---------------------------------------------------
-const ObjectId = inspirecloud.db.ObjectId;
 
-// 矿石相关
-const OreService = require("./OreService");
 
 /**
- * UserService
+ * 引用service
+ * ---------------------------------------------------
  */
+const OreService = require("./OreService");  // 矿石相关
+/**
+ * ---------------------------------------------------
+ */
+
 class UserService {
     /**
      * 创建一个用户id
