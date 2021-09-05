@@ -1,12 +1,13 @@
 import { Button, Modal, Select } from 'antd';
-import React, { useState, useRef } from 'react';
-import { FormattedMessage } from 'umi';
+import React, { useRef } from 'react';
+import { FormattedMessage, useDispatch } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import { changeTransportStatus, getDeliveryRecordList } from './services';
+import { useEffect } from 'react';
 
 const mapState = (state: any) => {
   return {
@@ -14,14 +15,9 @@ const mapState = (state: any) => {
   };
 };
 
-const TableList: React.FC = (props) => {
+const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
-
-  /**
-   * 设置页数和数据大小
-   */
-  const [current, setCurrent] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const dispatch = useDispatch<any>();
 
   const changeTransport = (record: API.DeliveryRecordItem) => {
     Modal.confirm({
@@ -33,38 +29,15 @@ const TableList: React.FC = (props) => {
       onOk: async () => {
         // 修改发货状态
         await changeTransportStatus({ id: record._id });
-        const res: API.deliresList = await getDeliveryRecordList();
+        const res = await getDeliveryRecordList();
         if (res?.code === '200') {
-          props?.dispatch({
-            type: 'deliveryRecord/saveList',
-            payload: res.data,
-          });
-          //  actionRef.current.reload()
-          setsearchList(res.data);
-          props.f;
+          actionRef.current?.reload();
         }
-
-        // props?.dispatch({
-        //     type:'deliveryRecord/changeTransportStatus',
-        //     payload:{
-        //         id:record._id
-        //     },
-        //     callback:()=>{
-        //         props?.dispatch({
-        //             type: 'deliveryRecord/getList',
-        //             payload: {
-        //               current,
-        //               pageSize,
-        //             }
-        //           })
-        //     }
-        // })
       },
     });
   };
-  const [searchList, setsearchList] = useState([]);
 
-  const columns: ProColumns<API.DeliveryListItem>[] = [
+  const columns: ProColumns<API.DeliveryRecordItem>[] = [
     {
       title: <FormattedMessage id="pages.deliveryTable.Winning" defaultMessage="ID" />,
       dataIndex: 'prizeId',
@@ -112,12 +85,14 @@ const TableList: React.FC = (props) => {
       key: 'deliveryStatus',
       hideInTable: true,
       dataIndex: 'transport',
-      renderFormItem: (item, { type, defaultRender, ...rest }, form) => {
+      renderFormItem: (item, { type }) => {
         if (type === 'form') {
           return null;
         }
         return (
           <Select
+            {...item.fieldProps}
+            placeholder="请选择"
             options={[
               {
                 label: '已发货',
@@ -132,39 +107,6 @@ const TableList: React.FC = (props) => {
                 value: '3',
               },
             ]}
-            //   value={'全部'}
-            onChange={(value: string) => {
-              let newData = [];
-              console.log(value);
-              if (value === '1') {
-                newData = searchList.filter((item) => {
-                  return item.transport === true;
-                });
-                props?.dispatch({
-                  type: 'deliveryRecord/saveList',
-                  payload: newData,
-                });
-              } else if (value === '2') {
-                newData = searchList.filter((item) => {
-                  return item.transport === false;
-                });
-                props?.dispatch({
-                  type: 'deliveryRecord/saveList',
-                  payload: newData,
-                });
-              } else {
-                props?.dispatch({
-                  type: 'deliveryRecord/getList',
-                  payload: {
-                    current,
-                    pageSize,
-                  },
-                  callback: (rr: any) => {
-                    setsearchList(rr.data);
-                  },
-                });
-              }
-            }}
           />
         );
       },
@@ -176,7 +118,6 @@ const TableList: React.FC = (props) => {
         <Button
           type="link"
           disabled={record.transport}
-          key="Math.random()"
           onClick={() => {
             // transport 为true  已发货 false 未发货
             changeTransport(record);
@@ -191,27 +132,20 @@ const TableList: React.FC = (props) => {
 
   return (
     <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
+      <ProTable<API.DeliveryRecordItem, API.PageParams & { deliveryStatus?: string }>
         actionRef={actionRef}
-        rowKey="key"
-        dataSource={props.list || []}
-        // request={rule} // current pageSize
-        request={async (params, sorter, filter) => {
+        rowKey="_id"
+        request={async (params) => {
           // 表单搜索项会从 params 传入，传递给后端接口。
-          props?.dispatch({
+          const res = await dispatch({
             type: 'deliveryRecord/getList',
             payload: {
-              current,
-              pageSize,
-            },
-            callback: (rr: any) => {
-              setsearchList(rr.data);
+              current: actionRef.current?.pageInfo?.current || 1,
+              pageSize: actionRef.current?.pageInfo?.pageSize || 20,
+              transport: params.deliveryStatus,
             },
           });
-          return {
-            data: props.list,
-            success: true,
-          };
+          return res;
         }}
         columns={columns}
       />

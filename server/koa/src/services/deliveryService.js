@@ -1,27 +1,50 @@
 /*
  * @Author       : xiaolin
  * @Date         : 2021-09-03 15:28:21
- * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 17:23:52
+ * @LastEditors: xiaorui
+ * @LastEditTime: 2021-09-05 21:51:15
  * @Description  : 实物相关
- * @FilePath     : \lotteryMeanage\server\koa\src\services\DeliveryService.js
+ * @FilePath: /lotteryMeanage/server/koa/src/services/deliveryService.js
  */
 
 const inspirecloud = require("@byteinspire/api");
-const ObjectId     = inspirecloud.db.ObjectId;
+const ObjectId = inspirecloud.db.ObjectId;
 
 // ---------------------------------------------------
 const deliveryTable = require("../models/deliveryTable");  // 实物表
-const prizeTable    = require("../models/prizeTable");     // 奖品表
+const prizeTable = require("../models/prizeTable");     // 奖品表
 // ---------------------------------------------------
 
 class DeliveryService {
     /**
      * 获取所有发货商品
      */
-    async listAll() {
-        const all = await deliveryTable.where().find();
-        return all;
+    async listAll({ page, size, transport }) {
+        const start = (page - 1) * size;
+        const end = start + (size - 1);
+        if (Number.isNaN(start) || Number.isNaN(end)) {
+            return {
+                data: [],
+                current: 1,
+                pageSize: 20,
+                total: 0,
+                success: false,
+            };
+        }
+        const query = {};
+        if (transport === '1') {
+            query.transport = true;
+        } else if (transport === '2') {
+            query.transport = false;
+        }
+        const all = await deliveryTable.where(query).skip(start).limit(end).find();
+        return {
+            data: all,
+            current: page,
+            pageSize: size,
+            total: await deliveryTable.where().count(),
+            success: true,
+        };
     }
 
     /**
