@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 15:07:30
+ * @LastEditTime : 2021-09-05 15:28:47
  * @Description  : 抽奖
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
@@ -11,11 +11,6 @@
         <div class="header">当前矿石数：{{ oreNumber }}</div>
         <div class="lottery">
             <div class="turntable-box">
-                <!-- <div class="top-border"></div>
-        <div class="bottom-border"></div>
-        <div class="left-border"></div>
-        <div class="right-border"></div> -->
-
                 <div class="blocks">
                     <div class="item-container">
                         <div
@@ -85,6 +80,7 @@ import Normal from "@/components/Normal.vue";
 import { eventBus } from "../main";
 import Api from "@/common/api.js";
 import { animationOptions, animationMethods } from "@/components/Lottery.js";
+
 export default {
     name: "Lottery",
     components: {
@@ -99,25 +95,25 @@ export default {
             ID_66ORE: "612b6b9a6315d10255d12b86",
             ID_BUG: "612b77fd29e75c0238ab1679",
             dialog: {
-                flag       : false,
-                isEntity   : true,    // true 实物；false 虚拟
+                flag: false,
+                isEntity: true, // true 实物；false 虚拟
                 addressInfo: {
-                    name   : "",
-                    phone  : "",
+                    name: "",
+                    phone: "",
                     address: "",
                 },
                 prizeInfo: {
-                    _id  : "",
+                    _id: "",
                     image: "",
-                    name : "",
+                    name: "",
                 },
             },
             lotteryList: [],
-            lotteryResult  : null,    // 结果
-            oreNumber      : 0,      // 剩余矿石数量
-            oreUse         : 9999,   // 单次使用矿石
+            lotteryResult: null, // 结果
+            oreNumber: 0, // 剩余矿石数量
+            oreUse: 9999, // 单次使用矿石
             // 引入动画参数
-            ...animationOptions
+            ...animationOptions,
         };
     },
     computed: {},
@@ -183,6 +179,9 @@ export default {
                 .then((res) => {
                     alert("添加收货地址成功");
                     this.dialog.flag = false;
+                    //抽一次，刷新奖品数据
+                    this.$emit("refresh");
+                    eventBus.$emit("refresh");
                 })
                 .catch((err) => {
                     alert("出问题了呢，要不咱下次再送？😜");
@@ -252,7 +251,7 @@ export default {
             }, 800);
         },
         // 引入动画方法
-        ...animationMethods
+        ...animationMethods,
     },
 };
 </script>
