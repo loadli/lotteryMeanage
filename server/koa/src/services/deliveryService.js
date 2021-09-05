@@ -2,12 +2,13 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-03 15:28:21
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 01:41:23
+ * @LastEditTime : 2021-09-05 14:10:29
  * @Description  : 实物相关
- * @FilePath     : \lotteryMeanage\server\koa\src\services\deliveryService.js
+ * @FilePath     : \lotteryMeanage\server\koa\src\services\DeliveryService.js
  */
 
 const inspirecloud = require("@byteinspire/api");
+const ObjectId = inspirecloud.db.ObjectId;
 
 // ---------------------------------------------------
 // 实物表
@@ -15,8 +16,7 @@ const deliveryTable = require("../models/deliveryTable");
 // 奖品表
 const prizeTable = require("../models/prizeTable");
 // ---------------------------------------------------
-const ObjectId = inspirecloud.db.ObjectId;
-const dateToString = inspirecloud.db.dateToString;
+
 
 /**
  * DeliveryService
@@ -70,6 +70,7 @@ class DeliveryService {
         };
         return await deliveryTable.save(requestBody);
     }
+
     /**
      * 获取抽奖记录
      * @param {string} userId 用户ID

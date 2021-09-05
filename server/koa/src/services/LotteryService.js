@@ -2,26 +2,21 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-05 01:10:47
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 12:16:00
+ * @LastEditTime : 2021-09-05 14:09:10
  * @Description  : 抽奖相关
  * @FilePath     : \lotteryMeanage\server\koa\src\services\LotteryService.js
  */
 const inspirecloud = require("@byteinspire/api");
-const ObjectId = inspirecloud.db.ObjectId;
+const ObjectId     = inspirecloud.db.ObjectId;
 const dateToString = inspirecloud.db.dateToString;
 
-// 奖品
-const PrizeService = require("./PrizeService");
-// 用户
-const UserService = require("./UserService");
-// 历史纪录
-const RecordService = require("./RecordService");
-// 实物奖品
-const DeliveryService = require("./DeliveryService");
+// ---------------------------------------------------
+const PrizeService    = require("./PrizeService");     // 奖品
+const UserService     = require("./UserService");      // 用户
+const RecordService   = require("./RecordService");    // 历史纪录
+const DeliveryService = require("./DeliveryService");  // 实物奖品
+// ---------------------------------------------------
 
-/**
- * LotteryService
- */
 class LotteryService {
     /**
      * 抽奖结束，修改部分数值
