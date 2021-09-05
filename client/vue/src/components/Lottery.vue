@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 18:49:26
+ * @LastEditTime : 2021-09-05 18:55:58
  * @Description  : 抽奖
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
@@ -206,6 +206,7 @@ export default {
                 alert("矿石不足");
                 return;
             }
+            // 抽奖按钮不可点击
             this.lotteryLoading = true;
             this.start();
             this.getResult(userId);
@@ -255,6 +256,7 @@ export default {
             this.dialog.prizeInfo = lotteryResult;
             setTimeout(() => {
                 this.dialog.flag = true;
+                // 抽奖按钮可点击
                 this.lotteryLoading = false;
             }, 800);
         },
