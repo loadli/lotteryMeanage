@@ -2,9 +2,9 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-05 00:51:44
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 01:47:18
+ * @LastEditTime : 2021-09-05 10:14:31
  * @Description  : 前台用户相关
- * @FilePath     : \lotteryMeanage\server\koa\src\services\userService.js
+ * @FilePath     : \lotteryMeanage\server\koa\src\services\UserService.js
  */
 const inspirecloud = require("@byteinspire/api");
 
@@ -14,7 +14,7 @@ const baseSettingTable = require("../models/baseSettingTable");
 // 用户表
 const userTable = require("../models/userTable");
 // ---------------------------------------------------
-
+const ObjectId = inspirecloud.db.ObjectId;
 /**
  * UserService
  */
@@ -36,8 +36,8 @@ class UserService {
     /**
      * 获取用户剩余矿石
      */
-    async oreRemain(id) {
-        const user = await userTable.where({ _id: ObjectId(id) }).findOne();
+    async oreRemain(userid) {
+        const user = await userTable.where({ _id: ObjectId(userid) }).findOne();
         return user;
     }
     /**

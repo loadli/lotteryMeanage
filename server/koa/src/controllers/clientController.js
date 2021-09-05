@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-31 09:37:11
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 01:39:45
+ * @LastEditTime : 2021-09-05 10:15:30
  * @Description  : 前台服务
  * @FilePath     : \lotteryMeanage\server\koa\src\controllers\clientController.js
  */
@@ -46,7 +46,7 @@ class clientController {
      */
     async oreRemain(ctx) {
         const { userId } = ctx.request.body;
-        const user = await OreService.oreRemain(userId);
+        const user = await UserService.oreRemain(userId);
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -76,7 +76,7 @@ class clientController {
      */
     async myPrize(ctx) {
         const { userId } = ctx.request.body;
-        const prizeRecordList = await clientService.myPrize(userId);
+        const prizeRecordList = await DeliveryService.myPrize(userId);
         ctx.body = {
             code: "200",
             message: "请求成功",
@@ -131,7 +131,7 @@ class clientController {
                 probablySum -= probabilityList[i];
             }
         }
-        console.log("本次抽中 :" + prize._id +  " " + prize.name);
+        console.log("本次抽中 :" + prize._id + " " + prize.name);
         if (prize) {
             await LotteryService.LotteryEnd(userId, prize);
             console.log("剩余矿石" + user.oreRemain);
