@@ -2,22 +2,22 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-05 01:10:47
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 01:51:03
+ * @LastEditTime : 2021-09-05 12:16:00
  * @Description  : 抽奖相关
- * @FilePath     : \lotteryMeanage\server\koa\src\services\lotteryService.js
+ * @FilePath     : \lotteryMeanage\server\koa\src\services\LotteryService.js
  */
 const inspirecloud = require("@byteinspire/api");
 const ObjectId = inspirecloud.db.ObjectId;
 const dateToString = inspirecloud.db.dateToString;
 
 // 奖品
-const PrizeService = require("../services/PrizeService");
+const PrizeService = require("./PrizeService");
 // 用户
-const UserService = require("../services/UserService");
+const UserService = require("./UserService");
 // 历史纪录
-const RecordService = require("../services/RecordService");
+const RecordService = require("./RecordService");
 // 实物奖品
-const DeliveryService = require("../services/DeliveryService");
+const DeliveryService = require("./DeliveryService");
 
 /**
  * LotteryService

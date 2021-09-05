@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:21:01
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-04 22:01:41
+ * @LastEditTime : 2021-09-05 12:19:36
  * @Description  : 抽奖
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Lottery.vue
 -->
@@ -83,6 +83,7 @@ import Dialog from "@/components/Dialog.vue";
 import Address from "@/components/Address.vue";
 import Normal from "@/components/Normal.vue";
 import { eventBus } from "../main";
+import Api from "@/common/api.js";
 export default {
     name: "Lottery",
     components: {
@@ -94,6 +95,8 @@ export default {
     data() {
         return {
             userId: null,
+            ID_66ORE: "612b6b9a6315d10255d12b86",
+            ID_BUG: "612b77fd29e75c0238ab1679",
             dialog: {
                 flag: false,
                 isEntity: true, // true 实物；false 虚拟
@@ -109,17 +112,6 @@ export default {
                 },
             },
             lotteryList: [],
-            // lotteryList: [
-            //   { id: 1, name: "奖品1", order: 0 },
-            //   { id: 2, name: "奖品2", order: 7 },
-            //   { id: 3, name: "奖品3", order: 6 },
-            //   { id: 4, name: "奖品4", order: 1 },
-            //   { id: -1, name: "点击抽奖", order: -1 },
-            //   { id: 5, name: "奖品5", order: 5 },
-            //   { id: 6, name: "奖品6", order: 2 },
-            //   { id: 7, name: "奖品7", order: 3 },
-            //   { id: 8, name: "奖品8", order: 4 },
-            // ],
             defaultOption: {
                 startIndex: 1, // 初始位置
                 pits: 8, // 格子数
@@ -154,47 +146,39 @@ export default {
     },
     computed: {},
     async created() {
-        this.getLotteryList();
+        this.fetchLotteryList();
         let userId = localStorage.getItem("userId");
         this.userId = userId;
-        this.getOreNumber(userId);
-        this.getOreUse();
+        this.fetchOreNumber(userId);
+        this.fetchOreUse();
     },
     methods: {
         // 请求矿石数量
-        getOreNumber(userId) {
-            this.$axios
-                .post("/api/user/ore", {
-                    userId,
-                })
-                .then((res) => {
-                    this.oreNumber = res.data.data.number;
-                });
+        fetchOreNumber(userId) {
+            Api.getOreNumber({ userId }).then((res) => {
+                this.oreNumber = res.data.number;
+            });
         },
         // 请求矿石数量
-        getOreUse() {
-            this.$axios.get("/api/serve/getOreUse").then((res) => {
-                this.oreUse = +res.data.data.oreUse;
+        fetchOreUse() {
+            Api.getOreUseNumber().then((res) => {
+                this.oreUse = res.data.oreUse;
             });
         },
         // 获取奖品列表
-        getLotteryList() {
-            this.$axios.get("/api/user/lotteryList").then((res) => {
-                if (res.data.code == 200) {
-                    let arr =
-                        res.data.data.length >= 8
-                            ? res.data.data.slice(0, 8)
-                            : res.data.data;
-                    // if (!arr) {
-                    //   alert("奖品数量不足，请联系管理员添加奖品");
-                    //   return;
-                    // }
-                    arr.splice(4, 0, { id: -1, name: "点击抽奖", order: -1 });
-                    arr.forEach((item, index) => {
-                        item.order = this.orderList[index];
-                    });
-                    this.lotteryList = arr;
-                }
+        fetchLotteryList() {
+            Api.getLotteryList().then((res) => {
+                let arr =
+                    res.data.length >= 8 ? res.data.slice(0, 8) : res.data;
+                // if (!arr) {
+                //   alert("奖品数量不足，请联系管理员添加奖品");
+                //   return;
+                // }
+                arr.splice(4, 0, { id: -1, name: "点击抽奖", order: -1 });
+                arr.forEach((item, index) => {
+                    item.order = this.orderList[index];
+                });
+                this.lotteryList = arr;
             });
         },
         closeDialog() {
@@ -211,20 +195,18 @@ export default {
             let { name, phone, address } = this.dialog.addressInfo;
             let userId = localStorage.getItem("userId");
             let prizeId = this.lotteryResult._id;
-            let data = {
+            const params = {
                 name,
                 phone,
                 address,
                 userId,
                 prizeId,
             };
-            this.$axios
-                .post("/api/user/address", data)
+
+            Api.submitAddress(params)
                 .then((res) => {
-                    if (res.data.code == 200) {
-                        alert("添加收货地址成功");
-                        this.dialog.flag = false;
-                    }
+                    alert("添加收货地址成功");
+                    this.dialog.flag = false;
                 })
                 .catch((err) => {
                     alert("出问题了呢，要不咱下次再送？😜");
@@ -237,8 +219,8 @@ export default {
                 alert("未获取到用户信息");
                 return;
             }
-            this.getOreNumber(userId);
-            this.getOreUse();
+            this.fetchOreNumber(userId);
+            this.fetchOreUse();
             if (this.oreNumber < this.oreUse) {
                 alert("矿石不足");
                 return;
@@ -248,7 +230,7 @@ export default {
         },
         async getResult(userId) {
             setTimeout(async () => {
-                let lotteryResult = await this.getLotteryResult(userId);
+                let lotteryResult = await this.fetchLotteryResult(userId);
                 let res = this.lotteryList.find(
                     (item) => item._id === lotteryResult._id
                 );
@@ -261,16 +243,11 @@ export default {
         },
 
         // 获取抽奖结果
-        getLotteryResult(userId) {
+        fetchLotteryResult(userId) {
             return new Promise((resolve) => {
-                this.$axios
-                    .post("/api/user/lottery", {
-                        userId,
-                    })
+                Api.lotteryResult({ userId })
                     .then((res) => {
-                        if (res.data.code == 200) {
-                            resolve(res.data.data);
-                        }
+                        resolve(res.data);
                     })
                     .catch((err) => {
                         console.log(err);
@@ -283,9 +260,9 @@ export default {
             let lotteryResult = { ...this.lotteryResult };
             this.dialog.title = "恭喜中奖";
             lotteryResult.title = `恭喜获得${lotteryResult.name}`;
-            if (lotteryResult._id === "612b6b9a6315d10255d12b86") {
+            if (lotteryResult._id === this.ID_66ORE) {
                 lotteryResult.desc = "本次抽中的矿石已累加到你的当前矿石数中";
-            } else if (lotteryResult._id == "612b77fd29e75c0238ab1679") {
+            } else if (lotteryResult._id === this.ID_BUG) {
                 lotteryResult.desc =
                     "恭喜你抽中了一个bug，请保留好，敬请期待妙用";
                 lotteryResult.title = "触发彩蛋";
@@ -391,7 +368,7 @@ export default {
                 if (this.prizeIndexes.includes(this.index)) {
                     console.log("End", this.prizeIndexes, this.index);
                     this.showDialog();
-                    this.getOreNumber(this.userId);
+                    this.fetchOreNumber(this.userId);
                     return false;
                 }
             }

@@ -2,9 +2,9 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-03 15:28:21
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 01:45:28
+ * @LastEditTime : 2021-09-05 12:17:58
  * @Description  : 历史纪录相关
- * @FilePath     : \lotteryMeanage\server\koa\src\services\recordService.js
+ * @FilePath     : \lotteryMeanage\server\koa\src\services\RecordService.js
  */
 
 const inspirecloud = require("@byteinspire/api");
@@ -18,7 +18,8 @@ const prizeTable = require("../models/prizeTable");
 // ---------------------------------------------------
 
 // 矿石
-const OreService = require("../services/OreService");
+const OreService = require("./OreService");
+const UserService = require("./UserService");
 
 /**
  * RecordService
@@ -97,9 +98,9 @@ class RecordService {
      * @param {object} prize 奖品
      */
     async LotteryRecord(userid, prize) {
-        const oreUse = await OreService.oreUse();
+        const oreUse = await OreService.getOreUse();
 
-        const remain = await OreService.oreRemain(userid);
+        const remain = await UserService.oreRemain(userid);
 
         const recordItem = {
             userId: userid,

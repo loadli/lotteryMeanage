@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-04 13:06:59
- * @LastEditTime : 2021-09-05 09:22:54
+ * @LastEditTime : 2021-09-05 12:29:34
  * @LastEditors  : xiaolin
  * @Description: In User Settings Edit
  * @FilePath     : \lotteryMeanage\client\vue\src\views\Home.vue
@@ -70,7 +70,7 @@ export default {
             let userId = localStorage.getItem("userId");
             if (!userId) {
                 userId = await this.createUser();
-                // location.reload();
+                location.reload();
             }
             return userId;
         },

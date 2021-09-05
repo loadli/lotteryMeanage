@@ -2,9 +2,9 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-04 23:21:37
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 01:44:15
+ * @LastEditTime : 2021-09-05 11:01:53
  * @Description  : 管理员相关
- * @FilePath     : \lotteryMeanage\server\koa\src\services\adminService.js
+ * @FilePath     : \lotteryMeanage\server\koa\src\services\AdminService.js
  */
 
 const inspirecloud = require("@byteinspire/api");
@@ -13,7 +13,7 @@ const inspirecloud = require("@byteinspire/api");
 // 管理用户表
 const adminTable = require("../models/adminTable");
 // ---------------------------------------------------
-const ObjectId = inspirecloud.db.ObjectId;
+const ObjectId     = inspirecloud.db.ObjectId;
 const dateToString = inspirecloud.db.dateToString;
 
 /**

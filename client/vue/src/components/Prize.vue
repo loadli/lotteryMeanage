@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-08-26 19:36:18
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-04 22:01:10
+ * @LastEditTime : 2021-09-05 12:28:28
  * @Description  : 奖品
  * @FilePath     : \lotteryMeanage\client\vue\src\components\Prize.vue
 -->
@@ -20,14 +20,14 @@
                 :style="{ transform: 'translateX(' + distance + 'px)' }"
                 v-if="prizeInfo.length"
             >
-                <lottery-item
-                    v-for="(item, index) in prizeInfo"
-                    :key="index"
-                    :image="item.image"
-                    :name="item.name"
-                    class="content-item"
-                >
-                </lottery-item>
+                <template v-for="(item, index) in prizeInfo">
+                    <lottery-item
+                        :key="index"
+                        :image="item.image"
+                        :name="item.name"
+                        class="content-item"
+                    />
+                </template>
             </div>
         </div>
         <div class="no_data_tip" v-else>暂无内容</div>

@@ -2,7 +2,7 @@
  * @Author       : xiaolin
  * @Date         : 2021-09-05 00:51:44
  * @LastEditors  : xiaolin
- * @LastEditTime : 2021-09-05 10:14:31
+ * @LastEditTime : 2021-09-05 12:16:08
  * @Description  : 前台用户相关
  * @FilePath     : \lotteryMeanage\server\koa\src\services\UserService.js
  */
@@ -15,6 +15,10 @@ const baseSettingTable = require("../models/baseSettingTable");
 const userTable = require("../models/userTable");
 // ---------------------------------------------------
 const ObjectId = inspirecloud.db.ObjectId;
+
+// 矿石相关
+const OreService = require("./OreService");
+
 /**
  * UserService
  */
@@ -58,7 +62,7 @@ class UserService {
      */
     async oreRemainLess(userid) {
         // 获取单次消耗
-        const oreUse = await this.oreUse();
+        const oreUse = await OreService.getOreUse();
         // 修改矿石数
         const user = await userTable.where({ _id: ObjectId(userid) }).findOne();
 

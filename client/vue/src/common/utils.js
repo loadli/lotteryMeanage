@@ -1,7 +1,7 @@
 /*
  * @Author: mujiao
  * @Date: 2021-09-04 15:57:14
- * @LastEditTime : 2021-09-04 21:58:26
+ * @LastEditTime : 2021-09-05 11:11:50
  * @LastEditors  : xiaolin
  * @Description: In User Settings Edit
  * @FilePath     : \lotteryMeanage\client\vue\src\common\utils.js
@@ -13,7 +13,7 @@ function $$axios(options) {
         me = this;
     console.log(this);
     promise = new Promise((resolve, reject) => {
-        let url = `/api/user/${options.url.replace(/^\//, "")}`;
+        let url = `/api/${options.url.replace(/^\//, "")}`;
         let method = options?.method || "post";
 
         axios({
