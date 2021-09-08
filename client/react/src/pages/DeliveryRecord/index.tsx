@@ -49,7 +49,7 @@ const TableList: React.FC = () => {
     },
     {
       title: <FormattedMessage id="pages.deliveryTable.addressee" defaultMessage="ID" />,
-      dataIndex: 'userId',
+      dataIndex: 'name',
       search: false,
     },
     {
@@ -64,7 +64,7 @@ const TableList: React.FC = () => {
     },
     {
       title: <FormattedMessage id="pages.deliveryTable.prize" defaultMessage="ID" />,
-      dataIndex: 'name',
+      dataIndex: 'prizeName',
       search: false,
     },
     {

@@ -54,7 +54,7 @@ const TableList: React.FC<{ dispatch: Function }> = (props) => {
     },
     {
       title: <FormattedMessage id="pages.recordTable.prize" defaultMessage="ID" />,
-      dataIndex: 'name',
+      dataIndex: 'prizeName',
       search: false,
     },
   ];
